@@ -1,0 +1,12 @@
+sudo g++ -D LINUX \
+src/Main/main.cpp \
+src/Screen/screen.cpp \
+src/Menus/mainmenu.cpp \
+src/Games/snakeGame.cpp \
+src/Models/Snake/snakeModel.cpp \
+src/Models/Snake/snakeFoodModel.cpp \
+src/Menus/snakePauseMenu.cpp \
+src/Menus/settingsMenu.cpp \
+-lncurses -o snake \
+
+
