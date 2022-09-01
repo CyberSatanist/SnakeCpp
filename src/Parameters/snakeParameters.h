@@ -17,7 +17,7 @@ class SnakeParameters {
 
 //SnakeModel
         int snakeHeadColor = COLOR_YELLOW;
-        int snakeBodyColorOne = COLOR_BLUE;
+        int snakeBodyColorOne = COLOR_GREEN;
         int snakeBodyColorTwo = COLOR_GREEN;
 
 //FoodModel

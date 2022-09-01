@@ -15,6 +15,5 @@ class SnakeFoodModel
 	void getFoodCoordinates(int* x, int* y);
         void init(Screen screen, SnakeParameters parameters);
         void drawFood();
-        void drawFood();
 };
 #endif

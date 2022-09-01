@@ -1,13 +1,17 @@
 #include "settingsMenu.h"
 #include "../Screen/screen.h"
 #include <string>
+#include <array>
+#include <charconv>
+#include <iostream>
+#include <sstream>
+
 
 void SettingsMenu::run()
 {
     currentScreen.clearScreen();
     settingsMenuOn = true;
     while (settingsMenuOn) {
-
 	menuFrame();
 	menuControllHandler();
     }
@@ -26,23 +30,48 @@ void SettingsMenu::getParameters(SnakeParameters* parameters)
 
 void SettingsMenu::menuFrame()
 {
+
+    snakeParameters.delayDuration;
+
+    std::string delayString, lenghtString;
+    std::string leftArrowString = " < ";
+    std::string rightArrowString = " > ";
+    std::string spaceString = "   ";
+
+    delayString = std::to_string(snakeParameters.delayDuration);
+    lenghtString = std::to_string(snakeParameters.snakeLenght);
+    const char *delayDuration = delayString.c_str();
+    const char *snakeLenght = lenghtString.c_str();
+    const char *space = spaceString.c_str();
+    const char *leftArrow = leftArrowString.c_str();
+    const char *rightArrow = rightArrowString.c_str();
+
     for (int count = 0; count < ((settingsMenuChoiceCount-1)/2); count++) {
         currentScreen.setCursor(
             ((currentScreen.getHight() / ((settingsMenuChoiceCount/2) +2)) * (count+1)),
             (currentScreen.getWidth() / 6));
-	if (currentChoice == count) {
+        if (currentChoice == count) {
             setMenuChosenColor();	
         } else {
             setMenuLineColor();
         }
         const char *strings = settingsMenuChoices[count].c_str();
-	switch (currentChoice){
-            case GameSpeed:
-	   // currentScreen.writeText(std::c_str(std::to_string(snakeParameters.delayDuration)));
+
+	currentScreen.writeText(strings);
+	switch (count){
+            case 0:
+            currentScreen.writeText(space);
+            currentScreen.writeText(leftArrow);
+	    currentScreen.writeText(delayDuration);
+            currentScreen.writeText(rightArrow);
             break;
+	    case 1:
+            currentScreen.writeText(space);
+            currentScreen.writeText(leftArrow);
+	    currentScreen.writeText(snakeLenght);
+            currentScreen.writeText(rightArrow);
 
 	}
-	currentScreen.writeText(strings);
     }
     for (int count = ((settingsMenuChoiceCount)/2); count < (settingsMenuChoiceCount-1); count++) {
         currentScreen.setCursor(
