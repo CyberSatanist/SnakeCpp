@@ -1,10 +1,11 @@
 #include "snakeFoodModel.h"
 #include <random>
 
-void SnakeFoodModel::init(Screen screen, SnakeParameters parameters)
+extern SnakeParameters snakeParameters;
+
+void SnakeFoodModel::init(Screen screen)
 {
     currentScreen = screen;
-    snakeParameters = parameters;
     std::random_device random_device;
     std::mt19937 generator(random_device());
     std::uniform_int_distribution<> distributionX(1, currentScreen.getHight());

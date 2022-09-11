@@ -22,10 +22,8 @@ class SnakeModel
 	snakeLocs* snakeHeadTail = new snakeLocs;
 	Screen currentScreen;
 
-	SnakeParameters snakeParameters;
-
     public:
-        void init(Screen screen, SnakeParameters parameters);
+    void init(Screen screen);
 	void getSnakeHeadCoordinates(int* x, int* y);
 	void drawSnake();
 	void newCell();

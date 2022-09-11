@@ -3,6 +3,8 @@
 #include "../Games/snakeGame.h"
 #include "../Menus/settingsMenu.h"
 
+SnakeParameters snakeParameters;
+
 void MainMenu::run()
 {
     mainMenuOn = true;
@@ -60,13 +62,11 @@ void MainMenu::menuControllHandler()
 void MainMenu::menuControllSelect()
 {
     if (currentChoice == mainMenuChoicesConst::New_game){
-        SnakeGame snakeGame(currentScreen, parameters);
-	snakeGame.run();
+        SnakeGame snakeGame(currentScreen);
+	    snakeGame.run();
     } else if (currentChoice == mainMenuChoicesConst::Settings){
         SettingsMenu settingsMenu;
-        settingsMenu.initParameters(&parameters);
-	settingsMenu.run();
-        settingsMenu.getParameters(&parameters);
+	    settingsMenu.run();
     } else if (currentChoice == mainMenuChoicesConst::Controlls){
         mainMenuOn = false;
     } else if (currentChoice == mainMenuChoicesConst::Exit){

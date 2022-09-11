@@ -9,11 +9,11 @@ class SnakeParameters {
         bool snakeGameOn = false;
 
 //SnakeGame
-	int countOfFoods = 10;
-	int countOfSnakes = 1;
-	int snakeLenght = 6;
-	int delayDuration = 80;
-	int whiteColor = COLOR_WHITE;
+        int countOfFoods = 10;
+        int countOfSnakes = 1;
+        int snakeLength = 6;
+        int delayDuration = 80;
+        int whiteColor = COLOR_WHITE;
 
 //SnakeModel
         int snakeHeadColor = COLOR_YELLOW;

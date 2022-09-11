@@ -11,7 +11,6 @@ class MainMenu : public Menu {
         static const int mainMenuChoiceCount = 4;
         bool mainMenuOn = false;
         std::string mainMenuChoices[mainMenuChoiceCount] = {"New game", "Settings", "Controlls", "Exit"};
-	SnakeParameters parameters;
     
     public:
         void run() override;

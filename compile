@@ -1,4 +1,4 @@
-sudo g++ -D LINUX \
+g++ -D LINUX \
 src/Main/main.cpp \
 src/Screen/screen.cpp \
 src/Menus/mainmenu.cpp \

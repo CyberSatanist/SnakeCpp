@@ -2,9 +2,10 @@
 #include "../Parameters/snakeParameters.h"
 #include <unistd.h>
 
-SnakeGame::SnakeGame(Screen screen, SnakeParameters parameters)
+extern SnakeParameters snakeParameters;
+
+SnakeGame::SnakeGame(Screen screen)
 {
-    snakeParameters = parameters;
     Screen currentScreen;
     pauseMenu.initScreen(currentScreen);
 }
@@ -12,7 +13,7 @@ SnakeGame::SnakeGame(Screen screen, SnakeParameters parameters)
 void SnakeGame::run()
 {
 	SnakeModel newSnake;
-	newSnake.init(currentScreen, snakeParameters);
+	newSnake.init(currentScreen);
 	snakes->currentSnake = newSnake;
 	snakes->nextSnake = NULL;
 
@@ -21,7 +22,7 @@ void SnakeGame::run()
 	for (int count = 0; count < snakeParameters.countOfFoods; count++)
 	{
 	    SnakeFoodModel newFood;
-	    newFood.init(currentScreen, snakeParameters);
+	    newFood.init(currentScreen);
 	    foodTmp->currentFood = newFood;
 	    foodTmp->isFood = true;
 	    foodTmp->nextFood = new foodsList;
@@ -82,7 +83,7 @@ void SnakeGame::checkFood()
         while(foodTmp->nextFood){
             if (!foodTmp->isFood)
 	    {
-                foodTmp->currentFood.init(currentScreen, snakeParameters);
+                foodTmp->currentFood.init(currentScreen);
                 foodTmp->isFood = true;
 	    } else {
 		foodTmp->currentFood.getFoodCoordinates(&foodX, &foodY);

@@ -18,8 +18,6 @@ class SnakeGame
         Screen::controll_keys vector;
         SnakePauseMenu pauseMenu;
 
-        SnakeParameters snakeParameters;
-
         std::string deathText = "YOU ARE FINISHED";
         int deathTextColor = COLOR_RED;
         int deathTextBackground = COLOR_BLACK;
@@ -44,7 +42,7 @@ class SnakeGame
 
        
     public:
-	SnakeGame(Screen screen, SnakeParameters parameters);
+	SnakeGame(Screen screen);
 	void run();
 	void turn();
 	void checkFood();

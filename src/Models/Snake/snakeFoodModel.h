@@ -9,11 +9,10 @@ class SnakeFoodModel
     private:
         int foodX, foodY;
 	Screen currentScreen;
-	SnakeParameters snakeParameters;
 
     public:
 	void getFoodCoordinates(int* x, int* y);
-        void init(Screen screen, SnakeParameters parameters);
+        void init(Screen screen);
         void drawFood();
 };
 #endif

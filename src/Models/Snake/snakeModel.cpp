@@ -1,14 +1,14 @@
 #include "snakeModel.h"
 
+extern SnakeParameters snakeParameters;
 
-void SnakeModel::init(Screen screen, SnakeParameters parameters)
+void SnakeModel::init(Screen screen)
 {
     currentScreen = screen;
-    snakeParameters = parameters;
     currentBody->prevCell = NULL;
     snakeHeadTail->firstCell = currentBody;
     tmp = currentBody;
-    for (int x = 0; x < snakeParameters.snakeLenght; x++)
+    for (int x = 0; x < snakeParameters.snakeLength; x++)
     { 
         tmp->cellY = currentScreen.getWidth() / 2;
         tmp->cellX = (currentScreen.getHight() / 2) + x;

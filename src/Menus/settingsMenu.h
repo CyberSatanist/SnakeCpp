@@ -12,33 +12,49 @@ class SettingsMenu : public Menu {
         bool settingsMenuOn = false;
         std::string settingsMenuChoices[settingsMenuChoiceCount] = 
 	    {
-                "Game speed",
-	       	"Lenght of snakes",
+            "Game speed",
+	       	"Length of snakes",
 	       	"Count of snakes",
 	       	"Count of foods",
 
-		"Snake head color",
-		"Food color",
-		"Snake body color one",
-		"Snake body color two",
+		    "Snake head color",
+    		"Food color",
+	    	"Snake body color one",
+		    "Snake body color two",
 	       	
-		"Back",
+    		"Back",
 	    };
 
-	SnakeParameters snakeParameters;
-    
-    public:
-        void run() override;
-        void initParameters(SnakeParameters* parameters);
-        void getParameters(SnakeParameters* parameters);
-        void menuFrame();
-        void menuControllHandler();
-        void menuControllSelect();
+        std::string leftArrowString = " < ";
+        std::string rightArrowString = " > ";
+        std::string spaceString = "   ";
+        const char *space = spaceString.c_str();
+        const char *leftArrow = leftArrowString.c_str();
+        
         enum settingsMenuChoicesConst 
 	    {
-                GameSpeed, SnakesLenght, SnakesCount, FoodsCount, 
+                GameSpeed, SnakesLength, SnakesCount, FoodsCount, 
 		SnakeHeadColor, FoodColor, SnakeBodyColorOne, SnakeBodyColorTwo,
 		Back
 	    };
+        int firstMenuTitle = GameSpeed;
+        int currentMenuTitle;
+        int lastMenuTitle = Back;
+
+        const char *rightArrow = rightArrowString.c_str();
+        
+        int currentParameter;
+        
+    public:
+        void run() override;
+        void menuFrame();
+        void menuControllHandler();
+        void menuControllSelect();
+
+        void printParameter(int parameter);
+        void printColor(int parameter);
+        int getParameter(int count);
+        void setParameter(int currentChoice, int side); 
+
 };
 #endif
