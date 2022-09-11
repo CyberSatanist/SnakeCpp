@@ -68,8 +68,8 @@ void SettingsMenu::menuFrame()
         setMenuLineColor();
     }
     currentScreen.setCursor(
-        (currentScreen.getHight() / ((settingsMenuChoiceCount)/2) * ((settingsMenuChoiceCount/2)-1)),
-        (currentScreen.getWidth() / 6) * 2);
+        currentScreen.getHight() - settingsMenuChoiceCount,
+        (currentScreen.getWidth() - settingsMenuChoices[settingsMenuChoiceCount-1].length()) / 2);
     const char *strings = settingsMenuChoices[settingsMenuChoiceCount-1].c_str();
 	currentScreen.writeText(strings);
 

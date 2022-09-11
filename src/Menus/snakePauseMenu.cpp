@@ -1,6 +1,7 @@
 #include "snakePauseMenu.h"
 #include "../Screen/screen.h"
 #include "../Games/snakeGame.h"
+#include "../Menus/controllsMenu.h"
 
 void SnakePauseMenu::run()
 {
@@ -63,9 +64,12 @@ void SnakePauseMenu::menuControllHandler()
 void SnakePauseMenu::menuControllSelect()
 {
     if (currentChoice == snakePauseMenuChoicesConst::Continue){
-	snakePauseMenuOn = false;
+    	snakePauseMenuOn = false;
+    } else if (currentChoice == snakePauseMenuChoicesConst::Controlls){
+	    ControllsMenu controllsMenu;
+        controllsMenu.run();
     } else if (currentChoice == snakePauseMenuChoicesConst::MainMenu){
-	snakePauseMenuOn = false;
+	    snakePauseMenuOn = false;
         snakeBool = false;
     }
 }

@@ -2,6 +2,7 @@
 #include "../Screen/screen.h"
 #include "../Games/snakeGame.h"
 #include "../Menus/settingsMenu.h"
+#include "../Menus/controllsMenu.h"
 
 SnakeParameters snakeParameters;
 
@@ -9,13 +10,8 @@ void MainMenu::run()
 {
     mainMenuOn = true;
     while (mainMenuOn) {
-
-        //SnakeSettingMenu settingsMenu(snakeGame);
-        //SnakeControllsMenu settingsMenu();
-	
-	menuFrame();
-	menuControllHandler();
-    
+        menuFrame();
+        menuControllHandler();
     }
 }
 
@@ -25,23 +21,23 @@ void MainMenu::menuFrame()
         currentScreen.setCursor(
             ((currentScreen.getHight() / (mainMenuChoiceCount+1)) * (count+1)),
             (currentScreen.getWidth() / 2) - (mainMenuChoices[count].length())/2);
-	if (currentChoice == count) {
+        if (currentChoice == count) {
             setMenuChosenColor();	
         } else {
             setMenuLineColor();
         }
         const char *strings = mainMenuChoices[count].c_str();
-	currentScreen.writeText(strings);
-	currentScreen.endFrame();
+        currentScreen.writeText(strings);
+        currentScreen.endFrame();
     }
 }
 
 void MainMenu::menuControllHandler()
 {
     switch(currentScreen.controllHandler()) {
-	case currentScreen.controll_keys::UP: 
-	    if (currentChoice == 0) {
-		    currentChoice = mainMenuChoiceCount - 1;
+    case currentScreen.controll_keys::UP: 
+        if (currentChoice == 0) {
+            currentChoice = mainMenuChoiceCount - 1;
 	    } else {
 		    currentChoice--;
 	    }
@@ -68,7 +64,8 @@ void MainMenu::menuControllSelect()
         SettingsMenu settingsMenu;
 	    settingsMenu.run();
     } else if (currentChoice == mainMenuChoicesConst::Controlls){
-        mainMenuOn = false;
+        ControllsMenu controllsMenu;
+        controllsMenu.run();
     } else if (currentChoice == mainMenuChoicesConst::Exit){
         mainMenuOn = false;
     }
