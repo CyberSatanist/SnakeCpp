@@ -4,7 +4,7 @@
 #include "../Menus/controllsMenu.h"
 
 SnakeParameters snakeParameters;
-//EvolutionParameters evolutionParameters;
+EvolutionParameters evolutionParameters;
 
 
 void MainMenu::menuControllSelect()

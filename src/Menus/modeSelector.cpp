@@ -4,7 +4,7 @@
 #include <iostream>
 #include <sstream>
 #include "../Modes/SnakeGame/snakeGame.h"
-//#include "../Modes/Evolution/evolution.h"
+#include "../Modes/Evolution/evolution.h"
 
 
 void ModeSelector::menuControllSelect()
@@ -13,8 +13,8 @@ void ModeSelector::menuControllSelect()
         SnakeGame snakeGame(currentScreen);
 	    snakeGame.run();
     } else if (currentChoice == menuChoicesConst::EvolutionChoice){
-        //Evolution evolution(currentScreen);
-	    //evolution.run();
+        Evolution evolution(currentScreen);
+	    evolution.run();
     } else if (currentChoice == menuChoicesConst::Back){
         menuOn = false;
     }

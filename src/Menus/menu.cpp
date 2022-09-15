@@ -42,8 +42,8 @@ void Menu::run()
     currentScreen.clearScreen();
     menuOn = true;
     while (menuOn) {
-        menuFrame();
-        menuControllHandler();
+        this->menuFrame();
+        this->menuControllHandler();
     }
     currentScreen.clearScreen();
 }

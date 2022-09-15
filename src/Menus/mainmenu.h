@@ -4,7 +4,7 @@
 #include <string>
 #include "menu.h"
 #include "../Modes/SnakeGame/Parameters/snakeParameters.h"
-//#include "../Modes/Evolution/Parameters/evolutionParameters.h"
+#include "../Modes/Evolution/Parameters/evolutionParameters.h"
 
 class MainMenu : public Menu 
 {

@@ -11,6 +11,8 @@ src/Modes/SnakeGame/Models/snakeModel.cpp \
 src/Modes/SnakeGame/Models/foodModel.cpp \
 src/Modes/SnakeGame/Menus/pauseMenu.cpp \
 src/Modes/SnakeGame/Menus/snakeSettingsMenu.cpp \
+src/Modes/Evolution/evolution.cpp \
+src/Modes/Evolution/Field/map.cpp \
 -lncurses -o snake \
 
 
