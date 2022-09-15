@@ -53,22 +53,17 @@ Screen::controll_keys Screen::controllHandler()
     if (key = getch())
     {
         if (key == 259 | key == 119 | key == 87 | key == 134 | key == 166){
-		return UP;
-        }
-        if (key == 258 | key == 115 | key == 83 | key == 139 | key == 171){
-		return DOWN;
-        }
-        if (key == 260 | key == 97 | key == 65 | key == 132 | key == 164){
-		return LEFT;
-        }
-        if (key == 261 | key == 100 | key == 68 | key == 178 | key == 146){
-		return RIGHT;
-        }
-        if (key == 10){
-		return SELECT;
-        }
-        if (key == 27){
-		return ESCAPE;
+            return UP;
+        } else if (key == 258 | key == 115 | key == 83 | key == 139 | key == 171){
+            return DOWN;
+        } else if (key == 260 | key == 97 | key == 65 | key == 132 | key == 164){
+            return LEFT;
+        } else if (key == 261 | key == 100 | key == 68 | key == 178 | key == 146){
+            return RIGHT;
+        } else if (key == 10){
+            return SELECT;
+        } else if (key == 27){
+            return ESCAPE;
         }
     }
     return NOTHING;

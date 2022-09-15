@@ -1,7 +1,7 @@
 #ifndef SNAKEPARAMETERS_H
 #define SNAKEPARAMETERS_H
 
-#include "../Screen/screen.h"
+#include "../../../Screen/screen.h"
 
 class SnakeParameters {
 
@@ -9,7 +9,7 @@ class SnakeParameters {
         bool snakeGameOn = false;
 
 //SnakeGame
-        int countOfFoods = 10;
+        int countOfFood = 10;
         int countOfSnakes = 1;
         int snakeLength = 6;
         int delayDuration = 80;

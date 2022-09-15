@@ -1,6 +1,8 @@
 #ifndef MENU_H
 #define MENU_H
 
+#include <curses.h>
+#include <string>
 #include "../Screen/screen.h"
 
 class Menu
@@ -8,23 +10,30 @@ class Menu
 
     protected:
 	
-	int currentChoice = 0;
-	Screen currentScreen;
+        int currentChoice = 0;
+        int menuChoiceCount = 0;
+        bool menuOn = false;
+        Screen currentScreen;
+
+        int menuConst;
+        std::string menuTitle;
+        std::string menuChoices[0];
+        enum menuChoicesConst {}; 
+
+        virtual void menuControllSelect(){};
+
+        void menuControllHandler();
+        void menuFrame();
+        void setMenuChosenColor();
+        void setMenuLineColor();
+        void setMenuTitleColor();
 
     public:
-	void initScreen(Screen screen)
-	{
-	    currentScreen = screen;	
-	};
-	virtual void run(){};
-        
-	void setMenuChosenColor(){
-	   currentScreen.setColor(COLOR_BLACK, COLOR_WHITE);
-	};
-        
-	void setMenuLineColor(){
-	   currentScreen.setColor(COLOR_WHITE, COLOR_BLACK);
-	};
+        void initScreen(Screen screen);
+        void run();
+
+
+
 
 };
 #endif

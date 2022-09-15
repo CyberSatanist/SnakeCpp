@@ -1,11 +1,11 @@
-#ifndef SETTINGSMENU_H
-#define SETTINGSMENU_H
+#ifndef MODESELECTOR_H
+#define MODESELECTOR_H
 
 #include <string>
 #include "menu.h"
 
 
-class SettingsMenu : public Menu
+class ModeSelector : public Menu
 {
     
     private:
@@ -14,24 +14,24 @@ class SettingsMenu : public Menu
 
         std::string menuChoices[menuChoiceCount] = 
 	    {
-            "Snake Game settings",
-	       	"Evolution settings",
+            "Snake Game",
+	       	"Evolution",
     		"Back"
 	    };
 
         enum menuChoicesConst 
 	    {
-            SnakeGameSettignsChoice, 
-            EvolutionSettingsChoice,
+            SnakeGameChoice, 
+            EvolutionChoice,
 		    Back
 	    };
 
         void menuControllSelect() override;
 
     public:
-        SettingsMenu() {
+        ModeSelector() {
             this->menuConst = menuChoiceCount;
-            this->menuTitle = "   ~S E T T I N G S  S E L E C T O R~   ";
+            this->menuTitle = "   ~M O D E  S E L E C T O R~   ";
         };
 };
 #endif

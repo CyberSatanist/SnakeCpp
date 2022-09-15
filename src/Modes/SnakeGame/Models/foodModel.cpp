@@ -1,9 +1,9 @@
-#include "snakeFoodModel.h"
+#include "foodModel.h"
 #include <random>
 
 extern SnakeParameters snakeParameters;
 
-void SnakeFoodModel::init(Screen screen)
+void FoodModel::init(Screen screen)
 {
     currentScreen = screen;
     std::random_device random_device;
@@ -15,7 +15,7 @@ void SnakeFoodModel::init(Screen screen)
 }
 
 
-void SnakeFoodModel::drawFood()
+void FoodModel::drawFood()
 {
     currentScreen.setCursor(foodX, foodY);
     currentScreen.setColor(snakeParameters.whiteColor, snakeParameters.foodColor);
@@ -23,10 +23,8 @@ void SnakeFoodModel::drawFood()
 }
 
 
-void SnakeFoodModel::getFoodCoordinates(int* x, int* y)
+void FoodModel::getFoodCoordinates(int* x, int* y)
 {
-
     *x = foodX; 
     *y = foodY; 
-
 }

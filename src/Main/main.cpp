@@ -9,7 +9,7 @@ int main()
 {
     Screen screen;
     MainMenu mainMenu;
-
+    
     mainMenu.initScreen(screen);
     mainMenu.run();
 

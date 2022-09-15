@@ -1,72 +1,25 @@
 #include "mainmenu.h"
-#include "../Screen/screen.h"
-#include "../Games/snakeGame.h"
+#include "modeSelector.h"
 #include "../Menus/settingsMenu.h"
 #include "../Menus/controllsMenu.h"
 
 SnakeParameters snakeParameters;
+//EvolutionParameters evolutionParameters;
 
-void MainMenu::run()
-{
-    mainMenuOn = true;
-    while (mainMenuOn) {
-        menuFrame();
-        menuControllHandler();
-    }
-}
-
-void MainMenu::menuFrame()
-{
-    for (int count = 0; count < mainMenuChoiceCount; count++) {
-        currentScreen.setCursor(
-            ((currentScreen.getHight() / (mainMenuChoiceCount+1)) * (count+1)),
-            (currentScreen.getWidth() / 2) - (mainMenuChoices[count].length())/2);
-        if (currentChoice == count) {
-            setMenuChosenColor();	
-        } else {
-            setMenuLineColor();
-        }
-        const char *strings = mainMenuChoices[count].c_str();
-        currentScreen.writeText(strings);
-        currentScreen.endFrame();
-    }
-}
-
-void MainMenu::menuControllHandler()
-{
-    switch(currentScreen.controllHandler()) {
-    case currentScreen.controll_keys::UP: 
-        if (currentChoice == 0) {
-            currentChoice = mainMenuChoiceCount - 1;
-	    } else {
-		    currentChoice--;
-	    }
-	    break;
-	case currentScreen.controll_keys::DOWN: 
-	    if (currentChoice == mainMenuChoiceCount -1) {
-		    currentChoice = 0;
-	    } else {
-		    currentChoice++;
-	    }
-	    break;
-	case currentScreen.controll_keys::SELECT:
-	    menuControllSelect();
-	    break;
-    }
-}
 
 void MainMenu::menuControllSelect()
 {
-    if (currentChoice == mainMenuChoicesConst::New_game){
-        SnakeGame snakeGame(currentScreen);
-	    snakeGame.run();
-    } else if (currentChoice == mainMenuChoicesConst::Settings){
+    if (currentChoice == menuChoicesConst::ModeSelectorChoice){
+		ModeSelector modeSelector;
+		modeSelector.initScreen(currentScreen);
+	    modeSelector.run();
+    } else if (currentChoice == menuChoicesConst::Settings){
         SettingsMenu settingsMenu;
 	    settingsMenu.run();
-    } else if (currentChoice == mainMenuChoicesConst::Controlls){
+    } else if (currentChoice == menuChoicesConst::Controlls){
         ControllsMenu controllsMenu;
         controllsMenu.run();
-    } else if (currentChoice == mainMenuChoicesConst::Exit){
-        mainMenuOn = false;
+    } else if (currentChoice == menuChoicesConst::Exit){
+        menuOn = false;
     }
 }
