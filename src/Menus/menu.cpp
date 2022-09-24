@@ -31,7 +31,7 @@ void Menu::menuFrame()
         const char *string = menuChoices[count].c_str();
         
         currentScreen.writeText(string);
-             }
+    }
      /*
         currentScreen.endFrame();
     }*/

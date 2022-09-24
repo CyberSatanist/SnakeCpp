@@ -10,7 +10,11 @@ void Map::initMap(int sizeX, int sizeY)
     for (int countX = 0; countX < sizeX; countX++){
         fieldMap[countX] = new int [sizeY];
         for (int countY = 0; countY < sizeY; countY++){
-            fieldMap[countX][countY] = Free;
+            if ((countX == 0 | countX == sizeX - 1) | (countY == 0 | countY == sizeY - 1)){
+                fieldMap[countX][countY] = Wall;
+            } else {
+                fieldMap[countX][countY] = Free;
+            }
         }
     }
 }
@@ -27,7 +31,14 @@ int Map::getSizeY()
     return mapSizeY;
 }
 
+
 int Map::getCell(int cellX, int cellY)
 {
     return fieldMap[cellX][cellY];
+}
+
+
+void Map::setCell(int cellX, int cellY, int color)
+{
+    fieldMap[cellX][cellY] = color;
 }

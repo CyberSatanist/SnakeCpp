@@ -15,6 +15,7 @@ class Map {
         int getSizeX();
         int getSizeY();
         int getCell(int cellX, int cellY);
+        void setCell(int cellX, int cellY, int color);
 
 };
 #endif

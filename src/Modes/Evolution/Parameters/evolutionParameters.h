@@ -11,10 +11,11 @@ class EvolutionParameters
 
 //Field-ToolsMenu
 
-        int fieldX = 7;
-        int fieldMaxX = 8;
-        int fieldY = 4;
-        int fieldMaxY = 5;
+        int fieldX = 3;
+        int fieldMaxX = 4;
+        int fieldY = 5;
+        int fieldMaxY = 6;
+
 };
 
 #endif
