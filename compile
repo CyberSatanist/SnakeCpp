@@ -13,6 +13,8 @@ src/Modes/SnakeGame/Menus/pauseMenu.cpp \
 src/Modes/SnakeGame/Menus/snakeSettingsMenu.cpp \
 src/Modes/Evolution/evolution.cpp \
 src/Modes/Evolution/Field/map.cpp \
+src/Modes/Evolution/Menus/SubMenus/infoSubMenu.cpp \
+src/Modes/Evolution/Menus/SubMenus/toolsSubMenu.cpp \
 -lncurses -o snake \
 
 

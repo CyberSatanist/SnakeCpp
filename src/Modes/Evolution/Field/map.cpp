@@ -20,6 +20,32 @@ void Map::initMap(int sizeX, int sizeY)
 }
 
 
+void Map::drawField()
+{
+    for(int countX = 0; countX < mapSizeX; countX++){
+        for(int countY = 0; countY < mapSizeY; countY++){
+            if(getCell(countX, countY) == Map::Free){
+                currentScreen.setColor(COLOR_WHITE, COLOR_WHITE);
+                currentScreen.setCursor(countX, countY);
+                currentScreen.writeText(" ");
+            } else if (getCell(countX, countY) == Map::Wall){
+                currentScreen.setColor(COLOR_BLUE, COLOR_BLUE);
+                currentScreen.setCursor(countX, countY);
+                currentScreen.writeText(" ");
+            } else if (getCell(countX, countY) == Map::Snake){
+                currentScreen.setColor(COLOR_GREEN, COLOR_GREEN);
+                currentScreen.setCursor(countX, countY);
+                currentScreen.writeText(" ");
+            } else if (getCell(countX, countY) == Map::Food){
+                currentScreen.setColor(COLOR_RED, COLOR_RED);
+                currentScreen.setCursor(countX, countY);
+                currentScreen.writeText(" ");
+            }
+        }
+    }
+}
+
+
 int Map::getSizeX()
 {
     return mapSizeX;

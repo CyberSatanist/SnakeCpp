@@ -10,11 +10,15 @@ class EvolutionParameters
         int delayDuration = 5;
 
 //Field-ToolsMenu
-
         int fieldX = 3;
         int fieldMaxX = 4;
         int fieldY = 5;
         int fieldMaxY = 6;
+
+//Statistic info
+        int generation = 0;
+        int score = 0;
+        int time = 0;
 
 };
 
