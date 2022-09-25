@@ -1,17 +1,18 @@
-#ifndef SNAKE_MODEL_H
-#define SNAKE_MODEL_H
+#ifndef SNAKE_EVOLUTION_MODEL_H
+#define SNAKE_EVOLUTION_MODEL_H
 
 #include "../../../Screen/screen.h"
 
-class SnakeModel
+class SnakeEvolutionModel
 {
     private:
-        struct snakeBody{
+		bool alive = false;
+        
+		struct snakeBody{
 	    	int cellX, cellY;
-        	Screen::controll_keys vector = Screen::controll_keys::UP;
             struct snakeBody *nextCell;
             struct snakeBody *prevCell;
-		};
+        };
 
 		struct snakeLocs{
 				struct snakeBody *firstCell;
@@ -21,16 +22,20 @@ class SnakeModel
 		snakeBody* currentBody = new snakeBody;
 		snakeBody* snakeTmp = new snakeBody;
 		snakeLocs* snakeHeadTail = new snakeLocs;
+
 		Screen currentScreen;
 
     public:
-		void init(Screen screen);
-		void getSnakeHeadCoordinates(int* x, int* y);
-		void drawSnake();
+        int vector = Screen::controll_keys::UP;
+		
+		void init(int startX, int startY, int length, int color);
+		void deleteSnake();
 		void newCell();
 		void move();
-		void setVector(Screen::controll_keys vector);
-		void wallValidation(snakeBody* snakeTmp);
+		void getSnakeHeadCoordinates(int* x, int* y);
+		void drawSnake();
+		void setVector(int direction);
+		void validation(snakeBody* snakeTmp);
 		bool deathCheck();
 };
 #endif

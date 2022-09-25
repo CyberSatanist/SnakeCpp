@@ -1,5 +1,4 @@
 #include "map.h"
-#include <unistd.h>
 
 
 void Map::initMap(int sizeX, int sizeY)

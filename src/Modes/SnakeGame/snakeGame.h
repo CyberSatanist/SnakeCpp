@@ -3,7 +3,6 @@
 #include "Models/snakeModel.h"
 #include "Models/foodModel.h"
 #include "Menus/pauseMenu.h"
-#include "Parameters/snakeParameters.h"
 #include "../../Screen/screen.h"
 #include <string>
 

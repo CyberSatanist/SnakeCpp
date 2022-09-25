@@ -2,6 +2,8 @@
 #include "modeSelector.h"
 #include "../Menus/settingsMenu.h"
 #include "../Menus/controllsMenu.h"
+#include "../Modes/SnakeGame/Parameters/snakeParameters.h"
+#include "../Modes/Evolution/Parameters/evolutionParameters.h"
 
 SnakeParameters snakeParameters;
 EvolutionParameters evolutionParameters;

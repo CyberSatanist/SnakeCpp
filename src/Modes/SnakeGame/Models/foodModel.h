@@ -2,7 +2,6 @@
 #define FOOD_MODEL_H
 
 #include "../../../Screen/screen.h"
-#include "../Parameters/snakeParameters.h"
 
 class FoodModel
 {

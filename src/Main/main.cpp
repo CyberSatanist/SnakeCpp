@@ -1,7 +1,3 @@
-#include <chrono>
-#include <thread>
-#include <unistd.h>
-
 #include "../Screen/screen.h"
 #include "../Menus/mainmenu.h"
 

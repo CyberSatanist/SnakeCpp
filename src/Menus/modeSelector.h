@@ -1,7 +1,6 @@
 #ifndef MODESELECTOR_H
 #define MODESELECTOR_H
 
-#include <string>
 #include "menu.h"
 
 

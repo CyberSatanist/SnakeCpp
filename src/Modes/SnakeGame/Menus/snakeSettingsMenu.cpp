@@ -1,10 +1,5 @@
-#include <string>
-#include <array>
-#include <charconv>
-#include <iostream>
-#include <sstream>
 #include "snakeSettingsMenu.h"
-#include "../../../Screen/screen.h"
+#include "../Parameters/snakeParameters.h"
 
 
 extern SnakeParameters snakeParameters;

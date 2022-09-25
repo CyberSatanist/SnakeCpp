@@ -1,7 +1,6 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include <curses.h>
 #include <string>
 #include "../Screen/screen.h"
 

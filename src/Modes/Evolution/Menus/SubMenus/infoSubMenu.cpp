@@ -50,6 +50,9 @@ int InfoSubMenu::getParameter(int count)
         case Time:
             return evolutionParameters.time;
             break;
+        case Turn:
+            return evolutionParameters.turn;
+            break;
         default:
             return 0;
     }

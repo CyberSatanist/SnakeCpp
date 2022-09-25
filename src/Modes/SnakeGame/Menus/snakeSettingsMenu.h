@@ -1,10 +1,7 @@
 #ifndef SNAKESETTINGSMENU_H
 #define SNAKESETTINGSMENU_H
 
-#include <string>
 #include "../../../Menus/settings.h"
-#include "../../../Menus/menu.h"
-#include "../Parameters/snakeParameters.h"
 
 class SnakeSettingsMenu : public Settings {
     

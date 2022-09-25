@@ -1,7 +1,6 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include <string>
 #include "menu.h"
 
 class Settings : public Menu

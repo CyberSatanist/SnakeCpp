@@ -1,5 +1,3 @@
-#include <string>
-#include "../Screen/screen.h"
 #include "menu.h"
        
 
@@ -7,6 +5,7 @@ void Menu::initScreen(Screen screen)
 {
     currentScreen = screen;	
 }
+
 
 void Menu::menuFrame()
 {
@@ -32,10 +31,8 @@ void Menu::menuFrame()
         
         currentScreen.writeText(string);
     }
-     /*
-        currentScreen.endFrame();
-    }*/
 }
+
 
 void Menu::run()
 {
@@ -47,6 +44,7 @@ void Menu::run()
     }
     currentScreen.clearScreen();
 }
+
 
 void Menu::menuControllHandler()
 {
@@ -71,17 +69,20 @@ void Menu::menuControllHandler()
     }
 }
 
+
 void Menu::setMenuChosenColor()
 {
     currentScreen.setColor(COLOR_BLACK, COLOR_WHITE);
-};
+}
+
 
 void Menu::setMenuLineColor()
 {
     currentScreen.setColor(COLOR_WHITE, COLOR_BLACK);
-};
+}
+
 
 void Menu::setMenuTitleColor()
 {
     currentScreen.setColor(COLOR_BLACK, COLOR_YELLOW);
-};
+}

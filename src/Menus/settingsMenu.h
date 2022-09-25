@@ -1,7 +1,6 @@
 #ifndef SETTINGSMENU_H
 #define SETTINGSMENU_H
 
-#include <string>
 #include "menu.h"
 
 

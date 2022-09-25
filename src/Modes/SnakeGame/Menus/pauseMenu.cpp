@@ -1,7 +1,5 @@
 #include "pauseMenu.h"
-#include "../snakeGame.h"
 #include "../../../Menus/controllsMenu.h"
-#include "../../../Screen/screen.h"
 
 
 bool PauseMenu::getGameOnBool()

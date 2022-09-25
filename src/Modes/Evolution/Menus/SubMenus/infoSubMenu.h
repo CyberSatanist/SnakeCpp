@@ -13,17 +13,18 @@ class InfoSubMenu
         int infoBarXEnd;
         int infoBarYEnd;
 
-        static const int infoMenuChoiceCount = 3;
+        static const int infoMenuChoiceCount = 4;
         std::string infoMenuChoices[infoMenuChoiceCount] = 
         {
             "Generation",
             "Highest score",
             "Evolution time",
+            "Turns"
         };
-        enum infoMenuChoicesConst {Generation, Score, Time};
+        enum infoMenuChoicesConst {Generation, Score, Time, Turn};
         int firstInfoMenuTitle = Generation;
         int currentInfoMenuTitle;
-        int lastInfoMenuTitle = Time;
+        int lastInfoMenuTitle = Turn;
         int currentInfoParameter;
 
         int getParameter(int count);

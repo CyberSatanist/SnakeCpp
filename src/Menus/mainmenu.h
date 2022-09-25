@@ -1,10 +1,7 @@
 #ifndef MAINMENU_H
 #define MAINMENU_H
 
-#include <string>
 #include "menu.h"
-#include "../Modes/SnakeGame/Parameters/snakeParameters.h"
-#include "../Modes/Evolution/Parameters/evolutionParameters.h"
 
 class MainMenu : public Menu 
 {

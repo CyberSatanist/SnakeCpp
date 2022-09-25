@@ -1,18 +1,17 @@
-#include "snakeModel.h"
-#include "../Parameters/snakeParameters.h"
+#include "snakeEvolutionModel.h"
+#include "../Parameters/evolutionParameters.h"
 
-extern SnakeParameters snakeParameters;
+extern EvolutionParameters evolutionParameters;
 
-void SnakeModel::init(Screen screen)
+void SnakeEvolutionModel::init(int startX, int startY, int length, int color)
 {
-    currentScreen = screen;
     currentBody->prevCell = NULL;
     snakeHeadTail->firstCell = currentBody;
     snakeTmp = currentBody;
-    for (int x = 0; x < snakeParameters.snakeLength; x++)
+    for (int x = 0; x < evolutionParameters.snakeLength; x++)
     { 
-        snakeTmp->cellY = currentScreen.getWidth() / 2;
-        snakeTmp->cellX = (currentScreen.getHight() / 2) + x;
+        snakeTmp->cellY = startX;
+        snakeTmp->cellX = startY + x;
         snakeBody* next = new snakeBody; 
         snakeTmp->nextCell = next;	
         next->prevCell = snakeTmp;	
@@ -23,20 +22,20 @@ void SnakeModel::init(Screen screen)
 }
 
 
-void SnakeModel::drawSnake()
+void SnakeEvolutionModel::drawSnake()
 {
     snakeTmp = currentBody;
-    currentScreen.setColor(snakeParameters.whiteColor, snakeParameters.snakeHeadColor);
+    currentScreen.setColor(evolutionParameters.whiteColor, evolutionParameters.snakeHeadColor);
     currentScreen.setCursor(snakeTmp->cellX, snakeTmp->cellY);
     currentScreen.writeText(" ");
     snakeTmp = snakeTmp->nextCell;
     int colorCount = 0;
     while(snakeTmp->nextCell) {
         if (colorCount == 0) {
-            currentScreen.setColor(snakeParameters.whiteColor, snakeParameters.snakeBodyColorOne);
+            currentScreen.setColor(evolutionParameters.whiteColor, evolutionParameters.snakeOneBodyColor);
             colorCount = 1;
         } else {
-            currentScreen.setColor(snakeParameters.whiteColor, snakeParameters.snakeBodyColorTwo);
+            currentScreen.setColor(evolutionParameters.whiteColor, evolutionParameters.snakeOneBodyColor);
             colorCount = 0;
         }
         currentScreen.setCursor(snakeTmp->cellX, snakeTmp->cellY);
@@ -46,14 +45,14 @@ void SnakeModel::drawSnake()
 }
 
 
-void SnakeModel::getSnakeHeadCoordinates(int* x, int* y)
+void SnakeEvolutionModel::getSnakeHeadCoordinates(int* x, int* y)
 {
     *x = snakeHeadTail->firstCell->cellX;
     *y = snakeHeadTail->firstCell->cellY;
 }
 
 
-void SnakeModel::newCell()
+void SnakeEvolutionModel::newCell()
 {
     snakeBody* next = new snakeBody;
     next->nextCell = NULL;
@@ -65,18 +64,18 @@ void SnakeModel::newCell()
 }
 
 
-void SnakeModel::move()
+void SnakeEvolutionModel::move()
 {
     snakeTmp = snakeHeadTail->lastCell;
     while(snakeTmp->prevCell)
     {
         snakeTmp->cellX = snakeTmp->prevCell->cellX;
         snakeTmp->cellY = snakeTmp->prevCell->cellY;
-        wallValidation(snakeTmp);
+        validation(snakeTmp);
         snakeTmp = snakeTmp->prevCell;
     }
 
-    switch(snakeTmp->vector) {
+    switch(vector) {
         case Screen::controll_keys::UP:
             if (snakeTmp->nextCell->cellX != snakeTmp->cellX - 1) {
                 snakeTmp->cellX = snakeTmp->cellX -1;
@@ -98,11 +97,11 @@ void SnakeModel::move()
             }
             break;
     }
-    wallValidation(snakeTmp);
+    validation(snakeTmp);
 }
 
 
-void SnakeModel::wallValidation(snakeBody* snakeTmp)
+void SnakeEvolutionModel::validation(snakeBody* snakeTmp)
 {
     if (snakeTmp->cellX < 0) {
         snakeTmp->cellX = currentScreen.getHight() -1;
@@ -117,34 +116,34 @@ void SnakeModel::wallValidation(snakeBody* snakeTmp)
 }
 
 
-void SnakeModel::setVector(Screen::controll_keys vector)
+void SnakeEvolutionModel::setVector(int direction)
 {
-    switch (vector) {
+    switch (direction) {
         case Screen::controll_keys::RIGHT:
-            if(currentBody->vector != Screen::controll_keys::LEFT) {
-                currentBody->vector = vector;
+            if(vector != Screen::controll_keys::LEFT) {
+                vector = direction;
             }
             break;
         case Screen::controll_keys::LEFT:
-            if(currentBody->vector != Screen::controll_keys::RIGHT) {
-                currentBody->vector = vector;
+            if(vector != Screen::controll_keys::RIGHT) {
+                vector = direction;
             }
             break; 
         case Screen::controll_keys::UP:
-            if(currentBody->vector != Screen::controll_keys::DOWN) {
-                currentBody->vector = vector;
+            if(vector != Screen::controll_keys::DOWN) {
+                vector = direction;
             }
             break;
         case Screen::controll_keys::DOWN:
-            if(currentBody->vector != Screen::controll_keys::UP) {
-                currentBody->vector = vector;
+            if(vector != Screen::controll_keys::UP) {
+                vector = direction;
             }
             break;
     }
 }
 
 
-bool SnakeModel::deathCheck()
+bool SnakeEvolutionModel::deathCheck()
 {
     snakeTmp = snakeHeadTail->lastCell;
     while(snakeTmp->prevCell) {
