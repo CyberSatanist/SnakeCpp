@@ -4,15 +4,15 @@
 #include <string>
 #include "../Screen/screen.h"
 
+extern Screen currentScreen;
+
 class Menu
 {
 
     protected:
-	
         int currentChoice = 0;
         int menuChoiceCount = 0;
         bool menuOn = false;
-        Screen currentScreen;
 
         int menuConst;
         std::string menuTitle;
@@ -28,7 +28,6 @@ class Menu
         void setMenuTitleColor();
 
     public:
-        void initScreen(Screen screen);
         void run();
 
 

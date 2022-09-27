@@ -6,7 +6,7 @@
 class MainMenu : public Menu 
 {
     private:
-        
+
         static const int menuChoiceCount = 4;
 
         std::string menuChoices[menuChoiceCount] = 

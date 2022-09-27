@@ -3,10 +3,8 @@
 
 extern EvolutionParameters evolutionParameters;
 
-Evolution::Evolution(Screen screen)
+Evolution::Evolution()
 {
-    Screen currentScreen;
-
     infoSubMenu.initInfoBar(
         0,
         currentScreen.getWidth() / evolutionParameters.fieldMaxY * evolutionParameters.fieldY + 1,
@@ -32,6 +30,7 @@ Evolution::Evolution(Screen screen)
 
 void Evolution::run()
 {
+    currentScreen.clearScreen();
 
     evolutionParameters.turn = 0;
     evolutionParameters.score = 0;

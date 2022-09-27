@@ -6,12 +6,13 @@
 #include "../../Screen/screen.h"
 #include <string>
 
+extern Screen currentScreen;
+
 class SnakeGame
 {
     private:
         int foodX, foodY, snakeX, snakeY;
 
-        Screen currentScreen;
         Screen::controll_keys key;
         Screen::controll_keys vector;
         PauseMenu pauseMenu;
@@ -45,7 +46,6 @@ class SnakeGame
         void eatFood(snakesList* snakes, foodList* food);
        
     public:
-	    SnakeGame(Screen screen);
 	    void run();
 };
 #endif

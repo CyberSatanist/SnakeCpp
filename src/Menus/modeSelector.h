@@ -9,12 +9,13 @@ class ModeSelector : public Menu
     
     private:
 
-        static const int menuChoiceCount = 3;
+        static const int menuChoiceCount = 4;
 
         std::string menuChoices[menuChoiceCount] = 
 	    {
             "Snake Game",
 	       	"Evolution",
+            "Life Game",
     		"Back"
 	    };
 
@@ -22,6 +23,7 @@ class ModeSelector : public Menu
 	    {
             SnakeGameChoice, 
             EvolutionChoice,
+            LifeGameChoice,
 		    Back
 	    };
 

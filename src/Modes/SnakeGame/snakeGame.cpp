@@ -4,12 +4,6 @@
 
 extern SnakeParameters snakeParameters;
 
-SnakeGame::SnakeGame(Screen screen)
-{
-    Screen currentScreen;
-    pauseMenu.initScreen(currentScreen);
-}
-
 void SnakeGame::run()
 {
 	SnakeModel newSnake;

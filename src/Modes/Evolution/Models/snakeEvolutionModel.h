@@ -3,11 +3,11 @@
 
 #include "../../../Screen/screen.h"
 
+extern Screen currentScreen;
+
 class SnakeEvolutionModel
 {
     private:
-		bool alive = false;
-        
 		struct snakeBody{
 	    	int cellX, cellY;
             struct snakeBody *nextCell;
@@ -22,8 +22,6 @@ class SnakeEvolutionModel
 		snakeBody* currentBody = new snakeBody;
 		snakeBody* snakeTmp = new snakeBody;
 		snakeLocs* snakeHeadTail = new snakeLocs;
-
-		Screen currentScreen;
 
     public:
         int vector = Screen::controll_keys::UP;

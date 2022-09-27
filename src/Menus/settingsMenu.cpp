@@ -7,7 +7,6 @@ void SettingsMenu::menuControllSelect()
 {
     if (currentChoice == menuChoicesConst::SnakeGameSettignsChoice){
 		SnakeSettingsMenu snakeSettingsMenu;
-        snakeSettingsMenu.initScreen(currentScreen);
 	    snakeSettingsMenu.run();
     } else if (currentChoice == menuChoicesConst::EvolutionSettingsChoice){
 		//EvolutionSettingsMenu evolutionSettingsMenu;

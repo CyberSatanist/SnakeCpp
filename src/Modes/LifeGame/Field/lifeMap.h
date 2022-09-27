@@ -1,10 +1,10 @@
-#ifndef MAP_H
-#define MAP_H
+#ifndef LIFE_MAP_H
+#define LIFE_MAP_H
 #include "../../../Screen/screen.h"
 
 extern Screen currentScreen;
 
-class Map {
+class LifeMap {
 
     private:
         int** fieldMap;

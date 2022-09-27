@@ -3,11 +3,12 @@
 
 #include "../../../Screen/screen.h"
 
+extern Screen currentScreen;
+
 class FoodEvolutionModel
 {
     private:
         int foodX, foodY, foodColor;
-        Screen currentScreen;
 
     public:
         void init(int fieldX, int fieldY, int color);

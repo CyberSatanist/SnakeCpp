@@ -3,12 +3,13 @@
 
 #include "../../../Screen/screen.h"
 
+extern Screen currentScreen;
+
 class FoodModel
 {
     private:
         int foodX, foodY;
-	    Screen currentScreen;
-
+        
     public:
 	    void getFoodCoordinates(int* x, int* y);
         void init(Screen screen);

@@ -1,15 +1,23 @@
-#include "../Screen/screen.h"
 #include "../Menus/mainmenu.h"
+
+#include "../Screen/screen.h"
+#include "../Modes/SnakeGame/Parameters/snakeParameters.h"
+#include "../Modes/Evolution/Parameters/evolutionParameters.h"
+#include "../Modes/LifeGame/Parameters/lifeGameParameters.h"
+
+Screen currentScreen;
+SnakeParameters snakeParameters;
+EvolutionParameters evolutionParameters;
+LifeGameParameters lifeGameParameters;
+
 
 int main()
 {
-    Screen screen;
     MainMenu mainMenu;
     
-    mainMenu.initScreen(screen);
     mainMenu.run();
 
-    screen.finishWindow();
+    currentScreen.finishWindow();
  
     return 0;
 }

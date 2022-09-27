@@ -20,7 +20,6 @@ class ControllsMenu : public Menu {
 
         enum menuChoicesConst {Back};
 
-        //void menuFrame();
         void menuControllSelect() override;
     
     public:

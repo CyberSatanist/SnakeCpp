@@ -3,6 +3,8 @@
 
 #include "../../../Screen/screen.h"
 
+extern Screen currentScreen;
+
 class SnakeModel
 {
     private:
@@ -21,8 +23,7 @@ class SnakeModel
 		snakeBody* currentBody = new snakeBody;
 		snakeBody* snakeTmp = new snakeBody;
 		snakeLocs* snakeHeadTail = new snakeLocs;
-		Screen currentScreen;
-
+		
     public:
 		void init(Screen screen);
 		void getSnakeHeadCoordinates(int* x, int* y);

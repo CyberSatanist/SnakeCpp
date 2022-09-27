@@ -1,11 +1,4 @@
 #include "menu.h"
-       
-
-void Menu::initScreen(Screen screen)
-{
-    currentScreen = screen;	
-}
-
 
 void Menu::menuFrame()
 {
@@ -19,7 +12,8 @@ void Menu::menuFrame()
     for (int count = 0; count < menuConst; count++) {
       currentScreen.setCursor(
             (currentScreen.getHight() / (menuConst + 2) * (count+2)),
-            (currentScreen.getWidth() / 2) - (menuChoices[count].length())/2);
+            (currentScreen.getWidth() / 2) - (menuChoices[count].length())/2
+        );
 
         if (currentChoice == count) {
             setMenuChosenColor();	

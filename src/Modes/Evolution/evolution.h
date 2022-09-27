@@ -7,11 +7,12 @@
 #include "Models/foodEvolutionModel.h"
 #include "Field/map.h"
 
+extern Screen currentScreen;
+
 class Evolution
 {
     private:
         Map map;
-        Screen currentScreen;
         InfoSubMenu infoSubMenu;
         ToolsSubMenu toolsSubMenu;
 
@@ -35,6 +36,7 @@ class Evolution
 
         struct snakesList{
             Map currentMap;
+            bool alive = true;
             SnakeEvolutionModel currentSnake;
             struct foodList *thisSnakesFood;
             struct snakesList *nextSnake;
@@ -50,7 +52,7 @@ class Evolution
         void eatFood(snakesList* snakes, foodList* food);
 
     public:
-	    Evolution(Screen screen);
+        Evolution();
 	    void run();
 };
 #endif
