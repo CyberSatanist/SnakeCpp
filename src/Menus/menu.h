@@ -2,7 +2,7 @@
 #define MENU_H
 
 #include <string>
-#include "../Screen/screen.h"
+#include "Screen/screen.h"
 
 extern Screen currentScreen;
 

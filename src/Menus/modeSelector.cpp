@@ -1,7 +1,7 @@
 #include "modeSelector.h"
-#include "../Modes/SnakeGame/snakeGame.h"
-#include "../Modes/Evolution/evolution.h"
-#include "../Modes/LifeGame/lifeGame.h"
+#include <SnakeGame/snakeGame.h>
+#include <Evolution/evolution.h>
+#include <LifeGame/lifeGame.h>
 
 
 void ModeSelector::menuControllSelect()

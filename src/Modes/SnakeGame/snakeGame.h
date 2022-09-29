@@ -1,9 +1,9 @@
 #ifndef SNAKE_GAME_H
 #define SNAKE_GAME_H
-#include "Models/snakeModel.h"
-#include "Models/foodModel.h"
-#include "Menus/pauseMenu.h"
-#include "../../Screen/screen.h"
+#include <SnakeGame/Models/snakeModel.h>
+#include <SnakeGame/Models/foodModel.h>
+#include <SnakeGame/Menus/pauseMenu.h>
+#include <Screen/screen.h>
 #include <string>
 
 extern Screen currentScreen;

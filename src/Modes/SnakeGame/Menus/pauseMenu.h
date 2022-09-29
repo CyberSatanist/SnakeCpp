@@ -1,7 +1,7 @@
 #ifndef PAUSEMENU_H
 #define PAUSEMENU_H
 
-#include "../../../Menus/menu.h"
+#include <Menus/menu.h>
 
 class PauseMenu : public Menu {
     

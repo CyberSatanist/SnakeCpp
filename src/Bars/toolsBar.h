@@ -1,6 +1,6 @@
 #ifndef EVOLUTION_TOOLS_SUB_MENU_H
 #define EVOLUTION_TOOLS_SUB_MENU_H
-#include "../../../../Screen/screen.h"
+#include <Screen/screen.h>
 #include <string>
 
 extern Screen currentScreen;

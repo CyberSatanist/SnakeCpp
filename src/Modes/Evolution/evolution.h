@@ -1,20 +1,19 @@
 #ifndef EVOLUTION_H
 #define EVOLUTION_H
-#include "../../Screen/screen.h"
-#include "Menus/SubMenus/infoSubMenu.h"
-#include "Menus/SubMenus/toolsSubMenu.h"
-#include "Models/snakeEvolutionModel.h"
-#include "Models/foodEvolutionModel.h"
-#include "Field/map.h"
-
+#include <Screen/screen.h>
+#include <Evolution/Bars/evoInfoBar.h>
+#include <Evolution/Bars/evoToolsBar.h>
+#include <Evolution/Models/snakeEvolutionModel.h>
+#include <Evolution/Models/foodEvolutionModel.h>
+#include <Evolution/Field/evoField.h>
 extern Screen currentScreen;
 
 class Evolution
 {
     private:
-        Map map;
-        InfoSubMenu infoSubMenu;
-        ToolsSubMenu toolsSubMenu;
+        EvoField field;
+        EvoInfoBar infoBar;
+        EvoToolsBar toolsBar;
 
         int key;
         int foodX, foodY, snakeX, snakeY;
@@ -35,7 +34,7 @@ class Evolution
         foodList* foodTmp = new foodList;
 
         struct snakesList{
-            Map currentMap;
+            EvoField currentEvoField;
             bool alive = true;
             SnakeEvolutionModel currentSnake;
             struct foodList *thisSnakesFood;

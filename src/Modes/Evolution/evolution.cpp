@@ -1,42 +1,44 @@
 #include "evolution.h"
-#include "Parameters/evolutionParameters.h"
+#include <Evolution/Parameters/evolutionParameters.h>
 
 extern EvolutionParameters evolutionParameters;
 
 Evolution::Evolution()
 {
-    infoSubMenu.initInfoBar(
-        0,
-        currentScreen.getWidth() / evolutionParameters.fieldMaxY * evolutionParameters.fieldY + 1,
-        currentScreen.getHight() / evolutionParameters.fieldMaxX * evolutionParameters.fieldX,
-        currentScreen.getWidth()
+    infoBar.initInfoBar(
+        evolutionParameters.infoBarStartX,
+        evolutionParameters.infoBarStartY,
+        evolutionParameters.infoBarEndX,
+        evolutionParameters.infoBarEndY
     );
-
-    toolsSubMenu.initToolsBar(
-        currentScreen.getHight() / evolutionParameters.fieldMaxX * evolutionParameters.fieldX + 1, 
-        0, 
-        currentScreen.getHight(), 
-        currentScreen.getWidth()
+    toolsBar.initToolsBar(
+        evolutionParameters.toolsBarStartX,
+        evolutionParameters.toolsBarStartY, 
+        evolutionParameters.toolsBarEndX, 
+        evolutionParameters.toolsBarEndY
     );
-
-    map.initMap(
-        currentScreen.getHight() / evolutionParameters.fieldMaxX * evolutionParameters.fieldX,
-        currentScreen.getWidth() / evolutionParameters.fieldMaxY * evolutionParameters.fieldY
+    field.initField(
+        evolutionParameters.currentFieldSizeX,
+        evolutionParameters.currentFieldSizeY,
+        evolutionParameters.fullFieldSizeX,
+        evolutionParameters.fullFieldSizeY
     );
-
-    timeout(evolutionParameters.delayDuration);
+    field.initEvoField();
+    
 }
 
 
 void Evolution::run()
 {
+    timeout(evolutionParameters.delayDuration);
+
     currentScreen.clearScreen();
 
     evolutionParameters.turn = 0;
     evolutionParameters.score = 0;
 
     SnakeEvolutionModel newSnake;
-	newSnake.init((map.getSizeX() / 2), (map.getSizeX() / 2), evolutionParameters.snakeLength, evolutionParameters.snakeOneBodyColor);
+	newSnake.init((field.getFullSizeX() / 2), (field.getFullSizeY() / 2), evolutionParameters.snakeLength, evolutionParameters.snakeOneBodyColor);
 	snakes->currentSnake = newSnake;
 	snakes->nextSnake = NULL;
 
@@ -46,7 +48,7 @@ void Evolution::run()
 	for (int count = 0; count < evolutionParameters.countOfFood; count++)
 	{
 	    FoodEvolutionModel newFood;
-	    newFood.init((map.getSizeX() - 2), (map.getSizeY() - 2), evolutionParameters.snakeOnefoodColor);
+	    newFood.init((field.getFullSizeX() - 2), (field.getFullSizeY() - 2), evolutionParameters.snakeOnefoodColor);
 	    foodTmp->currentFood = newFood;
 	    foodTmp->isFood = true;
 	    foodTmp->nextFood = new foodList;
@@ -54,16 +56,16 @@ void Evolution::run()
 	    foodTmp->nextFood = NULL;
 	}
 
-	evolutionParameters.evolutionOn = true;
+	evolutionParameters.gameOn = true;
 
-    while((key = currentScreen.controllHandler()) !=-1  & (evolutionParameters.evolutionOn)){
+    while((key = currentScreen.controllHandler()) !=-1  & (evolutionParameters.gameOn)){
         turn();
         drawScreen();
         checkFood();
 	    drawFood();
         drawSnakes();
         checkDeath();
-        toolsSubMenu.menuControllHandler(key);
+        toolsBar.menuControllHandler(key);
 
         snakeTmp = snakes;
         while(snakeTmp->nextSnake){
@@ -94,9 +96,9 @@ void Evolution::turn()
 
 void Evolution::drawScreen()
 {
-    map.drawField();
-    infoSubMenu.drawInfoBar();
-    toolsSubMenu.drawToolsBar();
+    field.drawField();
+    infoBar.drawInfoBar();
+    toolsBar.drawToolsBar();
     currentScreen.endFrame();
 }
 
@@ -117,7 +119,7 @@ void Evolution::checkFood()
         foodTmp = snakeTmp->thisSnakesFood;
         while(foodTmp->nextFood) {
             if (!foodTmp->isFood) {
-                foodTmp->currentFood.init((map.getSizeX() - 2), (map.getSizeY() - 2), evolutionParameters.snakeOnefoodColor);
+                foodTmp->currentFood.init((field.getFullSizeX() - 2), (field.getFullSizeY() - 2), evolutionParameters.snakeOnefoodColor);
                 foodTmp->isFood = true;
             } else {
                 foodTmp->currentFood.getFoodCoordinates(&foodX, &foodY);

@@ -1,11 +1,12 @@
-#ifndef LIFE_GAME_TOOLS_SUB_MENU_H
-#define LIFE_GAME_TOOLS_SUB_MENU_H
-#include "../../../../Screen/screen.h"
+#ifndef EVO_TOOLS_BAR_H
+#define EVO_TOOLS_BAR_H
+#include <Screen/screen.h>
+#include <Bars/toolsBar.h>
 #include <string>
 
 extern Screen currentScreen;
 
-class LifeToolsSubMenu
+class EvoToolsBar //: public ToolsBar 
 {
     private:
         int toolsBarXStart;
@@ -18,20 +19,16 @@ class LifeToolsSubMenu
         int currentColumn;
         int currentRow;
         int currentChoice = 0;
-        static const int toolsMenuChoiceCount = 8;
+        static const int toolsMenuChoiceCount = 4;
         int columns = toolsMenuChoiceCount / rows;
         std::string toolsMenuChoices[toolsMenuChoiceCount] = 
         {
             "Save current state",
             "Load state",
-            "Move Left",
-            "Move Right",
-            "Move Up",
-            "Move Down",
             "Pause",
             "Exit",
         };
-        enum toolsMenuChoicesConst {Save, Load, Left, Right, Up, Down, Pause, Exit};
+        enum toolsMenuChoicesConst {Save, Load, Pause, Exit};
         int firstToolsMenuTitle = Save;
         int currentToolsMenuTitle;
         int lastToolsMenuTitle = Exit;

@@ -1,8 +1,8 @@
 #include "mainmenu.h"
 #include "modeSelector.h"
-#include "../Menus/settingsMenu.h"
-#include "../Menus/controllsMenu.h"
-#include "../Screen/screen.h"
+#include <Menus/settingsMenu.h>
+#include <Menus/controllsMenu.h>
+#include <Screen/screen.h>
         
 ModeSelector modeSelector;
 SettingsMenu settingsMenu;        

@@ -1,7 +1,7 @@
 #ifndef SNAKE_MODEL_H
 #define SNAKE_MODEL_H
 
-#include "../../../Screen/screen.h"
+#include <Screen/screen.h>
 
 extern Screen currentScreen;
 

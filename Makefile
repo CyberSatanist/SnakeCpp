@@ -2,11 +2,14 @@ CC=g++
 SYSTEMTYPE=-D LINUX
 CFLAGS=-c -Wall
 LIBFLAGS=-lncurses
+SOURCES=-I src/ -I src/Modes/
 
 ROOT=src/
 MAIN=$(ROOT)Main/
 SCREEN=$(ROOT)Screen/
+FIELD=$(ROOT)Field/
 MENUS=$(ROOT)Menus/
+BARS=$(ROOT)Bars/
 MODES=$(ROOT)Modes/
 
 SNAKEGAME=$(MODES)SnakeGame/
@@ -17,19 +20,22 @@ EVOLUTION=$(MODES)Evolution/
 EVOLUTION_FIELD=$(EVOLUTION)Field/
 EVOLUTION_MODELS=$(EVOLUTION)Models/
 EVOLUTION_MENUS=$(EVOLUTION)Menus/
-EVOLUTION_SUBMENUS=$(EVOLUTION_MENUS)SubMenus/
+EVOLUTION_BARS=$(EVOLUTION)Bars/
 
 LIFEGAME=$(MODES)LifeGame/
 LIFEGAME_FIELD=$(LIFEGAME)Field/
 LIFEGAME_MENUS=$(LIFEGAME)Menus/
-LIFEGAME_SUBMENUS=$(LIFEGAME_MENUS)SubMenus/
+LIFEGAME_BARS=$(LIFEGAME)Bars/
 
 all: main
 
 main: 
-	$(CC) $(SYSTEMTYPE) \
+	$(CC) $(SYSTEMTYPE) $(SOURCES) \
 	$(MAIN)main.cpp \
 	$(SCREEN)screen.cpp \
+	$(FIELD)field.cpp \
+	$(BARS)infoBar.cpp \
+	$(BARS)toolsBar.cpp \
 	$(MENUS)menu.cpp \
 	$(MENUS)mainmenu.cpp \
 	$(MENUS)modeSelector.cpp \
@@ -41,15 +47,15 @@ main:
 	$(SNAKEGAME_MENUS)pauseMenu.cpp \
 	$(SNAKEGAME_MENUS)snakeSettingsMenu.cpp \
 	$(EVOLUTION)evolution.cpp \
-	$(EVOLUTION_FIELD)map.cpp \
+	$(EVOLUTION_FIELD)evoField.cpp \
 	$(EVOLUTION_MODELS)snakeEvolutionModel.cpp \
 	$(EVOLUTION_MODELS)foodEvolutionModel.cpp \
-	$(EVOLUTION_SUBMENUS)infoSubMenu.cpp \
-	$(EVOLUTION_SUBMENUS)toolsSubMenu.cpp \
+	$(EVOLUTION_BARS)evoInfoBar.cpp \
+	$(EVOLUTION_BARS)evoToolsBar.cpp \
 	$(LIFEGAME)lifeGame.cpp \
-	$(LIFEGAME_FIELD)lifeMap.cpp \
-	$(LIFEGAME_SUBMENUS)lifeInfoSubMenu.cpp \
-	$(LIFEGAME_SUBMENUS)lifeToolsSubMenu.cpp \
+	$(LIFEGAME_FIELD)lifeField.cpp \
+	$(LIFEGAME_BARS)lifeInfoBar.cpp \
+	$(LIFEGAME_BARS)lifeToolsBar.cpp \
 	$(LIBFLAGS) -o snake
 
 clean:

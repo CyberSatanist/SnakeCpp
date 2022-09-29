@@ -1,9 +1,9 @@
-#include "../Menus/mainmenu.h"
+#include <Menus/mainmenu.h>
 
-#include "../Screen/screen.h"
-#include "../Modes/SnakeGame/Parameters/snakeParameters.h"
-#include "../Modes/Evolution/Parameters/evolutionParameters.h"
-#include "../Modes/LifeGame/Parameters/lifeGameParameters.h"
+#include <Screen/screen.h>
+#include <SnakeGame/Parameters/snakeParameters.h>
+#include <Evolution/Parameters/evolutionParameters.h>
+#include <LifeGame/Parameters/lifeGameParameters.h>
 
 Screen currentScreen;
 SnakeParameters snakeParameters;

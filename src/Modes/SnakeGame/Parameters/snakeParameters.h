@@ -1,19 +1,18 @@
 #ifndef SNAKEPARAMETERS_H
 #define SNAKEPARAMETERS_H
 
-#include "../../../Screen/screen.h"
+#include <Parameters/parameters.h>
 
-class SnakeParameters {
+class SnakeParameters : public Parameters
+{
 
     public:
-        bool snakeGameOn = false;
 
 //SnakeGame
         int countOfFood = 10;
         int countOfSnakes = 1;
         int snakeLength = 6;
         int delayDuration = 80;
-        int whiteColor = COLOR_WHITE;
 
 //SnakeModel
         int snakeHeadColor = COLOR_YELLOW;

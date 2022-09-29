@@ -1,5 +1,5 @@
 #include "snakeGame.h"
-#include "Parameters/snakeParameters.h"
+#include <SnakeGame/Parameters/snakeParameters.h>
 #include <unistd.h>
 
 extern SnakeParameters snakeParameters;
@@ -25,9 +25,9 @@ void SnakeGame::run()
 	    foodTmp->nextFood = NULL;
 	}
 
-	snakeParameters.snakeGameOn = true;
+	snakeParameters.gameOn = true;
 
-    while((key = currentScreen.controllHandler()) !=-1  & (snakeParameters.snakeGameOn)){
+    while((key = currentScreen.controllHandler()) !=-1  & (snakeParameters.gameOn)){
         turn();
 	    checkFood();
 	    drawFood();
@@ -37,7 +37,7 @@ void SnakeGame::run()
 
         if (key == Screen::controll_keys::ESCAPE) {
             pauseMenu.run();
-            snakeParameters.snakeGameOn = pauseMenu.getGameOnBool();
+            snakeParameters.gameOn = pauseMenu.getGameOnBool();
         }
         vector = key;
         snakeTmp = snakes;
@@ -133,7 +133,7 @@ void SnakeGame::death()
     currentScreen.setColor(deathTextColor, deathTextBackground);
     currentScreen.writeText(deathText.c_str());
     currentScreen.endFrame();
-    snakeParameters.snakeGameOn = false;
+    snakeParameters.gameOn = false;
     sleep(5);
     currentScreen.clearScreen();
 }

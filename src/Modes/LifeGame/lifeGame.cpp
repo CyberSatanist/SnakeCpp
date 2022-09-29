@@ -1,45 +1,46 @@
 #include "lifeGame.h"
-#include "Parameters/lifeGameParameters.h"
+#include <LifeGame/Parameters/lifeGameParameters.h>
 
 extern LifeGameParameters lifeGameParameters;
 
 LifeGame::LifeGame()
 {
-    infoSubMenu.initInfoBar(
-        0,
-        currentScreen.getWidth() / lifeGameParameters.fieldMaxY * lifeGameParameters.fieldY + 1,
-        currentScreen.getHight() / lifeGameParameters.fieldMaxX * lifeGameParameters.fieldX,
-        currentScreen.getWidth()
+    infoBar.initInfoBar(
+        lifeGameParameters.infoBarStartX,
+        lifeGameParameters.infoBarStartY,
+        lifeGameParameters.infoBarEndX,
+        lifeGameParameters.infoBarEndY
     );
-
-    toolsSubMenu.initToolsBar(
-        currentScreen.getHight() / lifeGameParameters.fieldMaxX * lifeGameParameters.fieldX + 1, 
-        0, 
-        currentScreen.getHight(), 
-        currentScreen.getWidth()
+    toolsBar.initToolsBar(
+        lifeGameParameters.toolsBarStartX,
+        lifeGameParameters.toolsBarStartY, 
+        lifeGameParameters.toolsBarEndX, 
+        lifeGameParameters.toolsBarEndY
     );
+    field.initField(
+        lifeGameParameters.currentFieldSizeX,
+        lifeGameParameters.currentFieldSizeY,
+        lifeGameParameters.fullFieldSizeX,
+        lifeGameParameters.fullFieldSizeY
+    );   
 
-    map.initMap(
-        currentScreen.getHight() / lifeGameParameters.fieldMaxX * lifeGameParameters.fieldX,
-        currentScreen.getWidth() / lifeGameParameters.fieldMaxY * lifeGameParameters.fieldY
-    );
-
-    timeout(lifeGameParameters.delayDuration);
 }
 
 
 void LifeGame::run()
 {
+    timeout(lifeGameParameters.delayDuration);
+
     currentScreen.clearScreen();
 
     lifeGameParameters.turn = 0;
 
-	lifeGameParameters.lifeGameOn = true;
+	lifeGameParameters.gameOn = true;
 
-    while((key = currentScreen.controllHandler()) !=-1  & (lifeGameParameters.lifeGameOn)){
+    while((key = currentScreen.controllHandler()) !=-1  & (lifeGameParameters.gameOn)){
         turn();
         drawScreen();
-        toolsSubMenu.menuControllHandler(key);
+        toolsBar.menuControllHandler(key);
 
         lifeGameParameters.turn++;
     }
@@ -55,8 +56,8 @@ void LifeGame::turn()
 
 void LifeGame::drawScreen()
 {
-    map.drawField();
-    infoSubMenu.drawInfoBar();
-    toolsSubMenu.drawToolsBar();
+    field.drawField();
+    infoBar.drawInfoBar();
+    toolsBar.drawToolsBar();
     currentScreen.endFrame();
 }

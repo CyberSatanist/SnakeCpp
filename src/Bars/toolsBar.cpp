@@ -1,5 +1,5 @@
-#include "toolsSubMenu.h"
-#include "../../Parameters/evolutionParameters.h"
+#include "toolsBar.h"
+#include <Evolution/Parameters/evolutionParameters.h>
 
 extern EvolutionParameters evolutionParameters;
 
@@ -84,6 +84,6 @@ void ToolsSubMenu::menuControllSelect()
     } else if (currentChoice == toolsMenuChoicesConst::Load){
     } else if (currentChoice == toolsMenuChoicesConst::Pause){
     } else if (currentChoice == toolsMenuChoicesConst::Exit){
-        evolutionParameters.evolutionOn = false;
+        evolutionParameters.gameOn = false;
     }
 }

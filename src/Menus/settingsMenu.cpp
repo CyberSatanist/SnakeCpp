@@ -1,6 +1,6 @@
 #include "settingsMenu.h"
-#include "../Modes/SnakeGame/Menus/snakeSettingsMenu.h"
-//#include "../Modes/Evolution/Menus/evolutionSettingsMenu.h"
+#include <SnakeGame/Menus/snakeSettingsMenu.h>
+//#include "Evolution/Menus/evolutionSettingsMenu.h"
 
 
 void SettingsMenu::menuControllSelect()

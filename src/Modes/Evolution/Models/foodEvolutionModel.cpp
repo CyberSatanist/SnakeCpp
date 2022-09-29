@@ -1,5 +1,5 @@
 #include "foodEvolutionModel.h"
-#include "../Parameters/evolutionParameters.h"
+#include <Evolution/Parameters/evolutionParameters.h>
 #include <random>
 
 extern EvolutionParameters evolutionParameters;

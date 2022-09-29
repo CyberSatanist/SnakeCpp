@@ -1,5 +1,5 @@
 #include "snakeModel.h"
-#include "../Parameters/snakeParameters.h"
+#include <SnakeGame/Parameters/snakeParameters.h>
 
 extern SnakeParameters snakeParameters;
 

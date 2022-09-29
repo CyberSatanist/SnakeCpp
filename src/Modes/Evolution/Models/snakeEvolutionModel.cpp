@@ -1,5 +1,5 @@
 #include "snakeEvolutionModel.h"
-#include "../Parameters/evolutionParameters.h"
+#include <Evolution/Parameters/evolutionParameters.h>
 
 extern EvolutionParameters evolutionParameters;
 
@@ -10,8 +10,8 @@ void SnakeEvolutionModel::init(int startX, int startY, int length, int color)
     snakeTmp = currentBody;
     for (int x = 0; x < evolutionParameters.snakeLength; x++)
     { 
-        snakeTmp->cellY = startX;
-        snakeTmp->cellX = startY + x;
+        snakeTmp->cellX = startX + x;
+        snakeTmp->cellY = startY;
         snakeBody* next = new snakeBody; 
         snakeTmp->nextCell = next;	
         next->prevCell = snakeTmp;	

@@ -1,9 +1,9 @@
-#include "lifeToolsSubMenu.h"
-#include "../../Parameters/lifeGameParameters.h"
+#include "evoToolsBar.h"
+#include <Evolution/Parameters/evolutionParameters.h>
 
-extern LifeGameParameters lifeGameParameters;
+extern EvolutionParameters evolutionParameters;
 
-void LifeToolsSubMenu::initToolsBar(int xStart, int yStart, int xEnd, int yEnd)
+void EvoToolsBar::initToolsBar(int xStart, int yStart, int xEnd, int yEnd)
 {
     toolsBarXStart = xStart;
     toolsBarYStart = yStart;
@@ -12,7 +12,7 @@ void LifeToolsSubMenu::initToolsBar(int xStart, int yStart, int xEnd, int yEnd)
 }
 
 
-void LifeToolsSubMenu::drawToolsBar()
+void EvoToolsBar::drawToolsBar()
 {
     currentToolsMenuTitle = firstToolsMenuTitle;
     count = 0;
@@ -40,7 +40,7 @@ void LifeToolsSubMenu::drawToolsBar()
 }
 
 
-void LifeToolsSubMenu::menuControllHandler(int key)
+void EvoToolsBar::menuControllHandler(int key)
 {
     switch(key) {
     case currentScreen.controll_keys::UP:
@@ -78,16 +78,12 @@ void LifeToolsSubMenu::menuControllHandler(int key)
 }
 
 
-void LifeToolsSubMenu::menuControllSelect()
+void EvoToolsBar::menuControllSelect()
 {
     if (currentChoice == toolsMenuChoicesConst::Save){
     } else if (currentChoice == toolsMenuChoicesConst::Load){
-    } else if (currentChoice == toolsMenuChoicesConst::Left){
-    } else if (currentChoice == toolsMenuChoicesConst::Right){
-    } else if (currentChoice == toolsMenuChoicesConst::Up){
-    } else if (currentChoice == toolsMenuChoicesConst::Down){
     } else if (currentChoice == toolsMenuChoicesConst::Pause){
     } else if (currentChoice == toolsMenuChoicesConst::Exit){
-        lifeGameParameters.lifeGameOn = false;
+        evolutionParameters.gameOn = false;
     }
 }

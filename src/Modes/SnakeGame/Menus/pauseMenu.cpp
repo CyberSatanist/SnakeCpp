@@ -1,5 +1,5 @@
 #include "pauseMenu.h"
-#include "../../../Menus/controllsMenu.h"
+#include <Menus/controllsMenu.h>
 
 
 bool PauseMenu::getGameOnBool()
