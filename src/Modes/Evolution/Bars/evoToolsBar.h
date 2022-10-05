@@ -1,45 +1,37 @@
 #ifndef EVO_TOOLS_BAR_H
 #define EVO_TOOLS_BAR_H
-#include <Screen/screen.h>
 #include <Bars/toolsBar.h>
-#include <string>
 
-extern Screen currentScreen;
 
-class EvoToolsBar //: public ToolsBar 
+class EvoToolsBar : public ToolsBar 
 {
     private:
-        int toolsBarXStart;
-        int toolsBarYStart;
-        int toolsBarXEnd;
-        int toolsBarYEnd;
 
-        int count;
-        int rows = 2;
-        int currentColumn;
-        int currentRow;
-        int currentChoice = 0;
-        static const int toolsMenuChoiceCount = 4;
-        int columns = toolsMenuChoiceCount / rows;
-        std::string toolsMenuChoices[toolsMenuChoiceCount] = 
+        static const int toolsBarChoiceCount = 4;
+        std::string toolsBarChoices[toolsBarChoiceCount] = 
         {
             "Save current state",
             "Load state",
             "Pause",
             "Exit",
         };
-        enum toolsMenuChoicesConst {Save, Load, Pause, Exit};
-        int firstToolsMenuTitle = Save;
-        int currentToolsMenuTitle;
-        int lastToolsMenuTitle = Exit;
-        int currentToolsParameter;
+        enum toolsBarChoicesConst {Save, Load, Pause, Exit};
 
-        void menuControllSelect();
+        void menuControllSelect() override;
+        void writeString(int count) override;
 
     public:
-        void initToolsBar(int xStart, int yStart, int xEnd, int yEnd);
-        void drawToolsBar();
-        void menuControllHandler(int key);
+        EvoToolsBar(){
+            this->barTitle = "~TOOLS~";
+
+            this->choicesCount = toolsBarChoiceCount;
+            this->rows = toolsBarChoiceCount / 2;
+            this->columns = toolsBarChoiceCount / rows;
+
+            this->firstToolsBarTitle = Save;
+            this->lastToolsBarTitle = Exit;
+        }
+
 };
 
 #endif

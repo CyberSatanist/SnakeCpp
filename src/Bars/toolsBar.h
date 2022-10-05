@@ -1,41 +1,40 @@
-#ifndef EVOLUTION_TOOLS_SUB_MENU_H
-#define EVOLUTION_TOOLS_SUB_MENU_H
+#ifndef TOOLS_BAR_H
+#define TOOLS_BAR_H
 #include <Screen/screen.h>
 #include <string>
 
 extern Screen currentScreen;
 
-class ToolsSubMenu
+class ToolsBar
 {
-    private:
+    protected:
         int toolsBarXStart;
         int toolsBarYStart;
         int toolsBarXEnd;
         int toolsBarYEnd;
 
+        bool toolsBarOn = false;
+
         int count;
-        int rows = 2;
+        int rows;
+        int columns;
         int currentColumn;
         int currentRow;
         int currentChoice = 0;
-        static const int toolsMenuChoiceCount = 4;
-        int columns = toolsMenuChoiceCount / rows;
-        std::string toolsMenuChoices[toolsMenuChoiceCount] = 
-        {
-            "Save current state",
-            "Load state",
-            "Pause",
-            "Exit",
-        };
-        enum toolsMenuChoicesConst {Save, Load, Pause, Exit};
-        int firstToolsMenuTitle = Save;
-        int currentToolsMenuTitle;
-        int lastToolsMenuTitle = Exit;
+        int choicesCount;
+
+        enum toolsBarChoicesConst {};
+
+        int firstToolsBarTitle;
+        int currentToolsBarTitle;
+        int lastToolsBarTitle;
         int currentToolsParameter;
 
-        void menuControllSelect();
+        virtual void menuControllSelect() {};
+        virtual void writeString(int count) {};
 
     public:
+        std::string barTitle;
         void initToolsBar(int xStart, int yStart, int xEnd, int yEnd);
         void drawToolsBar();
         void menuControllHandler(int key);

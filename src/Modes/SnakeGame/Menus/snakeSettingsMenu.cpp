@@ -1,74 +1,8 @@
 #include "snakeSettingsMenu.h"
 #include <SnakeGame/Parameters/snakeParameters.h>
 
-
 extern SnakeParameters snakeParameters;
 
-void SnakeSettingsMenu::run()
-{
-    currentScreen.clearScreen();
-    menuOn = true;
-    while (menuOn) {
-        menuFrame();
-        menuControllHandler();
-    }
-    currentScreen.clearScreen();
-}
-
-
-void SnakeSettingsMenu::menuFrame()
-{
-    for (
-        int count = 0, currentMenuTitle = firstMenuTitle;
-        count < ((menuConst-1)/2); 
-        count++, currentMenuTitle++
-    ) {
-        currentScreen.setCursor(
-            ((currentScreen.getHight() / ((menuConst/2) +2)) * (count+1)),
-            (currentScreen.getWidth() / 6));
-        if (currentChoice == count) {
-            setMenuChosenColor();	
-        } else {
-            setMenuLineColor();
-        }
-        const char *string = menuChoices[count].c_str();
-
-    	currentScreen.writeText(string);
-        currentParameter = getParameter(currentMenuTitle);
-        printParameter(currentParameter);
-	}
-
-    for (
-        int count = ((menuConst)/2), currentMenuTitle = firstMenuTitle + count;
-        count < (menuConst-1);
-        count++, currentMenuTitle++
-    ) {
-        currentScreen.setCursor(
-            ((currentScreen.getHight() / ((menuConst/2) +2)) * (count+1 - ((menuConst)/2))),
-            (currentScreen.getWidth() / 6) * 3);
-        if (currentChoice == count) {
-            setMenuChosenColor();	
-        } else {
-            setMenuLineColor();
-        }
-        const char *string = menuChoices[count].c_str();
-	    currentScreen.writeText(string);
-        currentParameter = getParameter(currentMenuTitle);
-        printColor(currentParameter);
-    }
-    if (currentChoice == menuConst-1) {
-        setMenuChosenColor();	
-    } else {
-        setMenuLineColor();
-    }
-    currentScreen.setCursor(
-        currentScreen.getHight() - menuConst,
-        (currentScreen.getWidth() - menuChoices[menuConst-1].length()) / 2);
-    const char *strings = menuChoices[menuConst-1].c_str();
-	currentScreen.writeText(strings);
-
-    currentScreen.endFrame();
-}
 
 void SnakeSettingsMenu::setParameter(int currentChoice, int side)
 {
@@ -194,37 +128,6 @@ void SnakeSettingsMenu::setParameter(int currentChoice, int side)
 }
 
 
-void SnakeSettingsMenu::menuControllHandler()
-{
-    switch(currentScreen.controllHandler()) {
-        case currentScreen.controll_keys::UP: 
-            if (currentChoice == 0) {
-                currentChoice = menuConst - 1;
-            } else {
-                currentChoice--;
-            }
-            break;
-        case currentScreen.controll_keys::DOWN: 
-            if (currentChoice == menuConst -1) {
-                currentChoice = 0;
-            } else {
-                currentChoice++;
-            }
-            break;
-        case currentScreen.controll_keys::LEFT:
-            setParameter(currentChoice, currentScreen.controll_keys::LEFT);
-            break;
-        case currentScreen.controll_keys::RIGHT:
-            setParameter(currentChoice, currentScreen.controll_keys::RIGHT);
-            break;
-        case currentScreen.controll_keys::SELECT:
-            menuControllSelect();
-            break;
-        }
-}
-
-
-
 int SnakeSettingsMenu::getParameter(int count)
 {
     switch(count) {
@@ -257,60 +160,24 @@ int SnakeSettingsMenu::getParameter(int count)
     }
 }
 
-void SnakeSettingsMenu::printParameter(int parameter)
-{
-    std::string parameterString;
-    parameterString = std::to_string(parameter);
-    const char *parameterChar = parameterString.c_str();
-
-    currentScreen.writeText(space);
-    currentScreen.writeText(leftArrow);
-	currentScreen.writeText(parameterChar);
-    currentScreen.writeText(rightArrow);
-}
-
-void SnakeSettingsMenu::printColor(int parameter)
-{
-    std::string parameterString;
-    switch (parameter)
-    {
-        case COLOR_BLACK:
-            parameterString = "Black";
-            break;
-        case COLOR_RED:
-            parameterString = "Red";
-            break;
-        case COLOR_GREEN:
-            parameterString = "Green";
-            break;
-        case COLOR_YELLOW:
-            parameterString = "Yellow";
-            break;
-        case COLOR_BLUE:
-            parameterString = "Blue";
-            break;
-        case COLOR_MAGENTA:
-            parameterString = "Magenta";
-            break;
-        case COLOR_CYAN:
-            parameterString = "Cyan";
-            break;
-        case COLOR_WHITE:
-            parameterString = "White";
-            break;
-
-    }
-    const char *parameterChar = parameterString.c_str();
-    
-    currentScreen.writeText(space);
-    currentScreen.writeText(leftArrow);
-	currentScreen.writeText(parameterChar);
-    currentScreen.writeText(rightArrow);
-}
 
 void SnakeSettingsMenu::menuControllSelect()
 {
-    if (currentChoice == menuChoicesConst::Back){
-        menuOn = false;
+    if (currentChoice == (menuConst + buttonsConst - 1)){
+        settingsOn = false;
     }
+}
+
+
+void SnakeSettingsMenu::writeString(int count)
+{
+    const char *string = menuChoices[count].c_str();
+    currentScreen.writeText(string);
+}
+
+
+void SnakeSettingsMenu::writeButton(int count)
+{
+    const char *string = buttonChoices[count].c_str();
+    currentScreen.writeText(string);
 }

@@ -1,27 +1,15 @@
 #ifndef LIFE_TOOLS_BAR_H
 #define LIFE_TOOLS_BAR_H
-#include <Screen/screen.h>
 #include <Bars/toolsBar.h>
-#include <string>
 
-extern Screen currentScreen;
 
-class LifeToolsBar//: public toolsBar
+class LifeToolsBar : public ToolsBar
 {
-    private:
-        int toolsBarXStart;
-        int toolsBarYStart;
-        int toolsBarXEnd;
-        int toolsBarYEnd;
 
-        int count;
-        int rows = 2;
-        int currentColumn;
-        int currentRow;
-        int currentChoice = 0;
-        static const int toolsMenuChoiceCount = 8;
-        int columns = toolsMenuChoiceCount / rows;
-        std::string toolsMenuChoices[toolsMenuChoiceCount] = 
+    private:
+
+        static const int toolsBarChoiceCount = 8;
+        std::string toolsBarChoices[toolsBarChoiceCount] = 
         {
             "Save current state",
             "Load state",
@@ -32,18 +20,22 @@ class LifeToolsBar//: public toolsBar
             "Pause",
             "Exit",
         };
-        enum toolsMenuChoicesConst {Save, Load, Left, Right, Up, Down, Pause, Exit};
-        int firstToolsMenuTitle = Save;
-        int currentToolsMenuTitle;
-        int lastToolsMenuTitle = Exit;
-        int currentToolsParameter;
+        enum toolsBarChoicesConst {Save, Load, Left, Right, Up, Down, Pause, Exit};
 
-        void menuControllSelect();
+        void menuControllSelect() override;
+        void writeString(int count) override;
 
     public:
-        void initToolsBar(int xStart, int yStart, int xEnd, int yEnd);
-        void drawToolsBar();
-        void menuControllHandler(int key);
+        LifeToolsBar(){
+            this->barTitle = "~TOOLS~";
+
+            this->choicesCount = toolsBarChoiceCount;
+            this->rows = 2;
+            this->columns = toolsBarChoiceCount / rows;
+
+            this->firstToolsBarTitle = Save;
+            this->lastToolsBarTitle = Exit;
+        }
 };
 
 #endif

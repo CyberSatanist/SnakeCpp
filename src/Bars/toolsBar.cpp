@@ -1,9 +1,6 @@
 #include "toolsBar.h"
-#include <Evolution/Parameters/evolutionParameters.h>
 
-extern EvolutionParameters evolutionParameters;
-
-void ToolsSubMenu::initToolsBar(int xStart, int yStart, int xEnd, int yEnd)
+void ToolsBar::initToolsBar(int xStart, int yStart, int xEnd, int yEnd)
 {
     toolsBarXStart = xStart;
     toolsBarYStart = yStart;
@@ -12,12 +9,12 @@ void ToolsSubMenu::initToolsBar(int xStart, int yStart, int xEnd, int yEnd)
 }
 
 
-void ToolsSubMenu::drawToolsBar()
+void ToolsBar::drawToolsBar()
 {
-    currentToolsMenuTitle = firstToolsMenuTitle;
+    currentToolsBarTitle = firstToolsBarTitle;
     count = 0;
     for (currentColumn = 1; currentColumn <= columns; currentColumn++) {
-        if (count == toolsMenuChoiceCount) { break; }
+        if (count == choicesCount) { break; }
         for (currentRow = 1; currentRow <= rows; currentRow++) {
             currentScreen.setCursor(
                 toolsBarXStart + (toolsBarXEnd - toolsBarXStart) / (rows + 1) * currentRow,
@@ -30,35 +27,36 @@ void ToolsSubMenu::drawToolsBar()
                 currentScreen.setColor(COLOR_WHITE, COLOR_BLACK);
             }
 
-            const char *string = toolsMenuChoices[count].c_str();
-            currentScreen.writeText(string);
+            writeString(count);
+            //const char *string = toolsMenuChoices[count].c_str();
+            //currentScreen.writeText(string);
 
             count++;
-            currentToolsMenuTitle++;
+            currentToolsBarTitle++;
         }
     }
 }
 
 
-void ToolsSubMenu::menuControllHandler(int key)
+void ToolsBar::menuControllHandler(int key)
 {
     switch(key) {
     case currentScreen.controll_keys::UP:
         if (currentChoice == 0) {
-            currentChoice = toolsMenuChoiceCount - 1;
+            currentChoice = choicesCount - 1;
         } else {
             currentChoice--;
         }
         break;
     case currentScreen.controll_keys::DOWN:
-        if (currentChoice == toolsMenuChoiceCount - 1) {
+        if (currentChoice == choicesCount - 1) {
             currentChoice = 0;
         } else {
             currentChoice++;
         }
         break;
     case currentScreen.controll_keys::RIGHT:
-        if ((currentChoice + rows) > (toolsMenuChoiceCount -1)) {
+        if ((currentChoice + rows) > (choicesCount -1)) {
             currentChoice = 0 + (currentChoice % rows);
         } else {
             currentChoice += rows;
@@ -66,7 +64,7 @@ void ToolsSubMenu::menuControllHandler(int key)
         break;
     case currentScreen.controll_keys::LEFT:
         if ((currentChoice - rows) < 0) {
-            currentChoice = toolsMenuChoiceCount + (currentChoice - rows);
+            currentChoice = choicesCount + (currentChoice - rows);
         } else {
             currentChoice -= rows;
         }
@@ -77,7 +75,7 @@ void ToolsSubMenu::menuControllHandler(int key)
     }
 }
 
-
+/*
 void ToolsSubMenu::menuControllSelect()
 {
     if (currentChoice == toolsMenuChoicesConst::Save){
@@ -87,3 +85,4 @@ void ToolsSubMenu::menuControllSelect()
         evolutionParameters.gameOn = false;
     }
 }
+*/

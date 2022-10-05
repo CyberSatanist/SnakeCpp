@@ -30,8 +30,6 @@ class EvoInfoBar : public InfoBar
             this->rows = infoBarChoiceCount / 2;
             this->columns = infoBarChoiceCount / rows;
 
-
-
             this->firstInfoBarTitle = Generation;
             this->lastInfoBarTitle = Speed;
 

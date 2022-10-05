@@ -1,12 +1,12 @@
-#ifndef SNAKESETTINGSMENU_H
-#define SNAKESETTINGSMENU_H
+#ifndef SNAKE_SETTINGS_MENU_H
+#define SNAKE_SETTINGS_MENU_H
 
 #include <Menus/settings.h>
 
 class SnakeSettingsMenu : public Settings {
     
     private:
-        static const int menuChoiceCount = 9;
+        static const int menuChoiceCount = 8;
 
         std::string menuChoices[menuChoiceCount] = 
 	    {
@@ -19,37 +19,48 @@ class SnakeSettingsMenu : public Settings {
     		"Food color",
 	    	"Snake body color one",
 		    "Snake body color two",
-	       	
-    		"Back",
 	    };
-          
+
         enum menuChoicesConst 
 	    {
             GameSpeed, SnakesLength, SnakesCount, FoodsCount, 
 		    SnakeHeadColor, FoodColor, SnakeBodyColorOne, SnakeBodyColorTwo,
+	    };
+
+        static const int buttonChoiceCount = 1;
+        
+        std::string buttonChoices[buttonChoiceCount] = 
+	    {
+            "Back",
+	    };
+
+        enum buttonChoicesConst 
+	    {
 		    Back
 	    };
 
-        int firstMenuTitle = GameSpeed;
-        int currentMenuTitle;
-        int lastMenuTitle = Back;
-        int currentParameter;
 
-        void menuFrame();
-        void menuControllHandler();
         void menuControllSelect() override;
-
-        void printParameter(int parameter);
-        void printColor(int parameter);
-        void setParameter(int currentChoice, int side); 
-        int getParameter(int count);
+        void writeString(int count) override;
+        void writeButton(int count) override;
+        void setParameter(int currentChoice, int side) override;
+        int getParameter(int count) override;
             
     public:
         SnakeSettingsMenu() {
             this->menuConst = menuChoiceCount;
+            this->buttonsConst = buttonChoiceCount;
             this->menuTitle = "   ~S E T T I N G S  M E N U~   ";
+
+            this->rows = menuChoiceCount / 2;
+            this->columns = menuChoiceCount / rows;
+
+
+            this->colorsFrom = 3;
+
+            this->firstMenuTitle = GameSpeed;
+            this->lastMenuTitle = SnakeBodyColorTwo;
         };
-        void run();
 
 };
 #endif

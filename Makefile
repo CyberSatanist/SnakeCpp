@@ -39,6 +39,7 @@ main:
 	$(MENUS)menu.cpp \
 	$(MENUS)mainmenu.cpp \
 	$(MENUS)modeSelector.cpp \
+	$(MENUS)settings.cpp \
 	$(MENUS)settingsMenu.cpp \
 	$(MENUS)controllsMenu.cpp \
 	$(SNAKEGAME)snakeGame.cpp \
