@@ -14,6 +14,12 @@ void InfoBar::drawInfoBar()
     currentInfoBarTitle = firstInfoBarTitle;
     count = 0;
 
+    for (int x = infoBarXStart ; x < infoBarXEnd; x++){
+        currentScreen.setCursor(x, infoBarYStart - 1);
+        currentScreen.setColor(COLOR_YELLOW, COLOR_YELLOW);
+        currentScreen.writeText(" ");
+    }
+
     for (int currentColumn = 1; currentColumn <= columns; currentColumn++) {
         for (int currentRow = 1; currentRow <= rows; currentRow++) {
              currentScreen.setCursor(

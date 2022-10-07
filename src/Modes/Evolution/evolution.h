@@ -3,6 +3,7 @@
 #include <Screen/screen.h>
 #include <Evolution/Bars/evoInfoBar.h>
 #include <Evolution/Bars/evoToolsBar.h>
+#include <Evolution/Bars/evoSquareBar.h>
 #include <Evolution/Models/snakeEvoModel.h>
 extern Screen currentScreen;
 
@@ -12,6 +13,7 @@ class Evolution
         EvoField field;
         EvoInfoBar infoBar;
         EvoToolsBar toolsBar;
+        EvoSquareBar squareBar;
 
         int key;
         int foodX, foodY, snakeX, snakeY;

@@ -17,6 +17,12 @@ Evolution::Evolution()
         evolutionParameters.toolsBarEndX, 
         evolutionParameters.toolsBarEndY
     );
+    squareBar.initSquareBar(
+        evolutionParameters.squareBarStartX,
+        evolutionParameters.squareBarStartY, 
+        evolutionParameters.squareBarEndX, 
+        evolutionParameters.squareBarEndY
+    );
 }
 
 
@@ -78,6 +84,7 @@ void Evolution::drawScreen()
 {
     infoBar.drawInfoBar();
     toolsBar.drawToolsBar();
+    squareBar.drawMap(snakes->currentSnake.field);
 
     snakeTmp = snakes;
     do {
@@ -126,4 +133,5 @@ void Evolution::initSnakes()
         snakeTmp->nextSnake = NULL;
     counter++;
     }
+    squareBar.initField(snakes->currentSnake.field);
 }

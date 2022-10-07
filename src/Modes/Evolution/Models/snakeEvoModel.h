@@ -10,7 +10,6 @@ extern Screen currentScreen;
 class SnakeEvoModel
 {
     private:
-        EvoField field;
 
 		struct snakeBody{
 	    	int cellX, cellY;
@@ -39,6 +38,7 @@ class SnakeEvoModel
 
     public:
 		bool isAlive = false;
+        EvoField field;
 
         int vector = Screen::controll_keys::UP;
 		int score = 0;

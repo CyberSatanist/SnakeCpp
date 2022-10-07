@@ -17,7 +17,7 @@ class Field {
         int fullSizeX;
         int fullSizeY;
 
-        enum spaceTypes {Free, Food, Snake, Wall, Cell};
+        enum spaceTypes {Free, Food, Snake, Wall, Cell, Nothing};
         void initField(int currentX, int currentY, int fullX, int fullY);
         void drawField();
 

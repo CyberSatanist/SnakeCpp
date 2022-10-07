@@ -13,6 +13,13 @@ void ToolsBar::drawToolsBar()
 {
     currentToolsBarTitle = firstToolsBarTitle;
     count = 0;
+
+    for (int y = toolsBarYStart ; y <= toolsBarYEnd; y++){
+        currentScreen.setCursor(toolsBarXStart - 1, y);
+        currentScreen.setColor(COLOR_YELLOW, COLOR_YELLOW);
+        currentScreen.writeText(" ");
+    }
+
     for (currentColumn = 1; currentColumn <= columns; currentColumn++) {
         if (count == choicesCount) { break; }
         for (currentRow = 1; currentRow <= rows; currentRow++) {

@@ -36,6 +36,7 @@ main:
 	$(FIELD)field.cpp \
 	$(BARS)infoBar.cpp \
 	$(BARS)toolsBar.cpp \
+	$(BARS)squareBar.cpp \
 	$(MENUS)menu.cpp \
 	$(MENUS)mainmenu.cpp \
 	$(MENUS)modeSelector.cpp \
@@ -53,6 +54,7 @@ main:
 	$(EVOLUTION_MODELS)foodEvoModel.cpp \
 	$(EVOLUTION_BARS)evoInfoBar.cpp \
 	$(EVOLUTION_BARS)evoToolsBar.cpp \
+	$(EVOLUTION_BARS)evoSquareBar.cpp \
 	$(LIFEGAME)lifeGame.cpp \
 	$(LIFEGAME_FIELD)lifeField.cpp \
 	$(LIFEGAME_BARS)lifeInfoBar.cpp \

@@ -18,7 +18,7 @@ class EvolutionParameters : public Parameters
         int snakeIdCounter = 1;
 
 //SnakeParameters
-        int countOfSnakes = 10;
+        int countOfSnakes = 1;
         int snakeLength = 6;
         int snakeHeadColor = COLOR_YELLOW;
         int snakeOneBodyColor = COLOR_GREEN;
