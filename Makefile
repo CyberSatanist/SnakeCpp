@@ -49,8 +49,8 @@ main:
 	$(SNAKEGAME_MENUS)snakeSettingsMenu.cpp \
 	$(EVOLUTION)evolution.cpp \
 	$(EVOLUTION_FIELD)evoField.cpp \
-	$(EVOLUTION_MODELS)snakeEvolutionModel.cpp \
-	$(EVOLUTION_MODELS)foodEvolutionModel.cpp \
+	$(EVOLUTION_MODELS)snakeEvoModel.cpp \
+	$(EVOLUTION_MODELS)foodEvoModel.cpp \
 	$(EVOLUTION_BARS)evoInfoBar.cpp \
 	$(EVOLUTION_BARS)evoToolsBar.cpp \
 	$(LIFEGAME)lifeGame.cpp \

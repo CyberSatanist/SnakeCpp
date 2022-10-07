@@ -18,7 +18,7 @@ void InfoBar::drawInfoBar()
         for (int currentRow = 1; currentRow <= rows; currentRow++) {
              currentScreen.setCursor(
                 infoBarXStart + (infoBarXEnd - infoBarXStart) / (rows + 1) * currentRow,
-                infoBarYStart + (infoBarYEnd - infoBarYStart) / (columns + 1) * currentColumn
+                infoBarYStart + (infoBarYEnd - infoBarYStart) / (columns + 3) * currentColumn * 2 - currentColumn * 2
             );
             
             currentScreen.setColor(COLOR_WHITE, COLOR_BLACK);
@@ -26,7 +26,7 @@ void InfoBar::drawInfoBar()
 
             currentScreen.setCursor(
                 1 + infoBarXStart + (infoBarXEnd - infoBarXStart) / (rows + 1) * currentRow,
-                infoBarYStart + (infoBarYEnd - infoBarYStart) / (columns + 1) * currentColumn
+                infoBarYStart + (infoBarYEnd - infoBarYStart) / (columns + 3) * currentColumn * 2 - currentColumn * 2
             );
             currentInfoParameter = getParameter(currentInfoBarTitle);
             printParameter(currentInfoParameter);

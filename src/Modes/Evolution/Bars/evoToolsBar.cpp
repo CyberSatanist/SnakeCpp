@@ -8,7 +8,22 @@ void EvoToolsBar::menuControllSelect()
 {
     if (currentChoice == toolsBarChoicesConst::Save){
     } else if (currentChoice == toolsBarChoicesConst::Load){
+    } else if (currentChoice == toolsBarChoicesConst::SpeedUp){
+        if (evolutionParameters.delayDuration == 1) {
+            evolutionParameters.delayDuration = 150;
+        } else {
+            evolutionParameters.delayDuration--;
+        }
+        timeout(evolutionParameters.delayDuration);
+    } else if (currentChoice == toolsBarChoicesConst::SpeedDown){
+        if (evolutionParameters.delayDuration == 150) {
+            evolutionParameters.delayDuration = 1;
+        } else {
+            evolutionParameters.delayDuration++;
+        }
+        timeout(evolutionParameters.delayDuration);
     } else if (currentChoice == toolsBarChoicesConst::Pause){
+        pauseOn = !pauseOn;
     } else if (currentChoice == toolsBarChoicesConst::Exit){
         evolutionParameters.gameOn = false;
     }

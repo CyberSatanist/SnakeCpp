@@ -28,8 +28,6 @@ void ToolsBar::drawToolsBar()
             }
 
             writeString(count);
-            //const char *string = toolsMenuChoices[count].c_str();
-            //currentScreen.writeText(string);
 
             count++;
             currentToolsBarTitle++;
@@ -74,15 +72,3 @@ void ToolsBar::menuControllHandler(int key)
         break;
     }
 }
-
-/*
-void ToolsSubMenu::menuControllSelect()
-{
-    if (currentChoice == toolsMenuChoicesConst::Save){
-    } else if (currentChoice == toolsMenuChoicesConst::Load){
-    } else if (currentChoice == toolsMenuChoicesConst::Pause){
-    } else if (currentChoice == toolsMenuChoicesConst::Exit){
-        evolutionParameters.gameOn = false;
-    }
-}
-*/

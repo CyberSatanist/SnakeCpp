@@ -3,9 +3,7 @@
 #include <Screen/screen.h>
 #include <Evolution/Bars/evoInfoBar.h>
 #include <Evolution/Bars/evoToolsBar.h>
-#include <Evolution/Models/snakeEvolutionModel.h>
-#include <Evolution/Models/foodEvolutionModel.h>
-#include <Evolution/Field/evoField.h>
+#include <Evolution/Models/snakeEvoModel.h>
 extern Screen currentScreen;
 
 class Evolution
@@ -25,30 +23,16 @@ class Evolution
         int deathTextColor = COLOR_RED;
         int deathTextBackground = COLOR_BLACK;
 
-        struct foodList {
-            FoodEvolutionModel currentFood;
-            bool isFood;
-            struct foodList *nextFood;
-        };
-        foodList* food = new foodList;
-        foodList* foodTmp = new foodList;
-
         struct snakesList{
-            EvoField currentEvoField;
-            bool alive = true;
-            SnakeEvolutionModel currentSnake;
-            struct foodList *thisSnakesFood;
+            SnakeEvoModel currentSnake;
             struct snakesList *nextSnake;
         };
         snakesList* snakes = new snakesList;
         snakesList* snakeTmp = new snakesList;
 
-        void checkFood();
-        void checkDeath();
-        void death();
-        void drawSnakes();
-        void drawFood();
-        void eatFood(snakesList* snakes, foodList* food);
+
+        void initSnakes();
+        void drawStuff();
 
     public:
         Evolution();

@@ -10,6 +10,9 @@ int EvoInfoBar::getParameter(int count)
         case Generation:
             return evolutionParameters.generation;
             break;
+        case BestSnakeId:
+            return evolutionParameters.bestSnakeId;
+            break;
         case Score:
             return evolutionParameters.score;
             break;

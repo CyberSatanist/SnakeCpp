@@ -6,19 +6,22 @@ class EvoInfoBar : public InfoBar
 {
     private:
 
-        static const int infoBarChoiceCount = 6;
+        static const int infoBarChoiceCount = 8;
 
         std::string infoBarChoices[infoBarChoiceCount] = 
         {
             "Gen.",
+            "Best Id",
             "Alive",
             "Time",
-            "Max.score",
+
+            "placeholder",
+            "Score",
             "Turns",
             "Speed"
         };
         
-        enum infoBarChoicesConst {Generation, Alive, Time, Score, Turn, Speed};
+        enum infoBarChoicesConst {Generation, BestSnakeId, Alive, Time, Placeholder, Score, Turn, Speed};
 
         int getParameter(int count) override;
         void writeString(int count) override;

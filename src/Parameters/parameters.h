@@ -13,10 +13,10 @@ class Parameters {
         int whiteColor = COLOR_WHITE;
 
         //Field-ToolsMenu scale
-        int fieldX = 4;
-        int fieldMaxX = 5;
-        int fieldY = 4;
-        int fieldMaxY = 5;
+        int fieldX = 3;
+        int fieldMaxX = 4;
+        int fieldY = 3;
+        int fieldMaxY = 4;
 
         //Size of info bar
         int infoBarStartX = 0;

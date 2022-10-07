@@ -11,12 +11,14 @@ class EvolutionParameters : public Parameters
 //Statistic info
         int generation = 0;
         int score = 0;
-        int aliveSnakes = 1;
+        int aliveSnakes = 0;
         int time = 0;
         int turn = 0;
+        int bestSnakeId = 0;
+        int snakeIdCounter = 1;
 
 //SnakeParameters
-        int countOfSnakes = 1;
+        int countOfSnakes = 10;
         int snakeLength = 6;
         int snakeHeadColor = COLOR_YELLOW;
         int snakeOneBodyColor = COLOR_GREEN;
@@ -26,13 +28,18 @@ class EvolutionParameters : public Parameters
         int snakeFiveBodyColor = COLOR_GREEN;
 
 //FoodModel
-        int countOfFood = 10;
+        int countOfFood = 1;
         int snakeOnefoodColor = COLOR_RED;
         int snakeTwofoodColor = COLOR_RED;
         int snakeThreefoodColor = COLOR_RED;
         int snakeFourfoodColor = COLOR_RED;
         int snakeFivefoodColor = COLOR_RED;
 
+//Cell Colors
+        int freeCellColor = COLOR_WHITE;
+        int wallCellColor = COLOR_BLUE;
+        int snakeCellColor = COLOR_GREEN;
+        int foodCellColor = COLOR_RED;
 };
 
 #endif
