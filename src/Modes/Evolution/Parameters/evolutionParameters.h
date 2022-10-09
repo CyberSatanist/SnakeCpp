@@ -11,6 +11,7 @@ class EvolutionParameters : public Parameters
 //Statistic info
         int generation = 1;
         int score = 0;
+        int theBestScore = 0;
         int aliveSnakes = 0;
         int time = 0;
         int turn = 0;
@@ -18,8 +19,8 @@ class EvolutionParameters : public Parameters
         int snakeIdCounter = 1;
 
 //SnakeParameters
-        int countOfSnakes = 3;
-        int snakeLength = 6;
+        int countOfSnakes = 20;
+        int snakeLength = 1;
         int snakeHeadColor = COLOR_YELLOW;
         int snakeOneBodyColor = COLOR_GREEN;
         int snakeTwoBodyColor = COLOR_BLACK;
@@ -28,7 +29,7 @@ class EvolutionParameters : public Parameters
         int snakeFiveBodyColor = COLOR_GREEN;
 
 //FoodModel
-        int countOfFood = 1;
+        int countOfFood = 3;
         int snakeOnefoodColor = COLOR_RED;
         int snakeTwofoodColor = COLOR_RED;
         int snakeThreefoodColor = COLOR_RED;
@@ -42,14 +43,19 @@ class EvolutionParameters : public Parameters
         int foodCellColor = COLOR_RED;
 
 //Neural Network
-        int countOfLayers = 20;
-        int countOfNeuronsInLayer = 20;
+        int countOfLayers = 5;
+        int countOfNeuronsInLayer = 10;
         int neuronIdCounter = 1;
         int layerIdCounter = 1;
 
         int firstLayerNeuronCount = 81;
         int lastLayerNeuronCount = 4;
         int outputLayerNeuronCount = 1;
+
+//Generetions
+        int countOfBest = 30;
+        int countOfWorst = 5;
+        int mutationChance = 5;
 };
 
 #endif

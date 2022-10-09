@@ -24,14 +24,14 @@ void EvoSettingsMenu::setParameter(int currentChoice, int side)
                 break;
             case SnakesCount:
                 if (evolutionParameters.countOfSnakes == 1){
-                    evolutionParameters.countOfSnakes = 100;
+                    evolutionParameters.countOfSnakes = 500;
                 } else {
                     evolutionParameters.countOfSnakes--;
                 }
                 break;
             case FoodsCount:
                 if (evolutionParameters.countOfFood == 1){
-                    evolutionParameters.countOfFood = 100;
+                    evolutionParameters.countOfFood = 500;
                 } else {
                     evolutionParameters.countOfFood--;
                 }
@@ -68,14 +68,14 @@ void EvoSettingsMenu::setParameter(int currentChoice, int side)
                 }
                 break;
             case SnakesCount:
-                if (evolutionParameters.countOfSnakes == 100){
+                if (evolutionParameters.countOfSnakes == 500){
                     evolutionParameters.countOfSnakes = 1;
                 } else {
                     evolutionParameters.countOfSnakes++;
                 }
                 break;
             case FoodsCount:
-                if (evolutionParameters.countOfFood == 100){
+                if (evolutionParameters.countOfFood == 500){
                     evolutionParameters.countOfFood = 1;
                 } else {
                     evolutionParameters.countOfFood++;

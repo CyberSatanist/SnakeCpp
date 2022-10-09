@@ -120,13 +120,13 @@ void SnakeEvoModel::setVector(int direction)
 {
     float vetc = network.useMind(field, snakeHeadTail->firstCell->cellX, snakeHeadTail->firstCell->cellY);
 
-    if (vetc >= 0.77){
+    if (vetc >= 0.5){
         direction = Screen::controll_keys::RIGHT;
-    } else if (vetc < 0.77 & vetc >= 0){
+    } else if (vetc < 0.5 & vetc >= 0){
         direction = Screen::controll_keys::UP;
-    } else if (vetc < 0 & vetc >= -0.33){
+    } else if (vetc < 0 & vetc >= -0.5){
         direction = Screen::controll_keys::LEFT;
-    } else if (vetc < -0.33){
+    } else if (vetc < -0.5){
         direction = Screen::controll_keys::DOWN;
     }
 
@@ -187,7 +187,7 @@ void SnakeEvoModel::snakeEat()
 {
     newCell();
     newFood();
-    score++;
+    score += 10;
     if (score > evolutionParameters.score){
         evolutionParameters.score = score;
         evolutionParameters.bestSnakeId = snakeId;

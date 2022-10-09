@@ -9,12 +9,11 @@
 class StandartNetwork
 {
     public:
-    //std::ofstream test;
-    StandartNetwork();
-    EvoField field;
-    float useMind(EvoField evoField, int headX, int headY);
+        StandartNetwork();
+        EvoField field;
+        float useMind(EvoField evoField, int headX, int headY);
+        void mergeNetworks(StandartNetwork *parentOne, StandartNetwork *parentTwo);
 
-    private:
         struct NeuronsList {
             StandartNeuron currentNeuron;
             struct NeuronsList *nextNeuron; 
@@ -25,6 +24,9 @@ class StandartNetwork
         NeuronsList* nextLayer = new NeuronsList;
         NeuronsList* outputLayer = new NeuronsList;
 
+        NeuronsList *layerParentOne;
+        NeuronsList *layerParentTwo;
+
         struct  LayersList {
             int layerId;
             NeuronsList currentNeuronsList;
@@ -32,9 +34,13 @@ class StandartNetwork
         };
         LayersList* layersList = new LayersList;
         LayersList* layersListTmp = new LayersList;
+        LayersList* layersListParentOne = new LayersList;
+        LayersList* layersListParentTwo = new LayersList;
+
 
         float randFloat;
 
+    private:
         void initNetwork();
         void initLayers();
         void initNeurons();

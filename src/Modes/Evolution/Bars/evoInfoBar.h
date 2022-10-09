@@ -15,13 +15,13 @@ class EvoInfoBar : public InfoBar
             "Alive",
             "Time",
 
-            "placeholder",
+            "Best Score",
             "Score",
             "Turns",
             "Speed"
         };
         
-        enum infoBarChoicesConst {Generation, BestSnakeId, Alive, Time, Placeholder, Score, Turn, Speed};
+        enum infoBarChoicesConst {Generation, BestSnakeId, Alive, Time, BestScore, Score, Turn, Speed};
 
         int getParameter(int count) override;
         void writeString(int count) override;

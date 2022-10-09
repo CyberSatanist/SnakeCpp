@@ -16,6 +16,9 @@ int EvoInfoBar::getParameter(int count)
         case Score:
             return evolutionParameters.score;
             break;
+        case BestScore:
+            return evolutionParameters.theBestScore;
+            break;
         case Alive:
             return evolutionParameters.aliveSnakes;
             break;

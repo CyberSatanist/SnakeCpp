@@ -21,6 +21,8 @@ class Evolution
 
         void turn();
         void drawScreen();
+        void evolveSnakes();
+        void getBest();
 
         std::string deathText = "YOU ARE FINISHED";
         int deathTextColor = COLOR_RED;
@@ -30,8 +32,21 @@ class Evolution
             SnakeEvoModel currentSnake;
             struct snakesList *nextSnake;
         };
+        
         snakesList* snakes = new snakesList;
         snakesList* snakeTmp = new snakesList;
+        snakesList* snakeSecondTmp = new snakesList;
+
+        struct bestSnakesList{
+            SnakeEvoModel currentSnake;
+            struct bestSnakesList *nextSnake;
+            struct bestSnakesList *prevSnake;
+        };
+        bestSnakesList* bestSnake = new bestSnakesList;
+        bestSnakesList* worstSnake = new bestSnakesList;
+        bestSnakesList* parentSnakes = new bestSnakesList;
+        bestSnakesList* snakeListTmp = new bestSnakesList;
+        bestSnakesList* snakeListSecondTmp = new bestSnakesList;
 
 
         void initSnakes();

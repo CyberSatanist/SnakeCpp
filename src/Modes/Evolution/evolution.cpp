@@ -1,5 +1,7 @@
 #include "evolution.h"
 #include <Evolution/Parameters/evolutionParameters.h>
+#include <fstream>
+#include <iostream>
 
 extern EvolutionParameters evolutionParameters;
 
@@ -34,7 +36,9 @@ void Evolution::run()
 
     evolutionParameters.turn = 0;
     evolutionParameters.score = 0;
+    evolutionParameters.generation = 1;
     evolutionParameters.snakeIdCounter = 1;
+    evolutionParameters.aliveSnakes = 0;
 
     initSnakes();
 
@@ -56,6 +60,16 @@ void Evolution::run()
             }
         }
 
+        if (evolutionParameters.aliveSnakes == 0){
+            evolutionParameters.generation++;
+            if (evolutionParameters.score > evolutionParameters.theBestScore){
+                evolutionParameters.theBestScore = evolutionParameters.score;
+            }
+            evolutionParameters.score = 0;
+            //initSnakes();
+            evolveSnakes();
+        }
+
         drawScreen();
         drawStuff();
         toolsBar.menuControllHandler(key);
@@ -70,6 +84,11 @@ void Evolution::turn()
     while(snakeTmp->nextSnake){
         if (snakeTmp->currentSnake.isAlive)
         {
+            snakeTmp->currentSnake.score++;
+            if (snakeTmp->currentSnake.score > evolutionParameters.score){
+                evolutionParameters.score = snakeTmp->currentSnake.score;
+                evolutionParameters.bestSnakeId = snakeTmp->currentSnake.snakeId;
+            }
             snakeTmp->currentSnake.move();
         }
         snakeTmp = snakeTmp->nextSnake;
@@ -123,7 +142,8 @@ void Evolution::initSnakes()
         }
         newSnake.init(
             evolutionParameters.fullFieldSizeX / 2,
-            (evolutionParameters.fullFieldSizeY / 2) + (count * 2) + counter,
+            evolutionParameters.fullFieldSizeY / 2,
+            //(evolutionParameters.fullFieldSizeY / 2) + (count * 2) + counter,
             evolutionParameters.snakeLength,
             evolutionParameters.snakeOneBodyColor
         );
@@ -134,4 +154,158 @@ void Evolution::initSnakes()
     counter++;
     }
     squareBar.initField(snakes->currentSnake.field);
+}
+
+
+void Evolution::evolveSnakes()
+{
+    getBest();
+    snakes = new snakesList;
+    snakeSecondTmp = snakes;
+
+    int counter = 1;
+    for (int count = 0; count < evolutionParameters.countOfSnakes; count++)
+	{
+        SnakeEvoModel newSnake;
+        if ((evolutionParameters.fullFieldSizeY / 2) + (count * 2) + counter > (evolutionParameters.fullFieldSizeY - 3)){
+            counter = 1;
+        }
+        newSnake.init(
+            evolutionParameters.fullFieldSizeX / 2,
+            evolutionParameters.fullFieldSizeY / 2,
+            //(evolutionParameters.fullFieldSizeY / 2) + (count * 2) + counter,
+            evolutionParameters.snakeLength,
+            evolutionParameters.snakeOneBodyColor
+        );
+
+        int parentOneNum = 0;
+        int parentTwoNum = 0;
+
+        int parentsCount = ((evolutionParameters.countOfSnakes / 10) * evolutionParameters.countOfBest / 10) + ((evolutionParameters.countOfSnakes / 10) * evolutionParameters.countOfWorst / 10);
+        
+        std::random_device random_device;
+        std::mt19937 generator(random_device());
+        std::uniform_int_distribution<> randGen(0, parentsCount);
+
+        while (parentOneNum == parentTwoNum) {
+            parentOneNum = randGen(generator);
+            parentTwoNum = randGen(generator);
+        }
+
+        snakeListTmp = parentSnakes;
+        for (int count = 0; count < parentOneNum; count++){
+            snakeListTmp = snakeListTmp->nextSnake;
+        }
+        snakeListSecondTmp = parentSnakes;
+        for (int count = 0; count < parentTwoNum; count++){
+            snakeListSecondTmp = snakeListTmp->nextSnake;
+        }
+
+        newSnake.network.mergeNetworks(&(snakeListTmp->currentSnake.network), &(snakeListSecondTmp->currentSnake.network));
+        
+        snakeSecondTmp->currentSnake = newSnake;
+        snakeSecondTmp->nextSnake = new snakesList;
+        snakeSecondTmp = snakeSecondTmp->nextSnake;
+        snakeSecondTmp->nextSnake = NULL;
+        counter++;
+    }
+    squareBar.initField(snakes->currentSnake.field);
+}
+
+
+void Evolution::getBest()
+{
+    std::ofstream test;
+    test.open("bestList.txt");
+
+
+    snakeTmp = snakes;
+    bestSnake = new bestSnakesList;
+    bestSnake->currentSnake = snakes->currentSnake;
+    bestSnake->prevSnake = NULL;
+    bestSnake->nextSnake = NULL;
+
+    while (snakeTmp->nextSnake){
+        if (snakeTmp->currentSnake.score >= bestSnake->currentSnake.score){
+            snakeListTmp = new bestSnakesList;
+            snakeListTmp->currentSnake = snakeTmp->currentSnake;
+            snakeListTmp->prevSnake = NULL;
+            snakeListTmp->nextSnake = bestSnake;
+            bestSnake->prevSnake = snakeListTmp;
+            bestSnake = snakeListTmp;
+        } else {
+            snakeListTmp = bestSnake;
+            while(snakeListTmp->nextSnake){
+                if (snakeTmp->currentSnake.score >= snakeListTmp->currentSnake.score){
+                    if (snakeListTmp->nextSnake){
+                        snakeListSecondTmp = new bestSnakesList;
+                        snakeListSecondTmp->currentSnake = snakeTmp->currentSnake;
+                        snakeListSecondTmp->prevSnake = snakeListTmp->prevSnake;
+                        snakeListSecondTmp->nextSnake = snakeListTmp;
+                        snakeListTmp->prevSnake->nextSnake = snakeListSecondTmp;
+                        snakeListTmp->prevSnake = snakeListSecondTmp;
+                        break;
+                    } else {
+                        snakeListSecondTmp = new bestSnakesList;
+                        snakeListSecondTmp->currentSnake = snakeTmp->currentSnake;
+                        snakeListSecondTmp->prevSnake = snakeListTmp;
+                        snakeListSecondTmp->nextSnake = NULL;
+                        snakeListTmp->nextSnake = snakeListSecondTmp;
+                        break;
+                    }
+                }
+                snakeListTmp = snakeListTmp->nextSnake;
+                if (!snakeListTmp->nextSnake){
+                    snakeListSecondTmp = new bestSnakesList;
+                    snakeListSecondTmp->currentSnake = snakeTmp->currentSnake;
+                    snakeListSecondTmp->prevSnake = snakeListTmp;
+                    snakeListSecondTmp->nextSnake = NULL;
+                    snakeListTmp->nextSnake = snakeListSecondTmp;
+                    break;
+                }
+            }
+            
+        }
+        snakeTmp = snakeTmp->nextSnake;
+    }
+
+    snakeListTmp = bestSnake;
+    while(snakeListTmp->nextSnake){
+        test << "Snake ID" << snakeListTmp->currentSnake.snakeId << ";   Score  " << snakeListTmp->currentSnake.score << std::endl;
+        snakeListTmp = snakeListTmp->nextSnake;
+    }
+    worstSnake = snakeListTmp->prevSnake;
+
+    snakeListTmp = bestSnake;
+    parentSnakes = new bestSnakesList;
+    snakeListSecondTmp = parentSnakes;
+    snakeListSecondTmp->prevSnake = NULL;
+    for (int count = 0; count < ((evolutionParameters.countOfSnakes / 10) * evolutionParameters.countOfBest / 10); count++){
+        snakeListSecondTmp->currentSnake = snakeListTmp->currentSnake;
+        snakeListSecondTmp->nextSnake = new bestSnakesList;
+        snakeListSecondTmp->nextSnake->prevSnake = snakeListSecondTmp;
+        snakeListSecondTmp = snakeListSecondTmp->nextSnake;
+        snakeListSecondTmp->nextSnake = NULL;
+
+        snakeListTmp = snakeListTmp->nextSnake;
+    }
+
+    snakeListTmp = worstSnake;
+    for (int count = 0; count < ((evolutionParameters.countOfSnakes / 10) * evolutionParameters.countOfWorst / 10); count++){
+        snakeListSecondTmp->currentSnake = snakeListTmp->currentSnake;
+        snakeListSecondTmp->nextSnake = new bestSnakesList;
+        snakeListSecondTmp->nextSnake->prevSnake = snakeListSecondTmp;
+        snakeListSecondTmp = snakeListSecondTmp->nextSnake;
+        snakeListSecondTmp->nextSnake = NULL;
+
+        snakeListTmp = snakeListTmp->nextSnake;
+    }
+
+    snakeListTmp = parentSnakes;
+    while(snakeListTmp->nextSnake){
+        test << "Snake PARENTS ID" << snakeListTmp->currentSnake.snakeId << ";   Score  " << snakeListTmp->currentSnake.score << std::endl;
+        snakeListTmp = snakeListTmp->nextSnake;
+    }
+
+    test.close();
 }
