@@ -20,6 +20,7 @@ EVOLUTION=$(MODES)Evolution/
 EVOLUTION_FIELD=$(EVOLUTION)Field/
 EVOLUTION_MODELS=$(EVOLUTION)Models/
 EVOLUTION_MENUS=$(EVOLUTION)Menus/
+EVOLUTION_NEURAL_NETWORK=$(EVOLUTION)NeuralNetwork/
 EVOLUTION_BARS=$(EVOLUTION)Bars/
 
 LIFEGAME=$(MODES)LifeGame/
@@ -52,6 +53,9 @@ main:
 	$(EVOLUTION_FIELD)evoField.cpp \
 	$(EVOLUTION_MODELS)snakeEvoModel.cpp \
 	$(EVOLUTION_MODELS)foodEvoModel.cpp \
+	$(EVOLUTION_MENUS)evoSettingsMenu.cpp \
+	$(EVOLUTION_NEURAL_NETWORK)standartNetwork.cpp \
+	$(EVOLUTION_NEURAL_NETWORK)standartNeuron.cpp \
 	$(EVOLUTION_BARS)evoInfoBar.cpp \
 	$(EVOLUTION_BARS)evoToolsBar.cpp \
 	$(EVOLUTION_BARS)evoSquareBar.cpp \

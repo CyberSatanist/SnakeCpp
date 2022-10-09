@@ -10,13 +10,13 @@ void EvoToolsBar::menuControllSelect()
     } else if (currentChoice == toolsBarChoicesConst::Load){
     } else if (currentChoice == toolsBarChoicesConst::SpeedUp){
         if (evolutionParameters.delayDuration == 1) {
-            evolutionParameters.delayDuration = 150;
+            evolutionParameters.delayDuration = 200;
         } else {
             evolutionParameters.delayDuration--;
         }
         timeout(evolutionParameters.delayDuration);
     } else if (currentChoice == toolsBarChoicesConst::SpeedDown){
-        if (evolutionParameters.delayDuration == 150) {
+        if (evolutionParameters.delayDuration == 200) {
             evolutionParameters.delayDuration = 1;
         } else {
             evolutionParameters.delayDuration++;

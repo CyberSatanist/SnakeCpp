@@ -3,6 +3,7 @@
 
 extern EvolutionParameters evolutionParameters;
 
+
 void SnakeEvoModel::init(int startX, int startY, int length, int color)
 {
     initField();
@@ -117,6 +118,18 @@ void SnakeEvoModel::validation()
 
 void SnakeEvoModel::setVector(int direction)
 {
+    float vetc = network.useMind(field, snakeHeadTail->firstCell->cellX, snakeHeadTail->firstCell->cellY);
+
+    if (vetc >= 0.77){
+        direction = Screen::controll_keys::RIGHT;
+    } else if (vetc < 0.77 & vetc >= 0){
+        direction = Screen::controll_keys::UP;
+    } else if (vetc < 0 & vetc >= -0.33){
+        direction = Screen::controll_keys::LEFT;
+    } else if (vetc < -0.33){
+        direction = Screen::controll_keys::DOWN;
+    }
+
     switch (direction) {
         case Screen::controll_keys::RIGHT:
             if(vector != Screen::controll_keys::LEFT) {

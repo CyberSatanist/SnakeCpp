@@ -1,6 +1,6 @@
 #include "settingsMenu.h"
 #include <SnakeGame/Menus/snakeSettingsMenu.h>
-//#include "Evolution/Menus/evolutionSettingsMenu.h"
+#include <Evolution/Menus/evoSettingsMenu.h>
 
 
 void SettingsMenu::menuControllSelect()
@@ -9,9 +9,8 @@ void SettingsMenu::menuControllSelect()
 		SnakeSettingsMenu snakeSettingsMenu;
 	    snakeSettingsMenu.run();
     } else if (currentChoice == menuChoicesConst::EvolutionSettingsChoice){
-		//EvolutionSettingsMenu evolutionSettingsMenu;
-        //evolutionSettingsMenu.initScreen(currentScreen);
-	    //evolutionSettingsMenu.run();
+		EvoSettingsMenu evoSettingsMenu;
+	    evoSettingsMenu.run();
     } else if (currentChoice == menuChoicesConst::Back){
         menuOn = false;
     }

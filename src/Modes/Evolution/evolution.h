@@ -5,6 +5,7 @@
 #include <Evolution/Bars/evoToolsBar.h>
 #include <Evolution/Bars/evoSquareBar.h>
 #include <Evolution/Models/snakeEvoModel.h>
+
 extern Screen currentScreen;
 
 class Evolution

@@ -7,17 +7,19 @@ class EvoToolsBar : public ToolsBar
 {
     private:
 
-        static const int toolsBarChoiceCount = 6;
+        static const int toolsBarChoiceCount = 8;
         std::string toolsBarChoices[toolsBarChoiceCount] = 
         {
-            "Save current state",
+            "Save state",
             "Load state",
             "Speed up",
             "Speed down",
+            "Switch map",
+            "Placeholder",
             "Pause",
             "Exit",
         };
-        enum toolsBarChoicesConst {Save, Load, SpeedUp, SpeedDown, Pause, Exit};
+        enum toolsBarChoicesConst {Save, Load, SpeedUp, SpeedDown, SwitchMap, Placeholder, Pause, Exit};
 
         void menuControllSelect() override;
         void writeString(int count) override;
@@ -28,7 +30,7 @@ class EvoToolsBar : public ToolsBar
             this->barTitle = "~TOOLS~";
 
             this->choicesCount = toolsBarChoiceCount;
-            this->rows = toolsBarChoiceCount / 3;
+            this->rows = toolsBarChoiceCount / 4;
             this->columns = toolsBarChoiceCount / rows;
 
             this->firstToolsBarTitle = Save;

@@ -3,6 +3,7 @@
 
 #include <Screen/screen.h>
 #include <Evolution/Field/evoField.h>
+#include <Evolution/NeuralNetwork/standartNetwork.h>
 #include <Evolution/Models/foodEvoModel.h>
 
 extern Screen currentScreen;
@@ -37,6 +38,8 @@ class SnakeEvoModel
 		void initField();
 
     public:
+		StandartNetwork network;
+
 		bool isAlive = false;
         EvoField field;
 
