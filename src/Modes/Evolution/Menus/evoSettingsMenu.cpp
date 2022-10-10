@@ -45,7 +45,7 @@ void EvoSettingsMenu::setParameter(int currentChoice, int side)
                 break;
             case NeuronsCount:
                 if (evolutionParameters.countOfNeuronsInLayer == 1){
-                    evolutionParameters.countOfNeuronsInLayer = 20;
+                    evolutionParameters.countOfNeuronsInLayer = 100;
                 } else {
                     evolutionParameters.countOfNeuronsInLayer--;
                 }
@@ -89,7 +89,7 @@ void EvoSettingsMenu::setParameter(int currentChoice, int side)
                 }
                 break;
             case NeuronsCount:
-                if (evolutionParameters.countOfNeuronsInLayer == 20){
+                if (evolutionParameters.countOfNeuronsInLayer == 100){
                     evolutionParameters.countOfNeuronsInLayer = 1;
                 } else {
                     evolutionParameters.countOfNeuronsInLayer++;

@@ -1,6 +1,7 @@
 CC=g++
 SYSTEMTYPE=-D LINUX
 CFLAGS=-c -Wall
+DEBUG=-g -O0
 LIBFLAGS=-lncurses
 SOURCES=-I src/ -I src/Modes/
 
@@ -31,7 +32,7 @@ LIFEGAME_BARS=$(LIFEGAME)Bars/
 all: main
 
 main: 
-	$(CC) $(SYSTEMTYPE) $(SOURCES) \
+	$(CC) $(SYSTEMTYPE) $(SOURCES) $(DEBUG) \
 	$(MAIN)main.cpp \
 	$(SCREEN)screen.cpp \
 	$(FIELD)field.cpp \

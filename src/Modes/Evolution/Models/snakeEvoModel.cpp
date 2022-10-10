@@ -7,7 +7,6 @@ extern EvolutionParameters evolutionParameters;
 void SnakeEvoModel::init(int startX, int startY, int length, int color)
 {
     initField();
-    initFood();
 
     snakeId = evolutionParameters.snakeIdCounter;
     evolutionParameters.snakeIdCounter++;
@@ -30,6 +29,7 @@ void SnakeEvoModel::init(int startX, int startY, int length, int color)
 
     isAlive = true;
     evolutionParameters.aliveSnakes++;
+    initFood();
 }
 
 void SnakeEvoModel::drawField()
@@ -169,17 +169,22 @@ void SnakeEvoModel::initField()
 
 void SnakeEvoModel::initFood()
 {
-    food = new foodList;
-    foodTmp = food;
+    std::random_device random_device;
+    std::mt19937 generator(random_device());
+    std::uniform_int_distribution<> randGenX(field.currentBeginX + 1, field.fullSizeX - 1);
+    std::uniform_int_distribution<> randGenY(field.currentBeginY + 1, field.fullSizeY - 1);
+    int foodX = randGenX(generator);
+    int foodY = randGenY(generator);
+
     for (int count = 0; count < evolutionParameters.countOfFood; count++)
     {
-        FoodEvoModel newFood;
-        newFood.init((field.getFullSizeX() - 2), (field.getFullSizeY() - 2), evolutionParameters.snakeOnefoodColor);
-        field.setCell(newFood.cellX(), newFood.cellY(), Field::Food);
-        foodTmp->currentFood = newFood;
-        foodTmp->nextFood = new foodList;
-        foodTmp = foodTmp->nextFood;
-        foodTmp->nextFood = NULL;
+
+
+        while (field.getCell(foodX, foodY) != Field::Free){
+            foodX = randGenX(generator);
+            foodY = randGenY(generator);
+        }
+        field.setCell(foodX, foodY, Field::Food);
     }
 }
 
@@ -197,11 +202,16 @@ void SnakeEvoModel::snakeEat()
 
 void SnakeEvoModel::newFood()
 {
-    int foodX = food->currentFood.randX();
-    int foodY = food->currentFood.randY();
+    std::random_device random_device;
+    std::mt19937 generator(random_device());
+    std::uniform_int_distribution<> randGenX(field.currentBeginX + 1, field.fullSizeX - 1);
+    std::uniform_int_distribution<> randGenY(field.currentBeginY + 1, field.fullSizeY - 1);
+    int foodX = randGenX(generator);
+    int foodY = randGenY(generator);
+
     while (field.getCell(foodX, foodY) != Field::Free){
-        foodX = food->currentFood.randX();
-        foodY = food->currentFood.randY();
+        foodX = randGenX(generator);
+        foodY = randGenY(generator);
     }
     field.setCell(foodX, foodY, Field::Food);
 }
