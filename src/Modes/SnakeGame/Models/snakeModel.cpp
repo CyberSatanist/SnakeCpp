@@ -97,6 +97,12 @@ void SnakeModel::move()
                 snakeTmp->cellY = snakeTmp->cellY + 1;
             }
             break;
+        case Screen::controll_keys::SELECT:
+            break;
+        case Screen::controll_keys::ESCAPE:
+            break;
+        case Screen::controll_keys::NOTHING:
+            break;
     }
     wallValidation(snakeTmp);
 }
@@ -139,6 +145,12 @@ void SnakeModel::setVector(Screen::controll_keys vector)
             if(currentBody->vector != Screen::controll_keys::UP) {
                 currentBody->vector = vector;
             }
+            break;
+        case Screen::controll_keys::SELECT:
+            break;
+        case Screen::controll_keys::ESCAPE:
+            break;
+        case Screen::controll_keys::NOTHING:
             break;
     }
 }

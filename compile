@@ -1,5 +1,14 @@
-//run in debug mode
-gdb -tui ./snake
-
-//build full project
+//build full project, output: snake
 make
+
+//build full project in debug mode, output: snakeDebug
+make debug
+
+//build full project with logs, output: snakeLogs
+make logs
+
+//build full project in debug mode with logs, output: snakeDebugAndLogs
+make debugAndLogs
+
+//run in debug mode
+gdb -tui ./snakeDebug

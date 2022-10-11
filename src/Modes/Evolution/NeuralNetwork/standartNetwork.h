@@ -10,7 +10,12 @@ class StandartNetwork
 {
     public:
         StandartNetwork();
-        EvoField field;
+        bool test = true;
+
+        #ifdef LOGS
+            EvoField field;
+        #endif
+        
         float useMind(EvoField evoField, int headX, int headY);
         void mergeNetworks(StandartNetwork *parentOne, StandartNetwork *parentTwo);
 
@@ -39,6 +44,9 @@ class StandartNetwork
 
 
         float randFloat;
+
+
+        void tests();
 
     private:
         void initNetwork();

@@ -70,9 +70,9 @@ int EvoSquareBar::getColor(int mapX, int mapY, int stepX, int stepY)
     bool food = false;
     bool free = false;
     for (int countX = (mapX * stepX); countX < (mapX * stepX + stepX); countX++){
-        if (countX >= 0 & countX <= (field.fullSizeX - 1)) {
+        if ((countX >= 0) & (countX <= (field.fullSizeX - 1))) {
             for (int countY = (mapY * stepY); countY < (mapY * stepY + stepY); countY++) {
-                if (countY >= 0 & countY <= (field.fullSizeY - 1)) {
+                if ((countY >= 0) & (countY <= (field.fullSizeY - 1))) {
                     if (field.getCell(countX, countY) == Field::Snake){
                         return Field::Snake;
                     }

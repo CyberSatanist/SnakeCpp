@@ -4,7 +4,7 @@
 #include <Screen/screen.h>
 #include <Evolution/Field/evoField.h>
 #include <Evolution/NeuralNetwork/standartNetwork.h>
-#include <Evolution/Models/foodEvoModel.h>
+#include <random>
 
 extern Screen currentScreen;
 
@@ -27,14 +27,8 @@ class SnakeEvoModel
 		snakeBody* snakeTmp = new snakeBody;
 		snakeLocs* snakeHeadTail = new snakeLocs;
 
-        struct foodList {
-            FoodEvoModel currentFood;
-            struct foodList *nextFood;
-        };
-        foodList* food = new foodList;
-        foodList* foodTmp = new foodList;
-
 		void initFood();
+		void initBorders();
 		void initField();
 
     public:

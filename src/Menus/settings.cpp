@@ -85,6 +85,11 @@ void Settings::menuControllHandler()
         case currentScreen.controll_keys::SELECT:
             menuControllSelect();
             break;
+        case currentScreen.controll_keys::ESCAPE:
+            settingsOn = false;
+            break;
+        case currentScreen.controll_keys::NOTHING:
+            break;
         }
 }
 

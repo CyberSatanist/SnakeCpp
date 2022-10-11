@@ -134,13 +134,9 @@ void Evolution::initSnakes()
 {
     snakeTmp = snakes;
 
-    int counter = 1;
     for (int count = 0; count < evolutionParameters.countOfSnakes; count++)
 	{
         SnakeEvoModel newSnake;
-        if ((evolutionParameters.fullFieldSizeY / 2) + (count * 2) + counter > (evolutionParameters.fullFieldSizeY - 3)){
-            counter = 1;
-        }
         newSnake.init(
             evolutionParameters.fullFieldSizeX / 2,
             evolutionParameters.fullFieldSizeY / 2,
@@ -151,7 +147,6 @@ void Evolution::initSnakes()
         snakeTmp->nextSnake = new snakesList;
         snakeTmp = snakeTmp->nextSnake;
         snakeTmp->nextSnake = NULL;
-    counter++;
     }
     squareBar.initField(snakes->currentSnake.field);
 }
@@ -184,7 +179,7 @@ void Evolution::evolveSnakes()
         
         std::random_device random_device;
         std::mt19937 generator(random_device());
-        std::uniform_int_distribution<> randGen(1, parentsCount - 1);
+        std::uniform_int_distribution<> randGen(1, parentsCount / 2);
 
         while (parentOneNum == parentTwoNum) {
             parentOneNum = randGen(generator);
@@ -192,41 +187,38 @@ void Evolution::evolveSnakes()
         }
 
         #ifdef LOGS
-        std::ofstream test;
-        test.open("mergeTests.txt");
-        if (test.is_open()){
-            test << "TEST" << std::endl;
-            #endif 
+            std::ofstream evolveSnake;
+            evolveSnake.open("logs/evolveSnake.txt");
+        #endif 
 
-            snakeListTmp = parentSnakes;
-            for (int count = 0; count < parentOneNum; count++){
-                #ifdef LOGS
-                test << count << std::endl;
-                test << parentOneNum << std::endl;
-                #endif
-
-                snakeListTmp = snakeListTmp->nextSnake;
-
-                #ifdef LOGS
-                test << "PARENT 1 NEURON ID : " << snakeListTmp->currentSnake.network.firstLayer->currentNeuron.neuronId << "\n" << std::endl;
-                #endif
-            }
+        snakeListTmp = parentSnakes;
+        for (int count = 0; count < parentOneNum; count++){
             #ifdef LOGS
-            test << "PARENT 1 NEURON ID : " << snakeListTmp->currentSnake.network.firstLayer->currentNeuron.neuronId << "\n" << std::endl;
+                evolveSnake << count << std::endl;
+                evolveSnake << parentOneNum << std::endl;
             #endif
-            snakeListSecondTmp = parentSnakes;
-            for (int count = 0; count < parentTwoNum; count++){
-                #ifdef LOGS
-                test << count << std::endl;
-                test << "PARENT 2 NEURON ID : " << snakeListSecondTmp->currentSnake.network.firstLayer->currentNeuron.neuronId << "\n" << std::endl;
-                #endif       
 
-                snakeListSecondTmp = snakeListSecondTmp->nextSnake;
-            }
+            snakeListTmp = snakeListTmp->nextSnake;
+
             #ifdef LOGS
-            test << "PARENT 2 NEURON ID : " << snakeListSecondTmp->currentSnake.network.firstLayer->currentNeuron.neuronId << "\n" << std::endl;
+                evolveSnake << "PARENT 1 NEURON ID : " << snakeListTmp->currentSnake.network.firstLayer->currentNeuron.neuronId << "\n" << std::endl;
+            #endif
         }
-        test.close();
+        #ifdef LOGS
+            evolveSnake << "PARENT 1 NEURON ID : " << snakeListTmp->currentSnake.network.firstLayer->currentNeuron.neuronId << "\n" << std::endl;
+        #endif
+
+        snakeListSecondTmp = parentSnakes;
+        for (int count = 0; count < parentTwoNum; count++){
+            #ifdef LOGS
+                evolveSnake << count << std::endl;
+                evolveSnake << "PARENT 2 NEURON ID : " << snakeListSecondTmp->currentSnake.network.firstLayer->currentNeuron.neuronId << "\n" << std::endl;
+            #endif       
+
+            snakeListSecondTmp = snakeListSecondTmp->nextSnake;
+        }
+        #ifdef LOGS
+            evolveSnake << "PARENT 2 NEURON ID : " << snakeListSecondTmp->currentSnake.network.firstLayer->currentNeuron.neuronId << "\n" << std::endl;
         #endif
         
         newSnake.network.mergeNetworks(&(snakeListTmp->currentSnake.network), &(snakeListSecondTmp->currentSnake.network));
@@ -244,8 +236,8 @@ void Evolution::evolveSnakes()
 void Evolution::getBest()
 {
     #ifdef LOGS
-    std::ofstream test;
-    test.open("bestList.txt");
+        std::ofstream getBest;
+        getBest.open("logs/getBest.txt");
     #endif
 
     snakeTmp = snakes;
@@ -301,7 +293,7 @@ void Evolution::getBest()
     snakeListTmp = bestSnake;
     while(snakeListTmp->nextSnake){
         #ifdef LOGS
-        test << "Snake ID" << snakeListTmp->currentSnake.snakeId << ";   Score  " << snakeListTmp->currentSnake.score << std::endl;
+            getBest << "Snake ID" << snakeListTmp->currentSnake.snakeId << ";   Score  " << snakeListTmp->currentSnake.score << std::endl;
         #endif
         snakeListTmp = snakeListTmp->nextSnake;
     }
@@ -335,11 +327,11 @@ void Evolution::getBest()
     snakeListTmp = parentSnakes;
     while(snakeListTmp->nextSnake){
         #ifdef LOGS
-        test << "Snake PARENTS ID" << snakeListTmp->currentSnake.snakeId << ";   Score  " << snakeListTmp->currentSnake.score << std::endl;
+            getBest << "Snake PARENTS ID" << snakeListTmp->currentSnake.snakeId << ";   Score  " << snakeListTmp->currentSnake.score << std::endl;
         #endif
         snakeListTmp = snakeListTmp->nextSnake;
     }
     #ifdef LOGS
-    test.close();
+        getBest.close();
     #endif
 }

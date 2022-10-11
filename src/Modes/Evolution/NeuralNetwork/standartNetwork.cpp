@@ -7,27 +7,9 @@ extern EvolutionParameters evolutionParameters;
 
 StandartNetwork::StandartNetwork()
 {
-    #ifdef LOGS
-    field.initField(
-        evolutionParameters.currentFieldSizeX,
-        evolutionParameters.currentFieldSizeY,
-        evolutionParameters.fullFieldSizeX,
-        evolutionParameters.fullFieldSizeY
-    );
-    field.initEvoField();
-
-    test.open("test.txt");
-    #endif
-
     initNetwork();
     initLayers();
     initNeurons();
-
-    #ifdef LOGS
-    testNetwork();
-    test << useMind(field, 15, 15) << " OUTPUT " << std::endl;
-    test.close();
-    #endif
 }
 
 
@@ -54,9 +36,6 @@ void StandartNetwork::initNetwork()
     layersListTmp->layerId = evolutionParameters.layerIdCounter;
     evolutionParameters.layerIdCounter++;
     layersListTmp->currentNeuronsList = *lastLayer;
-    for (int count = 0; count < evolutionParameters.lastLayerNeuronCount; count++) {
-    
-    }
 
     layersListTmp->nextLayer = new LayersList;
     layersListTmp = layersListTmp->nextLayer;
@@ -64,11 +43,7 @@ void StandartNetwork::initNetwork()
     evolutionParameters.layerIdCounter++;
     layersListTmp->currentNeuronsList = *outputLayer;
     layersListTmp->nextLayer = NULL;
-    for (int count = 0; count < evolutionParameters.outputLayerNeuronCount; count++) {
-    
-    }
 }
-
 
 void StandartNetwork::initLayers()
 {
@@ -127,8 +102,8 @@ void StandartNetwork::initLayers()
 void StandartNetwork::initNeurons()
 {
     #ifdef LOGS
-    std::ofstream test;
-    test.open("test.txt");
+        std::ofstream initNeurons;
+        initNeurons.open("logs/initNeurons.txt");
     #endif
 
     std::random_device random_device;
@@ -145,7 +120,7 @@ void StandartNetwork::initNeurons()
             nextLayer = &(layersListTmp->nextLayer->currentNeuronsList);
 
             #ifdef LOGS
-            test << "NEXT HOST NEURON " << tempLayer->currentNeuron.neuronId << std::endl;
+                initNeurons << "NEXT HOST NEURON " << tempLayer->currentNeuron.neuronId << std::endl;
             #endif
 
             while(nextLayer->nextNeuron){
@@ -154,7 +129,7 @@ void StandartNetwork::initNeurons()
                 tempLayer->currentNeuron.tmpConnection->synapse = randFloat;
                 
                 #ifdef LOGS
-                test << "SYNAPSE NEURON ID  " << nextLayer->currentNeuron.neuronId <<  std::endl;
+                    initNeurons << "SYNAPSE NEURON ID  " << nextLayer->currentNeuron.neuronId <<  std::endl;
                 #endif
 
                 tempLayer->currentNeuron.tmpConnection->currentNeuron = &(nextLayer->currentNeuron);
@@ -168,7 +143,7 @@ void StandartNetwork::initNeurons()
         layersListTmp = layersListTmp->nextLayer; 
     }
     #ifdef LOGS
-    test.close();
+        initNeurons.close();
     #endif
 }
 
@@ -176,26 +151,32 @@ void StandartNetwork::initNeurons()
 void StandartNetwork::testNetwork()
 {
     #ifdef LOGS
-        std::ofstream test;
-        test.open("neuronTest.txt");
+        std::ofstream neuronTest;
+        if (test){
+            neuronTest.open("logs/neuronTestBefor.txt");
+            neuronTest << "BEFOR" << std::endl;
+        } else {
+            neuronTest.open("logs/neuronTestAfter.txt");
+            neuronTest << "AFTER" << std::endl;
+        }
     #endif
     layersListTmp = layersList;
     while(layersListTmp){
         #ifdef LOGS
-            test << "\nLayer #" <<  layersListTmp->layerId << ";" << std::endl;
+            neuronTest << "\nLayer #" <<  layersListTmp->layerId << ";" << std::endl;
         #endif
         tempLayer = &(layersListTmp->currentNeuronsList);
         while (tempLayer->nextNeuron){                
             #ifdef LOGS
-                test << "- - Neuron #" <<  tempLayer->currentNeuron.neuronId << std::endl;
-                test << "- - Input " <<  tempLayer->currentNeuron.input << std::endl;
-                test << "- - - Connected to:" << std::endl;
+                neuronTest << "- - Neuron #" <<  tempLayer->currentNeuron.neuronId << std::endl;
+                neuronTest << "- - Input " <<  tempLayer->currentNeuron.input << std::endl;
+                neuronTest << "- - - Connected to:" << std::endl;
             #endif
             tempLayer->currentNeuron.tmpConnection = tempLayer->currentNeuron.firstConnection;
             while (tempLayer->currentNeuron.tmpConnection->nextConnection){
                 #ifdef LOGS
-                    test << "- - - - - - - Neuron #" <<  tempLayer->currentNeuron.tmpConnection->currentNeuron->neuronId << std::endl;
-                    test << "- - - - - - - - - - - Synapse: " <<  tempLayer->currentNeuron.tmpConnection->synapse << std::endl;
+                    neuronTest << "- - - - - - - Neuron #" <<  tempLayer->currentNeuron.tmpConnection->currentNeuron->neuronId << std::endl;
+                    neuronTest << "- - - - - - - - - - - Synapse: " <<  tempLayer->currentNeuron.tmpConnection->synapse << std::endl;
                 #endif
                 tempLayer->currentNeuron.tmpConnection = tempLayer->currentNeuron.tmpConnection->nextConnection;
             }
@@ -204,7 +185,7 @@ void StandartNetwork::testNetwork()
         layersListTmp = layersListTmp->nextLayer; 
     }
     #ifdef LOGS
-        test.close();
+        neuronTest.close();
     #endif
 }
 
@@ -218,10 +199,10 @@ float StandartNetwork::useMind(EvoField evoField, int headX, int headY)
     for (int countX = (headX - radius); countX <= (headX + radius); countX++){
         for (int countY = (headY - radius); countY <= (headY + radius); countY++){
             if (
-                countX > evoField.currentBeginX & 
-                countX < evoField.fullSizeX & 
-                countY > evoField.currentBeginY & 
-                countY < evoField.fullSizeY
+                (countX > evoField.currentBeginX) & 
+                (countX < evoField.fullSizeX) & 
+                (countY > evoField.currentBeginY) & 
+                (countY < evoField.fullSizeY)
             ) {
                 switch (evoField.getCell(countX, countY)){
                     case Field::Food:
@@ -255,6 +236,10 @@ float StandartNetwork::useMind(EvoField evoField, int headX, int headY)
 
 void StandartNetwork::neuronActivity()
 {
+    #ifdef LOGS
+        std::ofstream neuronActivity;
+        neuronActivity.open("logs/neuronActivity.txt");
+    #endif
     layersListTmp = layersList;
     while(layersListTmp){
         tempLayer = &(layersListTmp->currentNeuronsList);
@@ -262,17 +247,19 @@ void StandartNetwork::neuronActivity()
             tempLayer->currentNeuron.tmpConnection = tempLayer->currentNeuron.firstConnection;
             while (tempLayer->currentNeuron.tmpConnection->nextConnection){
                 #ifdef LOGS
-                    test << "=== INPUT BEFOR === " <<  tempLayer->currentNeuron.tmpConnection->currentNeuron->input << std::endl;
+                    neuronActivity << "=== === INPUT === " <<  tempLayer->currentNeuron.input << std::endl;
+                    neuronActivity << "=== === SYNAPSE === " <<  tempLayer->currentNeuron.tmpConnection->synapse << std::endl;
+                    neuronActivity << "=== === CONNECTED NEURON  ID === " <<  tempLayer->currentNeuron.tmpConnection->currentNeuron->neuronId << std::endl;
+                    neuronActivity << "=== === INPUT BEFOR === " <<  tempLayer->currentNeuron.tmpConnection->currentNeuron->input << std::endl;
                 #endif
                 tempLayer->currentNeuron.tmpConnection->currentNeuron->input = tempLayer->currentNeuron.input + tempLayer->currentNeuron.tmpConnection->synapse;
-                if (tempLayer->currentNeuron.tmpConnection->currentNeuron->input > 0.9){
-                    tempLayer->currentNeuron.tmpConnection->currentNeuron->input =  tempLayer->currentNeuron.tmpConnection->currentNeuron->input - ((tempLayer->currentNeuron.tmpConnection->currentNeuron->input - 1.0) + 0.1);
-                } else if (tempLayer->currentNeuron.tmpConnection->currentNeuron->input < -0.9){
-                    tempLayer->currentNeuron.tmpConnection->currentNeuron->input =  tempLayer->currentNeuron.tmpConnection->currentNeuron->input - ((tempLayer->currentNeuron.tmpConnection->currentNeuron->input + 1.0) - 0.1);
+                if (tempLayer->currentNeuron.tmpConnection->currentNeuron->input > 1.0){
+                    tempLayer->currentNeuron.tmpConnection->currentNeuron->input =  1.0 - (tempLayer->currentNeuron.tmpConnection->currentNeuron->input - 1.0);
+                } else if (tempLayer->currentNeuron.tmpConnection->currentNeuron->input < -1.0){
+                    tempLayer->currentNeuron.tmpConnection->currentNeuron->input =  -1.0 - (tempLayer->currentNeuron.tmpConnection->currentNeuron->input + 1.0);
                 }
                 #ifdef LOGS
-                    test << "=== NEURON  ID === " <<  tempLayer->currentNeuron.tmpConnection->currentNeuron->neuronId << std::endl;
-                    test << "=== INPUT AFTER === " <<  tempLayer->currentNeuron.tmpConnection->currentNeuron->input << std::endl;
+                    neuronActivity << "=== === === INPUT AFTER === " <<  tempLayer->currentNeuron.tmpConnection->currentNeuron->input << "\n" << std::endl;
                 #endif
                 tempLayer->currentNeuron.tmpConnection = tempLayer->currentNeuron.tmpConnection->nextConnection;
             }
@@ -280,15 +267,19 @@ void StandartNetwork::neuronActivity()
         }
         layersListTmp = layersListTmp->nextLayer; 
     }
+    #ifdef LOGS
+        neuronActivity.close();
+    #endif
 }
 
 
 
 void StandartNetwork::mergeNetworks(StandartNetwork *parentOne, StandartNetwork *parentTwo)
 {
+    testNetwork();
     #ifdef LOGS
-        std::ofstream test;
-        test.open("mergeTest.txt");
+        std::ofstream mergeTest;
+        mergeTest.open("logs/mergeTest.txt");
     #endif
 
     std::random_device random_device;
@@ -300,16 +291,21 @@ void StandartNetwork::mergeNetworks(StandartNetwork *parentOne, StandartNetwork 
 
     layersListTmp = layersList;
     #ifdef LOGS
-        test << "HOST NEURON ID : " << layersListTmp->currentNeuronsList.currentNeuron.neuronId << std::endl;
+        mergeTest << "HOST NEURON ID : " << layersListTmp->currentNeuronsList.currentNeuron.neuronId << std::endl;
     #endif
+
     layersListParentOne = parentOne->layersList;
     #ifdef LOGS
-        test << "PARENT 1 NEURON ID : " << layersListParentOne->currentNeuronsList.currentNeuron.neuronId << std::endl;
+        mergeTest << "PARENT 1 NEURON ID : " << layersListParentOne->currentNeuronsList.currentNeuron.neuronId << std::endl;
     #endif
+
     layersListParentTwo = parentTwo->layersList;
     #ifdef LOGS
-        test << "PARENT 2 NEURON ID : " << layersListParentTwo->currentNeuronsList.currentNeuron.neuronId << "\n" << std::endl;
+        mergeTest << "PARENT 2 NEURON ID : " << layersListParentTwo->currentNeuronsList.currentNeuron.neuronId << "\n" << std::endl;
     #endif
+    int layer = 1;
+    int neuron = 1;
+    int connection = 1;
     while(layersListTmp->nextLayer){
         tempLayer = &(layersListTmp->currentNeuronsList);
         layerParentOne = &(layersListParentOne->currentNeuronsList);
@@ -321,46 +317,75 @@ void StandartNetwork::mergeNetworks(StandartNetwork *parentOne, StandartNetwork 
             while (tempLayer->currentNeuron.tmpConnection->nextConnection){
                 randChance = randGen(generator);
                 #ifdef LOGS
-                    test << "=== SYNAPSE BEFOR === " <<  tempLayer->currentNeuron.tmpConnection->synapse << std::endl;
-                    test << "=== NEURON ID=== " <<  tempLayer->currentNeuron.neuronId << std::endl;
-                    test << "=== CONNECTED TO ID=== " <<  tempLayer->currentNeuron.tmpConnection->currentNeuron->neuronId << std::endl;
+                    mergeTest << "=== SYNAPSE BEFOR === " <<  tempLayer->currentNeuron.tmpConnection->synapse << std::endl;
+                    mergeTest << "=== NEURON ID=== " <<  tempLayer->currentNeuron.neuronId << std::endl;
+                    mergeTest << "=== CONNECTED TO ID=== " <<  tempLayer->currentNeuron.tmpConnection->currentNeuron->neuronId << std::endl;
                 #endif
                 if ((randChance < (evolutionParameters.mutationChance / 2)) | (randChance >  (100 -evolutionParameters.mutationChance))){
                     randSyn = randSynapse(generator);
                     #ifdef LOGS
-                        test << "=== RANDOM SYNAPSE === " << randSyn << std::endl;                                  
+                        mergeTest << "=== RANDOM SYNAPSE === " << randSyn << std::endl;                                  
                     #endif
                     tempLayer->currentNeuron.tmpConnection->synapse = randSyn / 10;
                 } else if (randChance < 50) {
                     #ifdef LOGS
-                        test << "=== PARENT 1 SYNAPSE === " <<  layerParentOne->currentNeuron.tmpConnection->synapse << std::endl;                       
+                        mergeTest << "=== PARENT 1 ID === " <<  layerParentOne->currentNeuron.neuronId << std::endl;  
+                        mergeTest << "=== PARENT 1 SYNAPSE === " <<  layerParentOne->currentNeuron.tmpConnection->synapse << std::endl;                      
                     #endif
                     tempLayer->currentNeuron.tmpConnection->synapse = layerParentOne->currentNeuron.tmpConnection->synapse;
                 } else {
-                    tempLayer->currentNeuron.tmpConnection->synapse = layerParentTwo->currentNeuron.tmpConnection->synapse;
                     #ifdef LOGS
-                        test << "=== PARENT 2 SYNAPSE === " <<  layerParentOne->currentNeuron.tmpConnection->synapse << std::endl;                       
+                        mergeTest << "=== PARENT 2 ID === " <<  layerParentTwo->currentNeuron.neuronId << std::endl;
+                        mergeTest << "=== PARENT 2 SYNAPSE === " <<  layerParentTwo->currentNeuron.tmpConnection->synapse << std::endl;
                     #endif
-                }
+                    tempLayer->currentNeuron.tmpConnection->synapse = layerParentTwo->currentNeuron.tmpConnection->synapse;
+                     //tempLayer->currentNeuron.tmpConnection->synapse = layerParentOne->currentNeuron.tmpConnection->synapse;
+                }   
                 #ifdef LOGS
-                    test << "=== SYNAPSE AFTER === " <<  tempLayer->currentNeuron.tmpConnection->synapse << "\n" << std::endl;
-                    test << "=== INPUT BEFOR === " <<  tempLayer->currentNeuron.tmpConnection->currentNeuron->input << std::endl;
-                    test << "=== NEURON  ID === " <<  tempLayer->currentNeuron.tmpConnection->currentNeuron->neuronId << std::endl;
-                    test << "=== INPUT AFTER === " <<  tempLayer->currentNeuron.tmpConnection->currentNeuron->input << std::endl;
+                    mergeTest << "=== SYNAPSE AFTER === " <<  tempLayer->currentNeuron.tmpConnection->synapse << "\n" << std::endl;
+                    mergeTest << "=== INPUT BEFOR === " <<  tempLayer->currentNeuron.tmpConnection->currentNeuron->input << std::endl;
+                    mergeTest << "=== NEURON  ID === " <<  tempLayer->currentNeuron.tmpConnection->currentNeuron->neuronId << std::endl;
+                    mergeTest << "=== INPUT AFTER === " <<  tempLayer->currentNeuron.tmpConnection->currentNeuron->input << std::endl;
                 #endif
-                tempLayer->currentNeuron.tmpConnection = tempLayer->currentNeuron.tmpConnection->nextConnection;
-                layerParentOne->currentNeuron.tmpConnection = layerParentOne->currentNeuron.tmpConnection->nextConnection; 
-                layerParentTwo->currentNeuron.tmpConnection = layerParentTwo->currentNeuron.tmpConnection->nextConnection;
+                tempLayer->currentNeuron.tmpConnection = tempLayer->currentNeuron.tmpConnection->nextConnection; 
+                layerParentOne->currentNeuron.tmpConnection = layerParentOne->currentNeuron.tmpConnection->nextConnection;
+                layerParentTwo->currentNeuron.tmpConnection = layerParentTwo->currentNeuron.tmpConnection->nextConnection; 
+                connection++;
             }
             tempLayer = tempLayer->nextNeuron;
             layerParentOne = layerParentOne->nextNeuron;
             layerParentTwo = layerParentTwo->nextNeuron;
+            neuron++;
         }
         layersListTmp = layersListTmp->nextLayer; 
         layersListParentOne = layersListParentOne->nextLayer;
         layersListParentTwo = layersListParentTwo->nextLayer;
+        layer++;
     }
     #ifdef LOGS
-        test.close();
+        mergeTest.close();
     #endif
+    test = false;
+    testNetwork();
+}
+
+
+void StandartNetwork::tests()
+{
+   /* #ifdef LOGS
+        std::ofstream useMindOutput;
+        useMindOutput.open("logs/useMindOutput.txt");
+
+        field.initField(
+            evolutionParameters.currentFieldSizeX,
+            evolutionParameters.currentFieldSizeY,
+            evolutionParameters.fullFieldSizeX,
+            evolutionParameters.fullFieldSizeY
+        );
+        field.initEvoField();
+
+        testNetwork();
+        useMindOutput << useMind(field, 15, 15) << " OUTPUT " << std::endl;
+        useMindOutput.close();
+    #endif*/
 }

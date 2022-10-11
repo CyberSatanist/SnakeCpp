@@ -43,23 +43,31 @@ void Menu::run()
 void Menu::menuControllHandler()
 {
     switch(currentScreen.controllHandler()) {
-    case currentScreen.controll_keys::UP: 
-        if (currentChoice == 0) {
-            currentChoice = menuConst - 1;
-        } else {
-            currentChoice--;
-        }
-        break;
-    case currentScreen.controll_keys::DOWN: 
-        if (currentChoice == menuConst -1) {
-            currentChoice = 0;
-        } else {
-            currentChoice++;
-        }
-        break;
-    case currentScreen.controll_keys::SELECT:
-        menuControllSelect();
-        break;
+        case currentScreen.controll_keys::UP: 
+            if (currentChoice == 0) {
+                currentChoice = menuConst - 1;
+            } else {
+                currentChoice--;
+            }
+            break;
+        case currentScreen.controll_keys::DOWN: 
+            if (currentChoice == menuConst -1) {
+                currentChoice = 0;
+            } else {
+                currentChoice++;
+            }
+            break;
+        case currentScreen.controll_keys::SELECT:
+            menuControllSelect();
+            break;
+        case currentScreen.controll_keys::RIGHT:
+            break;
+        case currentScreen.controll_keys::LEFT:
+            break;
+        case currentScreen.controll_keys::ESCAPE:
+            break;
+        case currentScreen.controll_keys::NOTHING:
+            break;
     }
 }
 

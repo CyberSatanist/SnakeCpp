@@ -27,7 +27,8 @@ void SnakeGame::run()
 
 	snakeParameters.gameOn = true;
 
-    while((key = currentScreen.controllHandler()) !=-1  & (snakeParameters.gameOn)){
+    while(snakeParameters.gameOn){
+        key = currentScreen.controllHandler();
         turn();
 	    checkFood();
 	    drawFood();

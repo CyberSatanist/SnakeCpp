@@ -37,7 +37,8 @@ void LifeGame::run()
 
 	lifeGameParameters.gameOn = true;
 
-    while((key = currentScreen.controllHandler()) !=-1  & (lifeGameParameters.gameOn)){
+    while(lifeGameParameters.gameOn){
+        key = currentScreen.controllHandler();
         turn();
         drawScreen();
         toolsBar.menuControllHandler(key);

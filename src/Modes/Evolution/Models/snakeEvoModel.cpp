@@ -25,11 +25,12 @@ void SnakeEvoModel::init(int startX, int startY, int length, int color)
         snakeTmp = next;
     }
     snakeTmp->nextCell = NULL;
-    snakeHeadTail->lastCell = snakeTmp;
+    snakeHeadTail->lastCell = snakeTmp->prevCell;
 
     isAlive = true;
     evolutionParameters.aliveSnakes++;
     initFood();
+    initBorders();
 }
 
 void SnakeEvoModel::drawField()
@@ -118,17 +119,25 @@ void SnakeEvoModel::validation()
 
 void SnakeEvoModel::setVector(int direction)
 {
+
     float vetc = network.useMind(field, snakeHeadTail->firstCell->cellX, snakeHeadTail->firstCell->cellY);
 
     if (vetc >= 0.5){
         direction = Screen::controll_keys::RIGHT;
-    } else if (vetc < 0.5 & vetc >= 0){
+    } else if ((vetc < 0.5) & (vetc >= 0)){
         direction = Screen::controll_keys::UP;
-    } else if (vetc < 0 & vetc >= -0.5){
+    } else if ((vetc < 0) & (vetc >= -0.5)){
         direction = Screen::controll_keys::LEFT;
-    } else if (vetc < -0.5){
+    } else if ((vetc < -0.5)){
         direction = Screen::controll_keys::DOWN;
     }
+    #ifdef LOGS
+        std::ofstream setVector;
+        setVector.open("logs/setVector.txt");
+        setVector << "Vector: " << vetc << std::endl;
+        setVector << "Direction: " << direction << std::endl;
+        setVector.close();
+    #endif
 
     switch (direction) {
         case Screen::controll_keys::RIGHT:
@@ -178,8 +187,6 @@ void SnakeEvoModel::initFood()
 
     for (int count = 0; count < evolutionParameters.countOfFood; count++)
     {
-
-
         while (field.getCell(foodX, foodY) != Field::Free){
             foodX = randGenX(generator);
             foodY = randGenY(generator);
@@ -187,6 +194,27 @@ void SnakeEvoModel::initFood()
         field.setCell(foodX, foodY, Field::Food);
     }
 }
+
+
+void SnakeEvoModel::initBorders()
+{
+    std::random_device random_device;
+    std::mt19937 generator(random_device());
+    std::uniform_int_distribution<> randGenX(field.currentBeginX + 1, field.fullSizeX - 1);
+    std::uniform_int_distribution<> randGenY(field.currentBeginY + 1, field.fullSizeY - 1);
+    int borderX = randGenX(generator);
+    int borderY = randGenY(generator);
+
+    for (int count = 0; count < evolutionParameters.countOfBorders; count++)
+    {
+        while (field.getCell(borderX, borderY) != Field::Free){
+            borderX = randGenX(generator);
+            borderY = randGenY(generator);
+        }
+        field.setCell(borderX, borderY, Field::Wall);
+    }
+}
+
 
 void SnakeEvoModel::snakeEat()
 {

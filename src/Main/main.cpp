@@ -5,8 +5,9 @@
 #include <Evolution/Parameters/evolutionParameters.h>
 #include <LifeGame/Parameters/lifeGameParameters.h>
 
-
-//#include <Evolution/NeuralNetwork/standartNetwork.h>
+#ifdef LOGS
+    #include <Evolution/NeuralNetwork/standartNetwork.h>
+#endif
 
 Screen currentScreen;
 SnakeParameters snakeParameters;
@@ -16,7 +17,10 @@ LifeGameParameters lifeGameParameters;
 
 int main()
 {
-    //StandartNetwork network;
+    #ifdef LOGS
+        StandartNetwork network;
+        network.tests();
+    #endif
     MainMenu mainMenu;
     
     mainMenu.run();
