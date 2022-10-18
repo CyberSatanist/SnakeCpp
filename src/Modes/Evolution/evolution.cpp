@@ -61,7 +61,7 @@ void Evolution::run()
             }
         }
 
-        if (evolutionParameters.aliveSnakes == 0){
+        if (evolutionParameters.aliveSnakes < 1){
             evolutionParameters.generation++;
             evolutionParameters.turn = 0;
             if (evolutionParameters.score > evolutionParameters.theBestScore){
@@ -155,8 +155,8 @@ void Evolution::initSnakes()
 void Evolution::evolveSnakes()
 {
     getBest();
-    snakes = new snakesList;
-    snakeSecondTmp = snakes;
+    snakeSecondTmp = new snakesList;
+    snakeTmp = snakeSecondTmp;
 
     int counter = 1;
     for (int count = 0; count < evolutionParameters.countOfSnakes; count++)
@@ -179,7 +179,7 @@ void Evolution::evolveSnakes()
         
         std::random_device random_device;
         std::mt19937 generator(random_device());
-        std::uniform_int_distribution<> randGen(1, parentsCount / 2);
+        std::uniform_int_distribution<> randGen(0, parentsCount - 1);
 
         while (parentOneNum == parentTwoNum) {
             parentOneNum = randGen(generator);
@@ -193,16 +193,7 @@ void Evolution::evolveSnakes()
 
         snakeListTmp = parentSnakes;
         for (int count = 0; count < parentOneNum; count++){
-            #ifdef LOGS
-                evolveSnake << count << std::endl;
-                evolveSnake << parentOneNum << std::endl;
-            #endif
-
             snakeListTmp = snakeListTmp->nextSnake;
-
-            #ifdef LOGS
-                evolveSnake << "PARENT 1 NEURON ID : " << snakeListTmp->currentSnake.network.firstLayer->currentNeuron.neuronId << "\n" << std::endl;
-            #endif
         }
         #ifdef LOGS
             evolveSnake << "PARENT 1 NEURON ID : " << snakeListTmp->currentSnake.network.firstLayer->currentNeuron.neuronId << "\n" << std::endl;
@@ -210,18 +201,13 @@ void Evolution::evolveSnakes()
 
         snakeListSecondTmp = parentSnakes;
         for (int count = 0; count < parentTwoNum; count++){
-            #ifdef LOGS
-                evolveSnake << count << std::endl;
-                evolveSnake << "PARENT 2 NEURON ID : " << snakeListSecondTmp->currentSnake.network.firstLayer->currentNeuron.neuronId << "\n" << std::endl;
-            #endif       
-
             snakeListSecondTmp = snakeListSecondTmp->nextSnake;
         }
         #ifdef LOGS
             evolveSnake << "PARENT 2 NEURON ID : " << snakeListSecondTmp->currentSnake.network.firstLayer->currentNeuron.neuronId << "\n" << std::endl;
         #endif
         
-        newSnake.network.mergeNetworks(&(snakeListTmp->currentSnake.network), &(snakeListSecondTmp->currentSnake.network));
+        newSnake.network.mergeNetworks(parentSnakes->currentSnake.network.layersList, parentSnakes->currentSnake.network.layersList);
         
         snakeSecondTmp->currentSnake = newSnake;
         snakeSecondTmp->nextSnake = new snakesList;
@@ -230,6 +216,20 @@ void Evolution::evolveSnakes()
         counter++;
     }
     squareBar.initField(snakes->currentSnake.field);
+    deleteOldSnakes();
+    snakes = snakeTmp;
+}
+
+
+void Evolution::deleteOldSnakes()
+{
+    snakeSecondTmp = snakes;
+    while(snakeSecondTmp->nextSnake){
+        snakeSecondTmp->currentSnake.deleteSnake();
+        snakeSecondTmp = snakeSecondTmp->nextSnake;
+    }
+    delete snakeSecondTmp;
+    delete snakes;
 }
 
 

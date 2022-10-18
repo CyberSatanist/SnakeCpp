@@ -6,7 +6,7 @@
 class EvolutionParameters : public Parameters
 {
     public:
-        int delayDuration = 80;
+        int delayDuration = 10;
 
 //Statistic info
         int generation = 1;
@@ -17,9 +17,10 @@ class EvolutionParameters : public Parameters
         int turn = 0;
         int bestSnakeId = 0;
         int snakeIdCounter = 1;
+        int turnsToDeath = 300;
 
 //SnakeParameters
-        int countOfSnakes = 40;
+        int countOfSnakes = 100;
         int snakeLength = 2;
         int snakeHeadColor = COLOR_YELLOW;
         int snakeOneBodyColor = COLOR_GREEN;
@@ -29,7 +30,7 @@ class EvolutionParameters : public Parameters
         int snakeFiveBodyColor = COLOR_GREEN;
 
 //FoodModel
-        int countOfFood = 40;
+        int countOfFood = 10;
         int snakeOnefoodColor = COLOR_RED;
         int snakeTwofoodColor = COLOR_RED;
         int snakeThreefoodColor = COLOR_RED;
@@ -37,7 +38,7 @@ class EvolutionParameters : public Parameters
         int snakeFivefoodColor = COLOR_RED;
 
 //Borders
-        int countOfBorders = 40;
+        int countOfBorders = 0;
 
 //Cell Colors
         int freeCellColor = COLOR_WHITE;
@@ -51,14 +52,14 @@ class EvolutionParameters : public Parameters
         int neuronIdCounter = 1;
         int layerIdCounter = 1;
 
-        int firstLayerNeuronCount = 49;
+        int firstLayerNeuronCount = 25;
         int lastLayerNeuronCount = 4;
         int outputLayerNeuronCount = 1;
 
 //Generetions
         int countOfBest = 10;
         int countOfWorst = 0;
-        int mutationChance = 4;
+        int mutationChance = 2;
 };
 
 #endif

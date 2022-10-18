@@ -15,6 +15,7 @@ class StandartNeuron
         };
         Connections* firstConnection = new Connections;
         Connections* tmpConnection = new Connections;
+        Connections* tmpSecondConnection = new Connections;
 
     private:
 

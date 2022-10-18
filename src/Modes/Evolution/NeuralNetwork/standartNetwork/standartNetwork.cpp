@@ -40,7 +40,7 @@ void StandartNetwork::initNetwork()
     layersListTmp->nextLayer = new LayersList;
     layersListTmp = layersListTmp->nextLayer;
     layersListTmp->layerId = evolutionParameters.layerIdCounter;
-    evolutionParameters.layerIdCounter++;
+    evolutionParameters.layerIdCounter = 0;
     layersListTmp->currentNeuronsList = *outputLayer;
     layersListTmp->nextLayer = NULL;
 }
@@ -206,20 +206,20 @@ float StandartNetwork::useMind(EvoField evoField, int headX, int headY)
             ) {
                 switch (evoField.getCell(countX, countY)){
                     case Field::Food:
-                        tempLayer->currentNeuron.input = 1.0; 
+                        tempLayer->currentNeuron.input = 0.9; //1.0
                         break;
                     case Field::Free:
-                        tempLayer->currentNeuron.input = 0.33; 
+                        tempLayer->currentNeuron.input = 0.3;//0.33
                         break;
                     case Field::Snake:
-                        tempLayer->currentNeuron.input = -0.33; 
+                        tempLayer->currentNeuron.input = -0.3; //-0.33
                     break;
                     case Field::Wall:
-                        tempLayer->currentNeuron.input = -1.0; 
+                        tempLayer->currentNeuron.input = -0.9; //-1.0
                     break;
                 }
             } else {
-                tempLayer->currentNeuron.input = -1.0; 
+                tempLayer->currentNeuron.input = -0.9; 
             }
             tempLayer = tempLayer->nextNeuron;
         }
@@ -274,7 +274,7 @@ void StandartNetwork::neuronActivity()
 
 
 
-void StandartNetwork::mergeNetworks(StandartNetwork *parentOne, StandartNetwork *parentTwo)
+void StandartNetwork::mergeNetworks(LayersList *parentOne, LayersList *parentTwo)
 {
     testNetwork();
     #ifdef LOGS
@@ -294,12 +294,12 @@ void StandartNetwork::mergeNetworks(StandartNetwork *parentOne, StandartNetwork 
         mergeTest << "HOST NEURON ID : " << layersListTmp->currentNeuronsList.currentNeuron.neuronId << std::endl;
     #endif
 
-    layersListParentOne = parentOne->layersList;
+    layersListParentOne = parentOne;
     #ifdef LOGS
         mergeTest << "PARENT 1 NEURON ID : " << layersListParentOne->currentNeuronsList.currentNeuron.neuronId << std::endl;
     #endif
 
-    layersListParentTwo = parentTwo->layersList;
+    layersListParentTwo = parentTwo;
     #ifdef LOGS
         mergeTest << "PARENT 2 NEURON ID : " << layersListParentTwo->currentNeuronsList.currentNeuron.neuronId << "\n" << std::endl;
     #endif
@@ -339,7 +339,7 @@ void StandartNetwork::mergeNetworks(StandartNetwork *parentOne, StandartNetwork 
                         mergeTest << "=== PARENT 2 SYNAPSE === " <<  layerParentTwo->currentNeuron.tmpConnection->synapse << std::endl;
                     #endif
                     tempLayer->currentNeuron.tmpConnection->synapse = layerParentTwo->currentNeuron.tmpConnection->synapse;
-                     //tempLayer->currentNeuron.tmpConnection->synapse = layerParentOne->currentNeuron.tmpConnection->synapse;
+                    //tempLayer->currentNeuron.tmpConnection->synapse = layerParentOne->currentNeuron.tmpConnection->synapse;
                 }   
                 #ifdef LOGS
                     mergeTest << "=== SYNAPSE AFTER === " <<  tempLayer->currentNeuron.tmpConnection->synapse << "\n" << std::endl;
@@ -349,7 +349,7 @@ void StandartNetwork::mergeNetworks(StandartNetwork *parentOne, StandartNetwork 
                 #endif
                 tempLayer->currentNeuron.tmpConnection = tempLayer->currentNeuron.tmpConnection->nextConnection; 
                 layerParentOne->currentNeuron.tmpConnection = layerParentOne->currentNeuron.tmpConnection->nextConnection;
-                layerParentTwo->currentNeuron.tmpConnection = layerParentTwo->currentNeuron.tmpConnection->nextConnection; 
+                //layerParentTwo->currentNeuron.tmpConnection = layerParentTwo->currentNeuron.tmpConnection->nextConnection; 
                 connection++;
             }
             tempLayer = tempLayer->nextNeuron;
@@ -372,7 +372,7 @@ void StandartNetwork::mergeNetworks(StandartNetwork *parentOne, StandartNetwork 
 
 void StandartNetwork::tests()
 {
-   /* #ifdef LOGS
+    #ifdef LOGSS
         std::ofstream useMindOutput;
         useMindOutput.open("logs/useMindOutput.txt");
 
@@ -387,5 +387,10 @@ void StandartNetwork::tests()
         testNetwork();
         useMindOutput << useMind(field, 15, 15) << " OUTPUT " << std::endl;
         useMindOutput.close();
-    #endif*/
+    #endif
+}
+
+void StandartNetwork::deleteNetwork()
+{
+
 }

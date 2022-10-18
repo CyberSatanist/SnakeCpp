@@ -5,11 +5,14 @@
 #include <iostream>
 #include "standartNeuron.h"
 #include <Evolution/Field/evoField.h>
+#include <NeuralNetwork/network.h>
 
-class StandartNetwork
+class StandartNetwork : public Network
 {
     public:
         StandartNetwork();
+        void deleteNetwork();
+        
         bool test = true;
 
         #ifdef LOGS
@@ -17,7 +20,6 @@ class StandartNetwork
         #endif
         
         float useMind(EvoField evoField, int headX, int headY);
-        void mergeNetworks(StandartNetwork *parentOne, StandartNetwork *parentTwo);
 
         struct NeuronsList {
             StandartNeuron currentNeuron;
@@ -26,6 +28,7 @@ class StandartNetwork
         NeuronsList* firstLayer = new NeuronsList;
         NeuronsList* lastLayer = new NeuronsList;
         NeuronsList* tempLayer = new NeuronsList;
+        NeuronsList* tempSecondLayer = new NeuronsList;
         NeuronsList* nextLayer = new NeuronsList;
         NeuronsList* outputLayer = new NeuronsList;
 
@@ -39,8 +42,12 @@ class StandartNetwork
         };
         LayersList* layersList = new LayersList;
         LayersList* layersListTmp = new LayersList;
+        LayersList* layersListSecondTmp = new LayersList;
         LayersList* layersListParentOne = new LayersList;
         LayersList* layersListParentTwo = new LayersList;
+
+
+        void mergeNetworks(struct LayersList *parentOne, struct LayersList *parentTwo);
 
 
         float randFloat;

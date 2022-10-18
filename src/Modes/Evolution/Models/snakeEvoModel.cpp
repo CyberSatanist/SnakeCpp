@@ -11,7 +11,11 @@ void SnakeEvoModel::init(int startX, int startY, int length, int color)
     snakeId = evolutionParameters.snakeIdCounter;
     evolutionParameters.snakeIdCounter++;
 
+    currentBody = new snakeBody;
+
     currentBody->prevCell = NULL;
+
+    snakeHeadTail = new snakeLocs;
     snakeHeadTail->firstCell = currentBody;
     snakeTmp = currentBody;
     for (int x = 0; x < evolutionParameters.snakeLength; x++)
@@ -19,10 +23,9 @@ void SnakeEvoModel::init(int startX, int startY, int length, int color)
         snakeTmp->cellX = startX + x;
         snakeTmp->cellY = startY;
         field.setCell(startX + x, startY, Field::Snake);
-        snakeBody* next = new snakeBody; 
-        snakeTmp->nextCell = next;	
-        next->prevCell = snakeTmp;	
-        snakeTmp = next;
+        snakeTmp->nextCell = new snakeBody;	
+        snakeTmp->nextCell->prevCell = snakeTmp;	
+        snakeTmp = snakeTmp->nextCell;
     }
     snakeTmp->nextCell = NULL;
     snakeHeadTail->lastCell = snakeTmp->prevCell;
@@ -53,13 +56,13 @@ void SnakeEvoModel::getSnakeHeadCoordinates(int* x, int* y)
 
 void SnakeEvoModel::newCell()
 {
-    snakeBody* next = new snakeBody;
-    next->nextCell = NULL;
-    next->cellX = snakeHeadTail->lastCell->cellX;
-    next->cellY = snakeHeadTail->lastCell->cellY;
-    next->prevCell = snakeHeadTail->lastCell;
-    snakeHeadTail->lastCell->nextCell = next;
-    snakeHeadTail->lastCell = next;
+    snakeBody* snakeTmp = new snakeBody;
+    snakeTmp->nextCell = NULL;
+    snakeTmp->cellX = snakeHeadTail->lastCell->cellX;
+    snakeTmp->cellY = snakeHeadTail->lastCell->cellY;
+    snakeTmp->prevCell = snakeHeadTail->lastCell;
+    snakeHeadTail->lastCell->nextCell = snakeTmp;
+    snakeHeadTail->lastCell = snakeTmp;
 }
 
 
@@ -98,7 +101,10 @@ void SnakeEvoModel::move()
     }
     snakeHeadTail->firstCell = snakeTmp;
     validation();
-    
+    turnsLeft -= 1;
+    if (turnsLeft < 1){
+        death();
+    }
 }
 
 
@@ -120,7 +126,7 @@ void SnakeEvoModel::validation()
 void SnakeEvoModel::setVector(int direction)
 {
 
-    float vetc = network.useMind(field, snakeHeadTail->firstCell->cellX, snakeHeadTail->firstCell->cellY);
+    /*float vetc = network.useMind(field, snakeHeadTail->firstCell->cellX, snakeHeadTail->firstCell->cellY);
 
     if (vetc >= 0.5){
         direction = Screen::controll_keys::RIGHT;
@@ -137,7 +143,8 @@ void SnakeEvoModel::setVector(int direction)
         setVector << "Vector: " << vetc << std::endl;
         setVector << "Direction: " << direction << std::endl;
         setVector.close();
-    #endif
+    #endif*/
+    direction = network.useMind(field, snakeHeadTail->firstCell->cellX, snakeHeadTail->firstCell->cellY);
 
     switch (direction) {
         case Screen::controll_keys::RIGHT:
@@ -221,6 +228,7 @@ void SnakeEvoModel::snakeEat()
     newCell();
     newFood();
     score += 10;
+    turnsLeft += 100;
     if (score > evolutionParameters.score){
         evolutionParameters.score = score;
         evolutionParameters.bestSnakeId = snakeId;
@@ -249,4 +257,18 @@ void SnakeEvoModel::death()
 {
     isAlive = false;
     evolutionParameters.aliveSnakes--;
+}
+
+void SnakeEvoModel::deleteSnake()
+{
+    snakeTmp = snakeHeadTail->lastCell;
+    while(snakeTmp->prevCell)
+    {
+        snakeTmp = snakeTmp->prevCell;
+        delete snakeTmp->nextCell;
+    }
+
+    delete snakeTmp;
+    delete snakeHeadTail;
+    network.deleteNetwork();
 }

@@ -3,7 +3,9 @@
 
 #include <Screen/screen.h>
 #include <Evolution/Field/evoField.h>
-#include <Evolution/NeuralNetwork/standartNetwork.h>
+#include <NeuralNetwork/network.h>
+#include <Evolution/NeuralNetwork/standartNetwork/standartNetwork.h>
+#include <Evolution/NeuralNetwork/straightNetwork/straightNetwork.h>
 #include <random>
 
 extern Screen currentScreen;
@@ -18,35 +20,42 @@ class SnakeEvoModel
             struct snakeBody *prevCell;
         };
 
+		snakeBody* currentBody;
+		snakeBody* snakeTmp;
+
 		struct snakeLocs{
 			struct snakeBody *firstCell;
 			struct snakeBody *lastCell;
 		};
 
-		snakeBody* currentBody = new snakeBody;
-		snakeBody* snakeTmp = new snakeBody;
-		snakeLocs* snakeHeadTail = new snakeLocs;
+		snakeLocs* snakeHeadTail;
 
 		void initFood();
 		void initBorders();
 		void initField();
 
+		void newCell();
+		void newFood();
+		void snakeEat();
+
     public:
-		StandartNetwork network;
+		//StandartNetwork network;
+
+		StraightNetwork network;
+
+        EvoField field;
 
 		bool isAlive = false;
-        EvoField field;
 
         int vector = Screen::controll_keys::UP;
 		int score = 0;
+		int turnsLeft = evolutionParameters.turnsToDeath;
 		int snakeId;
 		
 		void init(int startX, int startY, int length, int color);
 		void deleteSnake();
-		void newCell();
-		void newFood();
+		
 		void move();
-		void snakeEat();
 		void getSnakeHeadCoordinates(int* x, int* y);
 
 //Draw

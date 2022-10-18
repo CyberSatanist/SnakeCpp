@@ -36,6 +36,8 @@ class Evolution
         snakesList* snakes = new snakesList;
         snakesList* snakeTmp = new snakesList;
         snakesList* snakeSecondTmp = new snakesList;
+        snakesList* snakeThirdTmp = new snakesList;
+        snakesList* snakeFoursTmp = new snakesList;
 
         struct bestSnakesList{
             SnakeEvoModel currentSnake;
@@ -51,6 +53,7 @@ class Evolution
 
         void initSnakes();
         void drawStuff();
+        void deleteOldSnakes();
 
     public:
         Evolution();
