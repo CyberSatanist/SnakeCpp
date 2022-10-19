@@ -49,6 +49,7 @@ void Evolution::run()
 
         if (!toolsBar.pauseOn){
             turn();
+            evolutionParameters.hightTurnsLeft--;
             evolutionParameters.turn++;
             evolutionParameters.time++;
             snakeTmp = snakes;
@@ -62,6 +63,9 @@ void Evolution::run()
         }
 
         if (evolutionParameters.aliveSnakes < 1){
+            evolutionParameters.hightTurnsLeft = evolutionParameters.turnsToDeath;
+            evolutionParameters.snakeIdCounter = 1;
+            evolutionParameters.bestFood = 0;
             evolutionParameters.generation++;
             evolutionParameters.turn = 0;
             if (evolutionParameters.score > evolutionParameters.theBestScore){
@@ -132,6 +136,7 @@ void Evolution::drawStuff()
 
 void Evolution::initSnakes()
 {
+    snakes = new snakesList;
     snakeTmp = snakes;
 
     for (int count = 0; count < evolutionParameters.countOfSnakes; count++)
@@ -226,10 +231,27 @@ void Evolution::deleteOldSnakes()
     snakeSecondTmp = snakes;
     while(snakeSecondTmp->nextSnake){
         snakeSecondTmp->currentSnake.deleteSnake();
+        snakeFoursTmp = snakeSecondTmp;
         snakeSecondTmp = snakeSecondTmp->nextSnake;
+        delete snakeFoursTmp;
     }
     delete snakeSecondTmp;
-    delete snakes;
+
+    snakeListTmp = bestSnake;
+    while(snakeListTmp->nextSnake){
+        snakeListSecondTmp = snakeListTmp;
+        snakeListTmp = snakeListTmp->nextSnake;
+        delete snakeListSecondTmp;
+    }
+    delete snakeListTmp;
+
+    snakeListTmp = parentSnakes;
+    while(snakeListTmp->nextSnake){
+        snakeListSecondTmp = snakeListTmp;
+        snakeListTmp = snakeListTmp->nextSnake;
+        delete snakeListSecondTmp;
+    }
+    delete snakeListTmp;
 }
 
 

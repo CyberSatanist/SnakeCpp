@@ -51,6 +51,7 @@ class SnakeEvoModel
 		int score = 0;
 		int turnsLeft = evolutionParameters.turnsToDeath;
 		int snakeId;
+		int foodEaten = 0;
 		
 		void init(int startX, int startY, int length, int color);
 		void deleteSnake();

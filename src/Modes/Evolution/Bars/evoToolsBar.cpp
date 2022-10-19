@@ -22,6 +22,18 @@ void EvoToolsBar::menuControllSelect()
             evolutionParameters.delayDuration++;
         }
         timeout(evolutionParameters.delayDuration);
+    } else if (currentChoice == toolsBarChoicesConst::MutPlus){
+        if (evolutionParameters.mutationChance == 100) {
+            evolutionParameters.mutationChance = 0;
+        } else {
+            evolutionParameters.mutationChance += 2;
+        }
+    } else if (currentChoice == toolsBarChoicesConst::MutMinus){
+        if (evolutionParameters.mutationChance == 0) {
+            evolutionParameters.mutationChance = 100;
+        } else {
+            evolutionParameters.mutationChance -= 2;
+        }
     } else if (currentChoice == toolsBarChoicesConst::Pause){
         pauseOn = !pauseOn;
     } else if (currentChoice == toolsBarChoicesConst::Exit){

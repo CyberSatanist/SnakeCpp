@@ -227,8 +227,14 @@ void SnakeEvoModel::snakeEat()
 {
     newCell();
     newFood();
-    score += 10;
+    foodEaten++;
     turnsLeft += 100;
+    if (turnsLeft > evolutionParameters.hightTurnsLeft){
+        evolutionParameters.hightTurnsLeft = turnsLeft;
+    }
+    if (foodEaten > evolutionParameters.bestFood){
+        evolutionParameters.bestFood = foodEaten;
+    }
     if (score > evolutionParameters.score){
         evolutionParameters.score = score;
         evolutionParameters.bestSnakeId = snakeId;

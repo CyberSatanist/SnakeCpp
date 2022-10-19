@@ -13,8 +13,14 @@ int EvoInfoBar::getParameter(int count)
         case BestSnakeId:
             return evolutionParameters.bestSnakeId;
             break;
+        case MaxFood:
+            return evolutionParameters.bestFood;
+            break;
         case Score:
             return evolutionParameters.score;
+            break;
+        case MutChance:
+            return evolutionParameters.mutationChance;
             break;
         case BestScore:
             return evolutionParameters.theBestScore;
@@ -27,6 +33,9 @@ int EvoInfoBar::getParameter(int count)
             break;
         case Turn:
             return evolutionParameters.turn;
+            break;
+        case TurnsLeft:
+            return evolutionParameters.hightTurnsLeft;
             break;
         case Speed:
             return evolutionParameters.delayDuration;

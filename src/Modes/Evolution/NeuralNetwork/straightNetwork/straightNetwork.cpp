@@ -163,10 +163,6 @@ int StraightNetwork::useMind(EvoField evoField, int headX, int headY)
 
 void StraightNetwork::neuronActivity()
 {
-    #ifdef LOGS
-        std::ofstream neuronActivity;
-        neuronActivity.open("logs/neuronActivity.txt");
-    #endif
     layersListTmp = layersList;
     tempLayer = &(layersListTmp->currentNeuronsList);
     while (tempLayer->nextNeuron){
@@ -174,14 +170,6 @@ void StraightNetwork::neuronActivity()
         while (tempLayer->currentNeuron.tmpConnection->nextConnection){
             switch (tempLayer->currentNeuron.input) {
                 case -1:
-                    #ifdef LOGS
-                        neuronActivity << "BEFOR    |    WALL" << std::endl;
-                        neuronActivity << "NEURON ID " << tempLayer->currentNeuron.tmpConnection->currentNeuron->neuronId << std::endl;
-                        neuronActivity << tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->up<< std::endl;
-                        neuronActivity << tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->down<< std::endl;
-                        neuronActivity << tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->left<< std::endl;
-                        neuronActivity << tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->right<< std::endl;
-                    #endif
                     tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->up += tempLayer->currentNeuron.wallReaction->up;
                     if (tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->up > 100){
                         tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->up = 100 - (tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->up - 100);
@@ -206,25 +194,8 @@ void StraightNetwork::neuronActivity()
                     } else if (tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->right < -100){
                         tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->right = -100 - (tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->right + 100);
                     }
-                    #ifdef LOGS
-                        neuronActivity << "AFTER" << std::endl;
-                        neuronActivity << "NEURON ID " << tempLayer->currentNeuron.tmpConnection->currentNeuron->neuronId << std::endl;
-                        neuronActivity << tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->up<< std::endl;                        neuronActivity << tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->up<< std::endl;
-                        neuronActivity << tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->down<< std::endl;
-                        neuronActivity << tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->left<< std::endl;
-                        neuronActivity << tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->right<< std::endl;
-                        neuronActivity << "   " << std::endl;
-                    #endif
                     break;
                 case 1:
-                    #ifdef LOGS
-                        neuronActivity << "BEFOR    |    FOOD" << std::endl;
-                        neuronActivity << "NEURON ID " << tempLayer->currentNeuron.tmpConnection->currentNeuron->neuronId << std::endl;
-                        neuronActivity << tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->up<< std::endl;                        neuronActivity << tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->up<< std::endl;
-                        neuronActivity << tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->down<< std::endl;
-                        neuronActivity << tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->left<< std::endl;
-                        neuronActivity << tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->right<< std::endl;
-                    #endif
                     tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->up += tempLayer->currentNeuron.foodReaction->up;
                     if (tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->up > 100){
                         tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->up = 100 - (tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->up - 100);
@@ -249,15 +220,6 @@ void StraightNetwork::neuronActivity()
                     } else if (tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->right < -100){
                         tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->right = -100 - (tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->right + 100);
                     }
-                    #ifdef LOGS
-                        neuronActivity << "AFTER" << std::endl;
-                        neuronActivity << "NEURON ID " << tempLayer->currentNeuron.tmpConnection->currentNeuron->neuronId << std::endl;
-                        neuronActivity << tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->up<< std::endl;                        neuronActivity << tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->up<< std::endl;
-                        neuronActivity << tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->down<< std::endl;
-                        neuronActivity << tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->left<< std::endl;
-                        neuronActivity << tempLayer->currentNeuron.tmpConnection->currentNeuron->resultReaction->right<< std::endl;
-                        neuronActivity << "   " << std::endl;
-                    #endif
                     break;
             }
             tempLayer->currentNeuron.tmpConnection = tempLayer->currentNeuron.tmpConnection->nextConnection;
@@ -296,10 +258,6 @@ void StraightNetwork::neuronActivity()
         tempLayer = tempLayer->nextNeuron;
     }
 
-
-    #ifdef LOGS
-        neuronActivity.close();
-    #endif
     if ((lastNeuron->resultReaction->up > lastNeuron->resultReaction->down) & (lastNeuron->resultReaction->up > lastNeuron->resultReaction->left) & (lastNeuron->resultReaction->up > lastNeuron->resultReaction->right)) {
         lastNeuron->direction = Screen::controll_keys::UP;
     } else if ((lastNeuron->resultReaction->down > lastNeuron->resultReaction->up) & (lastNeuron->resultReaction->down > lastNeuron->resultReaction->left) & (lastNeuron->resultReaction->down > lastNeuron->resultReaction->right)) {
@@ -316,10 +274,6 @@ void StraightNetwork::neuronActivity()
 
 void StraightNetwork::mergeNetworks(LayersList *parentOne, LayersList *parentTwo)
 {
-    #ifdef LOGS
-        std::ofstream mergeTest;
-        mergeTest.open("logs/mergeTest.txt");
-    #endif
     std::random_device random_device;
     std::mt19937 generator(random_device());
     std::uniform_int_distribution<> randGen(0, 100);
@@ -337,33 +291,6 @@ void StraightNetwork::mergeNetworks(LayersList *parentOne, LayersList *parentTwo
         layerParentOne = &(layersListParentOne->currentNeuronsList);
         layerParentTwo = &(layersListParentTwo->currentNeuronsList);
         while (tempLayer->nextNeuron){
-            #ifdef LOGS
-                mergeTest << "PARENT" << std::endl;
-                mergeTest << "NEURON ID " << layerParentOne->currentNeuron.neuronId << std::endl;
-                mergeTest << "FOOD" << std::endl;
-                mergeTest << layerParentOne->currentNeuron.foodReaction->up<< std::endl;
-                mergeTest << layerParentOne->currentNeuron.foodReaction->down<< std::endl;
-                mergeTest << layerParentOne->currentNeuron.foodReaction->left<< std::endl;
-                mergeTest << layerParentOne->currentNeuron.foodReaction->right<< std::endl;
-                mergeTest << "WALL" << std::endl;
-                mergeTest << layerParentOne->currentNeuron.wallReaction->up<< std::endl;
-                mergeTest << layerParentOne->currentNeuron.wallReaction->down<< std::endl;
-                mergeTest << layerParentOne->currentNeuron.wallReaction->left<< std::endl;
-                mergeTest << layerParentOne->currentNeuron.wallReaction->right<< std::endl;
-                mergeTest << "+++" << std::endl;
-                mergeTest << "BEFOR" << std::endl;
-                mergeTest << neuron << std::endl;
-                mergeTest << "FOOD" << std::endl;
-                mergeTest << tempLayer->currentNeuron.foodReaction->up<< std::endl;
-                mergeTest << tempLayer->currentNeuron.foodReaction->down<< std::endl;
-                mergeTest << tempLayer->currentNeuron.foodReaction->left<< std::endl;
-                mergeTest << tempLayer->currentNeuron.foodReaction->right<< std::endl;
-                mergeTest << "WALL" << std::endl;
-                mergeTest << tempLayer->currentNeuron.wallReaction->up<< std::endl;
-                mergeTest << tempLayer->currentNeuron.wallReaction->down<< std::endl;
-                mergeTest << tempLayer->currentNeuron.wallReaction->left<< std::endl;
-                mergeTest << tempLayer->currentNeuron.wallReaction->right<< std::endl;
-            #endif
             randChance = randGen(generator);
             if ((randChance < (evolutionParameters.mutationChance / 2)) | (randChance >  (100 -evolutionParameters.mutationChance))){
                 tempLayer->currentNeuron.foodReaction->up = randSynapse(generator);
@@ -395,22 +322,7 @@ void StraightNetwork::mergeNetworks(LayersList *parentOne, LayersList *parentTwo
                 tempLayer->currentNeuron.wallReaction->down = layerParentTwo->currentNeuron.wallReaction->down;
                 tempLayer->currentNeuron.wallReaction->left = layerParentTwo->currentNeuron.wallReaction->left;
                 tempLayer->currentNeuron.wallReaction->right = layerParentTwo->currentNeuron.wallReaction->right;
-            } 
-            #ifdef LOGS
-                mergeTest << "AFTER" << std::endl;
-                mergeTest << "NEURON ID " << tempLayer->currentNeuron.neuronId << std::endl;
-                mergeTest << "FOOD" << std::endl;
-                mergeTest << tempLayer->currentNeuron.foodReaction->up<< std::endl;
-                mergeTest << tempLayer->currentNeuron.foodReaction->down<< std::endl;
-                mergeTest << tempLayer->currentNeuron.foodReaction->left<< std::endl;
-                mergeTest << tempLayer->currentNeuron.foodReaction->right<< std::endl;
-                mergeTest << "WALL" << std::endl;
-                mergeTest << tempLayer->currentNeuron.wallReaction->up<< std::endl;
-                mergeTest << tempLayer->currentNeuron.wallReaction->down<< std::endl;
-                mergeTest << tempLayer->currentNeuron.wallReaction->left<< std::endl;
-                mergeTest << tempLayer->currentNeuron.wallReaction->right<< std::endl;
-                mergeTest << "   " << std::endl;
-            #endif
+            }
             tempLayer = tempLayer->nextNeuron;
             layerParentOne = layerParentOne->nextNeuron;
             layerParentTwo = layerParentTwo->nextNeuron;
@@ -421,13 +333,6 @@ void StraightNetwork::mergeNetworks(LayersList *parentOne, LayersList *parentTwo
         layersListParentTwo = layersListParentTwo->nextLayer;
         layer++;
     }
-    delete layersListParentOne;
-    delete layersListParentTwo;
-    delete layerParentOne;
-    //delete layerParentTwo;
-    #ifdef LOGS
-        mergeTest.close();
-    #endif
 }
 
 
@@ -458,8 +363,9 @@ void StraightNetwork::deleteNetwork()
     while(layersListTmp->nextLayer){
         tempLayer = &(layersListTmp->currentNeuronsList);
         while (tempLayer->nextNeuron){
-            tempLayer->currentNeuron.deleteNeuron();
+            tempSecondLayer = tempLayer;
             tempLayer = tempLayer->nextNeuron;
+            tempSecondLayer->currentNeuron.deleteNeuron();
         }
         tempLayer->currentNeuron.deleteNeuron();
         delete tempLayer;

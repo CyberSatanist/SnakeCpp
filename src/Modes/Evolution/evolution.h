@@ -33,22 +33,22 @@ class Evolution
             struct snakesList *nextSnake;
         };
         
-        snakesList* snakes = new snakesList;
-        snakesList* snakeTmp = new snakesList;
-        snakesList* snakeSecondTmp = new snakesList;
-        snakesList* snakeThirdTmp = new snakesList;
-        snakesList* snakeFoursTmp = new snakesList;
+        snakesList* snakes;
+        snakesList* snakeTmp;
+        snakesList* snakeSecondTmp;
+        snakesList* snakeThirdTmp;
+        snakesList* snakeFoursTmp;
 
         struct bestSnakesList{
             SnakeEvoModel currentSnake;
             struct bestSnakesList *nextSnake;
             struct bestSnakesList *prevSnake;
         };
-        bestSnakesList* bestSnake = new bestSnakesList;
-        bestSnakesList* worstSnake = new bestSnakesList;
-        bestSnakesList* parentSnakes = new bestSnakesList;
-        bestSnakesList* snakeListTmp = new bestSnakesList;
-        bestSnakesList* snakeListSecondTmp = new bestSnakesList;
+        bestSnakesList* bestSnake;
+        bestSnakesList* worstSnake;
+        bestSnakesList* parentSnakes;
+        bestSnakesList* snakeListTmp;
+        bestSnakesList* snakeListSecondTmp;
 
 
         void initSnakes();

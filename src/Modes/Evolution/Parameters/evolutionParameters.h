@@ -16,8 +16,10 @@ class EvolutionParameters : public Parameters
         int time = 0;
         int turn = 0;
         int bestSnakeId = 0;
+        int bestFood = 0;
         int snakeIdCounter = 1;
         int turnsToDeath = 300;
+        int hightTurnsLeft = turnsToDeath;
 
 //SnakeParameters
         int countOfSnakes = 100;
