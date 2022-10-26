@@ -40,8 +40,8 @@ class SnakeEvoModel
 
     public:
 		//StandartNetwork network;
-
-		StraightNetwork network;
+		
+    	StraightNetwork network;
 
         EvoField field;
 

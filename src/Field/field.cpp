@@ -103,3 +103,13 @@ void Field::setCell(int cellX, int cellY, int color)
 {
     fieldMap[cellX][cellY] = color;
 }
+
+
+void Field::deleteField()
+{
+    for (int x = 0; x < fullSizeX; x++){
+        delete fieldMap[x];
+    }
+    delete fieldMap;
+
+}

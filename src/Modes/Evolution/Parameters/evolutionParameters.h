@@ -18,12 +18,12 @@ class EvolutionParameters : public Parameters
         int bestSnakeId = 0;
         int bestFood = 0;
         int snakeIdCounter = 1;
-        int turnsToDeath = 300;
+        int turnsToDeath = 500;
         int hightTurnsLeft = turnsToDeath;
 
 //SnakeParameters
         int countOfSnakes = 100;
-        int snakeLength = 2;
+        int snakeLength = 6;
         int snakeHeadColor = COLOR_YELLOW;
         int snakeOneBodyColor = COLOR_GREEN;
         int snakeTwoBodyColor = COLOR_BLACK;
@@ -54,13 +54,13 @@ class EvolutionParameters : public Parameters
         int neuronIdCounter = 1;
         int layerIdCounter = 1;
 
-        int firstLayerNeuronCount = 25;
+        int firstLayerNeuronCount = 49;
         int lastLayerNeuronCount = 4;
         int outputLayerNeuronCount = 1;
 
 //Generetions
-        int countOfBest = 10;
-        int countOfWorst = 0;
+        int countOfBest = 30;
+        int countOfWorst = 2;
         int mutationChance = 2;
 };
 

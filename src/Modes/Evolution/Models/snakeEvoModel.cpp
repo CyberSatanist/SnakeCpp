@@ -144,6 +144,7 @@ void SnakeEvoModel::setVector(int direction)
         setVector << "Direction: " << direction << std::endl;
         setVector.close();
     #endif*/
+
     direction = network.useMind(field, snakeHeadTail->firstCell->cellX, snakeHeadTail->firstCell->cellY);
 
     switch (direction) {
@@ -272,9 +273,15 @@ void SnakeEvoModel::deleteSnake()
     {
         snakeTmp = snakeTmp->prevCell;
         delete snakeTmp->nextCell;
+        snakeTmp->nextCell = NULL;
     }
 
+    
     delete snakeTmp;
+    snakeTmp = NULL;
     delete snakeHeadTail;
+    snakeHeadTail = NULL;
+    field.deleteField();
+    //delete currentBody;
     network.deleteNetwork();
 }

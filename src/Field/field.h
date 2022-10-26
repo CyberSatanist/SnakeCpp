@@ -36,6 +36,7 @@ class Field {
 
         int getCell(int cellX, int cellY);
         void setCell(int cellX, int cellY, int color);
+        void deleteField();
 
 
         virtual void drawCell(int cellX, int cellY) {};
