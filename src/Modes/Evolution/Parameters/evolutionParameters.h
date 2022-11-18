@@ -18,7 +18,7 @@ class EvolutionParameters : public Parameters
         int bestSnakeId = 0;
         int bestFood = 0;
         int snakeIdCounter = 1;
-        int turnsToDeath = 500;
+        int turnsToDeath = 100;
         int hightTurnsLeft = turnsToDeath;
 
 //SnakeParameters
@@ -54,7 +54,7 @@ class EvolutionParameters : public Parameters
         int neuronIdCounter = 1;
         int layerIdCounter = 1;
 
-        int firstLayerNeuronCount = 49;
+        int firstLayerNeuronCount = 81;
         int lastLayerNeuronCount = 4;
         int outputLayerNeuronCount = 1;
 

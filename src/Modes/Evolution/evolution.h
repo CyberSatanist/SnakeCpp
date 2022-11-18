@@ -29,7 +29,7 @@ class Evolution
         int deathTextBackground = COLOR_BLACK;
 
         struct snakesList{
-            SnakeEvoModel currentSnake;
+            SnakeEvoModel *currentSnake;
             struct snakesList *nextSnake;
         };
         
@@ -40,20 +40,20 @@ class Evolution
         snakesList* snakeFoursTmp;
 
         struct bestSnakesList{
-            SnakeEvoModel currentSnake;
+            SnakeEvoModel *currentSnake;
             struct bestSnakesList *nextSnake;
             struct bestSnakesList *prevSnake;
         };
-        bestSnakesList* bestSnake;
+        bestSnakesList* bestSnake = nullptr;
         bestSnakesList* worstSnake;
-        bestSnakesList* parentSnakes;
+        bestSnakesList* parentSnakes = nullptr;
         bestSnakesList* snakeListTmp;
         bestSnakesList* snakeListSecondTmp;
 
 
         void initSnakes();
         void drawStuff();
-        void deleteOldSnakes();
+        void deleteSnakes(snakesList *firstSnake);
 
     public:
         Evolution();

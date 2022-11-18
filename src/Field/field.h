@@ -9,7 +9,7 @@ class Field {
     
         
     public:
-        int** fieldMap;
+        int** fieldMap = nullptr;
         int currentBeginX = 0;
         int currentBeginY = 0;
         int currentSizeX;

@@ -21,30 +21,30 @@ class StraightNetwork : public Network
         int useMind(EvoField evoField, int headX, int headY);
 
         struct NeuronsList {
-            StraightNeuron currentNeuron;
+            StraightNeuron *currentNeuron;
             struct NeuronsList *nextNeuron; 
         };
-        NeuronsList* firstLayer;
-        NeuronsList* lastLayer;
-        NeuronsList* tempLayer;
-        NeuronsList* tempSecondLayer;
-        NeuronsList* nextLayer;
-        NeuronsList* outputLayer;
-        StraightNeuron* lastNeuron;
+        NeuronsList *firstLayer;
+        NeuronsList *lastLayer;
+        NeuronsList *tempLayer;
+        NeuronsList *tempSecondLayer;
+        NeuronsList *nextLayer;
+        NeuronsList *outputLayer;
+        StraightNeuron *lastNeuron;
 
         NeuronsList *layerParentOne;
         NeuronsList *layerParentTwo;
 
         struct  LayersList {
             int layerId;
-            NeuronsList currentNeuronsList;
+            NeuronsList *currentNeuronsList;
             struct LayersList *nextLayer;
         };
-        LayersList* layersList;
-        LayersList* layersListTmp;
-        LayersList* layersListSecondTmp;
-        LayersList* layersListParentOne;
-        LayersList* layersListParentTwo;
+        LayersList *layersList = nullptr;
+        LayersList *layersListTmp = nullptr;
+        LayersList *layersListSecondTmp = nullptr;
+        LayersList *layersListParentOne = nullptr;
+        LayersList *layersListParentTwo = nullptr;
 
 
         void mergeNetworks(struct LayersList *parentOne, struct LayersList *parentTwo);
@@ -54,13 +54,16 @@ class StraightNetwork : public Network
 
 
         void tests();
+        void addLayers(int countOfLayers);
+        void addNeurons(NeuronsList *firstNeuron, int neuronsCount);
 
     private:
         void initNetwork();
         void initLayers();
-        void initNeurons();
+        void initNeuronConnections();
         void neuronActivity();
         void testNetwork();
+
 
 };
 

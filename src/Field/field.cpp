@@ -107,9 +107,12 @@ void Field::setCell(int cellX, int cellY, int color)
 
 void Field::deleteField()
 {
-    for (int x = 0; x < fullSizeX; x++){
-        delete fieldMap[x];
+    if (fieldMap){
+        for (int x = 0; x < fullSizeX; x++){
+            delete[] fieldMap[x];
+        }
+        delete[] fieldMap;
     }
-    delete fieldMap;
+    fieldMap = nullptr;
 
 }

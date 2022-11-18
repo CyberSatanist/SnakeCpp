@@ -22,13 +22,14 @@ class SnakeEvoModel
 
 		snakeBody* currentBody;
 		snakeBody* snakeTmp;
+		snakeBody* snakeSecondTmp;
 
 		struct snakeLocs{
-			struct snakeBody *firstCell;
-			struct snakeBody *lastCell;
+			struct snakeBody *firstCell = nullptr;
+			struct snakeBody *lastCell = nullptr;
 		};
 
-		snakeLocs* snakeHeadTail;
+		snakeLocs* snakeHeadTail = nullptr;
 
 		void initFood();
 		void initBorders();
@@ -42,16 +43,15 @@ class SnakeEvoModel
 		//StandartNetwork network;
 		
     	StraightNetwork network;
-
         EvoField field;
 
 		bool isAlive = false;
 
         int vector = Screen::controll_keys::UP;
 		int score = 0;
-		int turnsLeft = evolutionParameters.turnsToDeath;
-		int snakeId;
+		int snakeId = 0;
 		int foodEaten = 0;
+		int turnsLeft = evolutionParameters.turnsToDeath;
 		
 		void init(int startX, int startY, int length, int color);
 		void deleteSnake();

@@ -38,24 +38,32 @@ StraightNeuron::StraightNeuron()
     snakeReaction->right = randGen(generator);
 
     resultReaction = new Reactions;
+
+    firstConnection = NULL;
 }
 
 
 void StraightNeuron::deleteNeuron()
 {
     delete resultReaction;
+    resultReaction = nullptr;
     delete snakeReaction;
+    snakeReaction = nullptr;
     delete freeReaction;
+    freeReaction = nullptr;
     delete wallReaction;
+    wallReaction = nullptr;
     delete foodReaction;
+    foodReaction = nullptr;
 
     if(firstConnection){
         tmpConnection = firstConnection;
-        while (tmpConnection->nextConnection){
+        while (tmpConnection){
             tmpSecondConnection = tmpConnection;
             tmpConnection = tmpConnection->nextConnection;
             delete tmpSecondConnection;
+            tmpSecondConnection = nullptr;
         }
-        delete tmpConnection;
+        tmpConnection = nullptr;
     }
 }

@@ -54,9 +54,9 @@ void Evolution::run()
             evolutionParameters.time++;
             snakeTmp = snakes;
             while(snakeTmp->nextSnake){
-                if (snakeTmp->currentSnake.isAlive)
+                if (snakeTmp->currentSnake->isAlive)
                 {
-                    snakeTmp->currentSnake.setVector(key);
+                    snakeTmp->currentSnake->setVector(key);
                 }
                 snakeTmp = snakeTmp->nextSnake;
             }
@@ -78,6 +78,9 @@ void Evolution::run()
         drawScreen();
         drawStuff();
         toolsBar.menuControllHandler(key);
+        if (!evolutionParameters.gameOn){
+            deleteSnakes(snakes);
+        }
     }
     currentScreen.clearScreen();
 }
@@ -87,14 +90,14 @@ void Evolution::turn()
 {
     snakeTmp = snakes;
     while(snakeTmp->nextSnake){
-        if (snakeTmp->currentSnake.isAlive)
+        if (snakeTmp->currentSnake->isAlive)
         {
-            snakeTmp->currentSnake.score++;
-            if (snakeTmp->currentSnake.score > evolutionParameters.score){
-                evolutionParameters.score = snakeTmp->currentSnake.score;
-                evolutionParameters.bestSnakeId = snakeTmp->currentSnake.snakeId;
+            snakeTmp->currentSnake->score++;
+            if (snakeTmp->currentSnake->score > evolutionParameters.score){
+                evolutionParameters.score = snakeTmp->currentSnake->score;
+                evolutionParameters.bestSnakeId = snakeTmp->currentSnake->snakeId;
             }
-            snakeTmp->currentSnake.move();
+            snakeTmp->currentSnake->move();
         }
         snakeTmp = snakeTmp->nextSnake;
     }
@@ -108,12 +111,12 @@ void Evolution::drawScreen()
 {
     infoBar.drawInfoBar();
     toolsBar.drawToolsBar();
-    squareBar.drawMap(snakes->currentSnake.field);
 
     snakeTmp = snakes;
     do {
-        if (snakeTmp->currentSnake.isAlive){
-            snakeTmp->currentSnake.drawField();
+        if (snakeTmp->currentSnake->isAlive){
+            snakeTmp->currentSnake->drawField();
+            squareBar.drawMap(snakeTmp->currentSnake->field);
             break;
         }
         snakeTmp = snakeTmp->nextSnake;
@@ -125,9 +128,9 @@ void Evolution::drawStuff()
 {
     snakeTmp = snakes;
     while(snakeTmp->nextSnake){
-        if (snakeTmp->currentSnake.isAlive)
+        if (snakeTmp->currentSnake->isAlive)
         { 
-            snakeTmp->currentSnake.drawStuff();
+            snakeTmp->currentSnake->drawStuff();
         }
 	    snakeTmp = snakeTmp->nextSnake;
    } 
@@ -141,8 +144,8 @@ void Evolution::initSnakes()
 
     for (int count = 0; count < evolutionParameters.countOfSnakes; count++)
 	{
-        SnakeEvoModel newSnake;
-        newSnake.init(
+        SnakeEvoModel *newSnake = new SnakeEvoModel;
+        newSnake->init(
             evolutionParameters.fullFieldSizeX / 2,
             evolutionParameters.fullFieldSizeY / 2,
             evolutionParameters.snakeLength,
@@ -151,9 +154,9 @@ void Evolution::initSnakes()
         snakeTmp->currentSnake = newSnake;
         snakeTmp->nextSnake = new snakesList;
         snakeTmp = snakeTmp->nextSnake;
-        snakeTmp->nextSnake = NULL;
+        snakeTmp->nextSnake = nullptr;
     }
-    squareBar.initField(snakes->currentSnake.field);
+    squareBar.initField(snakes->currentSnake->field);
 }
 
 
@@ -166,11 +169,11 @@ void Evolution::evolveSnakes()
     int counter = 1;
     for (int count = 0; count < evolutionParameters.countOfSnakes; count++)
 	{
-        SnakeEvoModel newSnake;
+        SnakeEvoModel *newSnake = new SnakeEvoModel;
         if ((evolutionParameters.fullFieldSizeY / 2) + (count * 2) + counter > (evolutionParameters.fullFieldSizeY - 3)){
             counter = 1;
         }
-        newSnake.init(
+        newSnake->init(
             evolutionParameters.fullFieldSizeX / 2,
             evolutionParameters.fullFieldSizeY / 2,
             evolutionParameters.snakeLength,
@@ -197,89 +200,97 @@ void Evolution::evolveSnakes()
         #endif 
 
         snakeListTmp = parentSnakes;
-        for (int count = 0; count < parentOneNum; count++){
+        for (int countX = 0; countX < parentOneNum; countX++){
             snakeListTmp = snakeListTmp->nextSnake;
         }
         #ifdef LOGS
-            evolveSnake << "PARENT 1 NEURON ID : " << snakeListTmp->currentSnake.network.firstLayer->currentNeuron.neuronId << "\n" << std::endl;
+            evolveSnake << "PARENT 1 NEURON ID : " << snakeListTmp->currentSnake->network.firstLayer->currentNeuron.neuronId << "\n" << std::endl;
         #endif
 
         snakeListSecondTmp = parentSnakes;
-        for (int count = 0; count < parentTwoNum; count++){
+        for (int countX = 0; countX < parentTwoNum; countX++){
             snakeListSecondTmp = snakeListSecondTmp->nextSnake;
         }
         #ifdef LOGS
-            evolveSnake << "PARENT 2 NEURON ID : " << snakeListSecondTmp->currentSnake.network.firstLayer->currentNeuron.neuronId << "\n" << std::endl;
+            evolveSnake << "PARENT 2 NEURON ID : " << snakeListSecondTmp->currentSnake->network.firstLayer->currentNeuron.neuronId << "\n" << std::endl;
         #endif
         
-        newSnake.network.mergeNetworks(parentSnakes->currentSnake.network.layersList, parentSnakes->currentSnake.network.layersList);
+        newSnake->network.mergeNetworks(parentSnakes->currentSnake->network.layersList, parentSnakes->currentSnake->network.layersList);
         
         snakeSecondTmp->currentSnake = newSnake;
         snakeSecondTmp->nextSnake = new snakesList;
         snakeSecondTmp = snakeSecondTmp->nextSnake;
-        snakeSecondTmp->nextSnake = NULL;
+        snakeSecondTmp->nextSnake = nullptr;
         counter++;
     }
-    squareBar.initField(snakes->currentSnake.field);
-    deleteOldSnakes();
+    squareBar.initField(snakes->currentSnake->field);
+    deleteSnakes(snakes);
     snakes = snakeTmp;
 }
 
 
-void Evolution::deleteOldSnakes()
+void Evolution::deleteSnakes(snakesList *firstSnake)
 {
-    snakeSecondTmp = snakes;
+    snakeSecondTmp = firstSnake;
     while(snakeSecondTmp->nextSnake){
-        snakeSecondTmp->currentSnake.deleteSnake();
+        snakeSecondTmp->currentSnake->deleteSnake();
+        delete snakeSecondTmp->currentSnake;
+        snakeSecondTmp->currentSnake = nullptr;
         snakeFoursTmp = snakeSecondTmp;
         snakeSecondTmp = snakeSecondTmp->nextSnake;
         delete snakeFoursTmp;
+        snakeFoursTmp = nullptr;
     }
     delete snakeSecondTmp;
+    snakeSecondTmp = nullptr;
 
-    snakeListTmp = bestSnake;
-    while(snakeListTmp->nextSnake){
-        snakeListSecondTmp = snakeListTmp;
-        snakeListTmp = snakeListTmp->nextSnake;
-        delete snakeListSecondTmp;
+    if (bestSnake){
+        snakeListTmp = bestSnake;
+        while(snakeListTmp->nextSnake){
+            snakeListSecondTmp = snakeListTmp;
+            snakeListTmp = snakeListTmp->nextSnake;
+            delete snakeListSecondTmp;
+            snakeListSecondTmp = nullptr;
+        }
+        delete snakeListTmp;
+        bestSnake = nullptr;
     }
-    delete snakeListTmp;
 
-    snakeListTmp = parentSnakes;
-    while(snakeListTmp->nextSnake){
-        snakeListSecondTmp = snakeListTmp;
-        snakeListTmp = snakeListTmp->nextSnake;
-        delete snakeListSecondTmp;
+    if (parentSnakes){
+        snakeListTmp = parentSnakes;
+        while(snakeListTmp->nextSnake){
+            snakeListSecondTmp = snakeListTmp;
+            snakeListTmp = snakeListTmp->nextSnake;
+            delete snakeListSecondTmp;
+            snakeListSecondTmp = nullptr;
+        }
+        delete snakeListTmp;
+        snakeListTmp = nullptr;
+        parentSnakes = nullptr;
     }
-    delete snakeListTmp;
 }
 
 
 void Evolution::getBest()
 {
-    #ifdef LOGS
-        std::ofstream getBest;
-        getBest.open("logs/getBest.txt");
-    #endif
-
     snakeTmp = snakes;
     bestSnake = new bestSnakesList;
     bestSnake->currentSnake = snakes->currentSnake;
-    bestSnake->prevSnake = NULL;
-    bestSnake->nextSnake = NULL;
+    bestSnake->prevSnake = nullptr;
+    bestSnake->nextSnake = nullptr;
 
     while (snakeTmp->nextSnake){
-        if (snakeTmp->currentSnake.score >= bestSnake->currentSnake.score){
+        if (snakeTmp->currentSnake->score >= bestSnake->currentSnake->score){
             snakeListTmp = new bestSnakesList;
             snakeListTmp->currentSnake = snakeTmp->currentSnake;
-            snakeListTmp->prevSnake = NULL;
+            snakeListTmp->prevSnake = nullptr;
             snakeListTmp->nextSnake = bestSnake;
             bestSnake->prevSnake = snakeListTmp;
             bestSnake = snakeListTmp;
         } else {
             snakeListTmp = bestSnake;
             while(snakeListTmp->nextSnake){
-                if (snakeTmp->currentSnake.score >= snakeListTmp->currentSnake.score){
+                if (snakeTmp->currentSnake->score >= snakeListTmp->currentSnake->score){
                     if (snakeListTmp->nextSnake){
                         snakeListSecondTmp = new bestSnakesList;
                         snakeListSecondTmp->currentSnake = snakeTmp->currentSnake;
@@ -292,7 +303,7 @@ void Evolution::getBest()
                         snakeListSecondTmp = new bestSnakesList;
                         snakeListSecondTmp->currentSnake = snakeTmp->currentSnake;
                         snakeListSecondTmp->prevSnake = snakeListTmp;
-                        snakeListSecondTmp->nextSnake = NULL;
+                        snakeListSecondTmp->nextSnake = nullptr;
                         snakeListTmp->nextSnake = snakeListSecondTmp;
                         break;
                     }
@@ -302,7 +313,7 @@ void Evolution::getBest()
                     snakeListSecondTmp = new bestSnakesList;
                     snakeListSecondTmp->currentSnake = snakeTmp->currentSnake;
                     snakeListSecondTmp->prevSnake = snakeListTmp;
-                    snakeListSecondTmp->nextSnake = NULL;
+                    snakeListSecondTmp->nextSnake = nullptr;
                     snakeListTmp->nextSnake = snakeListSecondTmp;
                     break;
                 }
@@ -314,9 +325,6 @@ void Evolution::getBest()
 
     snakeListTmp = bestSnake;
     while(snakeListTmp->nextSnake){
-        #ifdef LOGS
-            getBest << "Snake ID" << snakeListTmp->currentSnake.snakeId << ";   Score  " << snakeListTmp->currentSnake.score << std::endl;
-        #endif
         snakeListTmp = snakeListTmp->nextSnake;
     }
     worstSnake = snakeListTmp->prevSnake;
@@ -324,13 +332,13 @@ void Evolution::getBest()
     snakeListTmp = bestSnake;
     parentSnakes = new bestSnakesList;
     snakeListSecondTmp = parentSnakes;
-    snakeListSecondTmp->prevSnake = NULL;
+    snakeListSecondTmp->prevSnake = nullptr;
     for (int count = 0; count < ((evolutionParameters.countOfSnakes / 10) * evolutionParameters.countOfBest / 10); count++){
         snakeListSecondTmp->currentSnake = snakeListTmp->currentSnake;
         snakeListSecondTmp->nextSnake = new bestSnakesList;
         snakeListSecondTmp->nextSnake->prevSnake = snakeListSecondTmp;
         snakeListSecondTmp = snakeListSecondTmp->nextSnake;
-        snakeListSecondTmp->nextSnake = NULL;
+        snakeListSecondTmp->nextSnake = nullptr;
 
         snakeListTmp = snakeListTmp->nextSnake;
     }
@@ -341,19 +349,13 @@ void Evolution::getBest()
         snakeListSecondTmp->nextSnake = new bestSnakesList;
         snakeListSecondTmp->nextSnake->prevSnake = snakeListSecondTmp;
         snakeListSecondTmp = snakeListSecondTmp->nextSnake;
-        snakeListSecondTmp->nextSnake = NULL;
+        snakeListSecondTmp->nextSnake = nullptr;
 
         snakeListTmp = snakeListTmp->nextSnake;
     }
 
     snakeListTmp = parentSnakes;
     while(snakeListTmp->nextSnake){
-        #ifdef LOGS
-            getBest << "Snake PARENTS ID" << snakeListTmp->currentSnake.snakeId << ";   Score  " << snakeListTmp->currentSnake.score << std::endl;
-        #endif
         snakeListTmp = snakeListTmp->nextSnake;
     }
-    #ifdef LOGS
-        getBest.close();
-    #endif
 }

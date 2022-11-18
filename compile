@@ -12,3 +12,7 @@ make debugAndLogs
 
 //run in debug mode
 gdb -tui ./snakeDebug
+
+
+//memory leaks check
+valgrind  --log-file=errors/errorLogFull1   --leak-check=full --show-leak-kinds=all -s --track-origins=yes  ./snakeDebug
