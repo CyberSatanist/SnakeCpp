@@ -250,7 +250,7 @@ void Evolution::deleteSnakes(snakesList *thisSnakes)
     while(snakesTmpList){
         if (snakesTmpList->currentSnake){
             snakesTmpList->currentSnake->deleteSnake();
-            delete snakesTmpList->currentSnake;
+            //delete snakesTmpList->currentSnake;
         }
         snakesTmpList->currentSnake = nullptr;
         snakesSecondTmpList = snakesTmpList;
