@@ -16,44 +16,28 @@ class Evolution
         EvoToolsBar toolsBar;
         EvoSquareBar squareBar;
 
-        int key;
-        int foodX, foodY, snakeX, snakeY;
-
-        void turn();
-        void drawScreen();
-        void evolveSnakes();
-        void getBest();
-
-        std::string deathText = "YOU ARE FINISHED";
-        int deathTextColor = COLOR_RED;
-        int deathTextBackground = COLOR_BLACK;
+        int key = 0;
 
         struct snakesList{
-            SnakeEvoModel *currentSnake;
-            struct snakesList *nextSnake;
+            SnakeEvoModel *currentSnake = nullptr;
+            struct snakesList *nextSnake = nullptr;
         };
-        
-        snakesList* snakes;
-        snakesList* snakeTmp;
-        snakesList* snakeSecondTmp;
-        snakesList* snakeThirdTmp;
-        snakesList* snakeFoursTmp;
+        snakesList* snakes = nullptr;
+        snakesList* parentSnakes = nullptr;
 
         struct bestSnakesList{
-            SnakeEvoModel *currentSnake;
-            struct bestSnakesList *nextSnake;
-            struct bestSnakesList *prevSnake;
+            SnakeEvoModel *currentSnake = nullptr;
+            struct bestSnakesList *nextSnake = nullptr;
+            struct bestSnakesList *prevSnake = nullptr;
         };
-        bestSnakesList* bestSnake = nullptr;
-        bestSnakesList* worstSnake;
-        bestSnakesList* parentSnakes = nullptr;
-        bestSnakesList* snakeListTmp;
-        bestSnakesList* snakeListSecondTmp;
 
-
-        void initSnakes();
+        void turn(snakesList *thisSnakes);
+        void drawScreen();
+        void evolveSnakes();
+        void getBest(snakesList* thisSnakes);
+        void initSnakes(snakesList *thisSnakes);
         void drawStuff();
-        void deleteSnakes(snakesList *firstSnake);
+        void deleteSnakes(snakesList *thisSnakes);
 
     public:
         Evolution();

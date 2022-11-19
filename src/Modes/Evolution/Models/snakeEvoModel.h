@@ -15,20 +15,17 @@ class SnakeEvoModel
     private:
 
 		struct snakeBody{
-	    	int cellX, cellY;
-            struct snakeBody *nextCell;
-            struct snakeBody *prevCell;
+	    	int cellX = 0;
+			int cellY = 0;
+            struct snakeBody *nextCell = nullptr;
+            struct snakeBody *prevCell = nullptr;
         };
-
-		snakeBody* currentBody;
-		snakeBody* snakeTmp;
-		snakeBody* snakeSecondTmp;
+		snakeBody* currentBody	= nullptr;
 
 		struct snakeLocs{
 			struct snakeBody *firstCell = nullptr;
 			struct snakeBody *lastCell = nullptr;
 		};
-
 		snakeLocs* snakeHeadTail = nullptr;
 
 		void initFood();
@@ -41,7 +38,6 @@ class SnakeEvoModel
 
     public:
 		//StandartNetwork network;
-		
     	StraightNetwork network;
         EvoField field;
 

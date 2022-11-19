@@ -18,6 +18,7 @@ void SnakeEvoModel::init(int startX, int startY, int length, int color)
     snakeHeadTail = new snakeLocs;
     
     snakeHeadTail->firstCell = currentBody;
+	snakeBody* snakeTmp = nullptr;
     snakeTmp = currentBody;
     for (int x = 0; x < evolutionParameters.snakeLength; x++)
     { 
@@ -57,7 +58,7 @@ void SnakeEvoModel::getSnakeHeadCoordinates(int* x, int* y)
 
 void SnakeEvoModel::newCell()
 {
-    snakeTmp = nullptr;
+	snakeBody* snakeTmp = nullptr;
     snakeTmp = new snakeBody;
     snakeTmp->nextCell = NULL;
     snakeTmp->cellX = snakeHeadTail->lastCell->cellX;
@@ -70,6 +71,8 @@ void SnakeEvoModel::newCell()
 
 void SnakeEvoModel::move()
 {
+	snakeBody* snakeTmp = nullptr;
+
     snakeTmp = snakeHeadTail->lastCell;
     field.setCell(snakeTmp->cellX, snakeTmp->cellY, Field::Free);
     while(snakeTmp->prevCell)
@@ -112,6 +115,8 @@ void SnakeEvoModel::move()
 
 void SnakeEvoModel::validation()
 {
+	snakeBody* snakeTmp = nullptr;
+
     snakeTmp = snakeHeadTail->firstCell;
     if (field.getCell(snakeTmp->cellX, snakeTmp->cellY) == Field::Wall) {
         death();
@@ -146,28 +151,27 @@ void SnakeEvoModel::setVector(int direction)
         setVector << "Direction: " << direction << std::endl;
         setVector.close();
     #endif*/
-    int o = 0;
-    o = network.useMind(field, snakeHeadTail->firstCell->cellX, snakeHeadTail->firstCell->cellY);
+    direction = network.useMind(field, snakeHeadTail->firstCell->cellX, snakeHeadTail->firstCell->cellY);
 
-    switch (o) {
+    switch (direction) {
         case Screen::controll_keys::RIGHT:
             if(vector != Screen::controll_keys::LEFT) {
-                vector = o;
+                vector = direction;
             }
             break;
         case Screen::controll_keys::LEFT:
             if(vector != Screen::controll_keys::RIGHT) {
-                vector = o;
+                vector = direction;
             }
             break; 
         case Screen::controll_keys::UP:
             if(vector != Screen::controll_keys::DOWN) {
-                vector = o;
+                vector = direction;
             }
             break;
         case Screen::controll_keys::DOWN:
             if(vector != Screen::controll_keys::UP) {
-                vector = o;
+                vector = direction;
             }
             break;
     }
@@ -270,6 +274,9 @@ void SnakeEvoModel::death()
 
 void SnakeEvoModel::deleteSnake()
 {
+	snakeBody* snakeTmp = nullptr;
+	snakeBody* snakeSecondTmp = nullptr;
+
     field.deleteField();
     network.deleteNetwork();
     if (snakeHeadTail){

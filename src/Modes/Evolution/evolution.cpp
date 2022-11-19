@@ -40,7 +40,8 @@ void Evolution::run()
     evolutionParameters.snakeIdCounter = 1;
     evolutionParameters.aliveSnakes = 0;
 
-    initSnakes();
+    snakes = new snakesList;
+    initSnakes(snakes);
 
 	evolutionParameters.gameOn = true;
 
@@ -48,18 +49,20 @@ void Evolution::run()
         key = currentScreen.controllHandler();
 
         if (!toolsBar.pauseOn){
-            turn();
+            turn(snakes);
             evolutionParameters.hightTurnsLeft--;
             evolutionParameters.turn++;
             evolutionParameters.time++;
-            snakeTmp = snakes;
-            while(snakeTmp->nextSnake){
-                if (snakeTmp->currentSnake->isAlive)
+            snakesList *snakesListTmp = nullptr;
+            snakesListTmp = snakes;
+            while(snakesListTmp->nextSnake){
+                if (snakesListTmp->currentSnake->isAlive)
                 {
-                    snakeTmp->currentSnake->setVector(key);
+                    snakesListTmp->currentSnake->setVector(key);
                 }
-                snakeTmp = snakeTmp->nextSnake;
+                snakesListTmp = snakesListTmp->nextSnake;
             }
+            snakesListTmp = nullptr;
         }
 
         if (evolutionParameters.aliveSnakes < 1){
@@ -86,21 +89,23 @@ void Evolution::run()
 }
 
 
-void Evolution::turn()
+void Evolution::turn(struct snakesList *thisSnakes)
 {
-    snakeTmp = snakes;
-    while(snakeTmp->nextSnake){
-        if (snakeTmp->currentSnake->isAlive)
+    snakesList *snakesListTmp = nullptr;
+    snakesListTmp = thisSnakes;
+    while(snakesListTmp->nextSnake){
+        if (snakesListTmp->currentSnake->isAlive)
         {
-            snakeTmp->currentSnake->score++;
-            if (snakeTmp->currentSnake->score > evolutionParameters.score){
-                evolutionParameters.score = snakeTmp->currentSnake->score;
-                evolutionParameters.bestSnakeId = snakeTmp->currentSnake->snakeId;
+            snakesListTmp->currentSnake->score++;
+            if (snakesListTmp->currentSnake->score > evolutionParameters.score){
+                evolutionParameters.score = snakesListTmp->currentSnake->score;
+                evolutionParameters.bestSnakeId = snakesListTmp->currentSnake->snakeId;
             }
-            snakeTmp->currentSnake->move();
+            snakesListTmp->currentSnake->move();
         }
-        snakeTmp = snakeTmp->nextSnake;
+        snakesListTmp = snakesListTmp->nextSnake;
     }
+    snakesListTmp = nullptr;
 
     currentScreen.endFrame();
     currentScreen.clearScreen();
@@ -112,35 +117,39 @@ void Evolution::drawScreen()
     infoBar.drawInfoBar();
     toolsBar.drawToolsBar();
 
-    snakeTmp = snakes;
+    snakesList *snakesListTmp = nullptr;
+    snakesListTmp = snakes;
     do {
-        if (snakeTmp->currentSnake->isAlive){
-            snakeTmp->currentSnake->drawField();
-            squareBar.drawMap(snakeTmp->currentSnake->field);
+        if (snakesListTmp->currentSnake->isAlive){
+            snakesListTmp->currentSnake->drawField();
+            squareBar.drawMap(snakesListTmp->currentSnake->field);
             break;
         }
-        snakeTmp = snakeTmp->nextSnake;
-    } while (snakeTmp->nextSnake);
+        snakesListTmp = snakesListTmp->nextSnake;
+    } while (snakesListTmp->nextSnake);
+    snakesListTmp = nullptr;
 }
 
 
 void Evolution::drawStuff()
 {
-    snakeTmp = snakes;
-    while(snakeTmp->nextSnake){
-        if (snakeTmp->currentSnake->isAlive)
-        { 
-            snakeTmp->currentSnake->drawStuff();
+    snakesList *snakesListTmp = nullptr;
+    snakesListTmp = snakes;
+
+    while(snakesListTmp->nextSnake) {
+        if (snakesListTmp->currentSnake->isAlive) { 
+            snakesListTmp->currentSnake->drawStuff();
         }
-	    snakeTmp = snakeTmp->nextSnake;
-   } 
+	    snakesListTmp = snakesListTmp->nextSnake;
+    }
+    snakesListTmp = nullptr; 
 }
 
 
-void Evolution::initSnakes()
+void Evolution::initSnakes(snakesList *thisSnakes)
 {
-    snakes = new snakesList;
-    snakeTmp = snakes;
+    snakesList *snakesListTmp = nullptr;
+    snakesListTmp = thisSnakes;
 
     for (int count = 0; count < evolutionParameters.countOfSnakes; count++)
 	{
@@ -151,20 +160,29 @@ void Evolution::initSnakes()
             evolutionParameters.snakeLength,
             evolutionParameters.snakeOneBodyColor
         );
-        snakeTmp->currentSnake = newSnake;
-        snakeTmp->nextSnake = new snakesList;
-        snakeTmp = snakeTmp->nextSnake;
-        snakeTmp->nextSnake = nullptr;
+        snakesListTmp->currentSnake = newSnake;
+        snakesListTmp->nextSnake = new snakesList;
+        snakesListTmp = snakesListTmp->nextSnake;
+        snakesListTmp->nextSnake = nullptr;
+        snakesListTmp->currentSnake = nullptr;
     }
+    snakesListTmp = nullptr;
     squareBar.initField(snakes->currentSnake->field);
 }
 
 
 void Evolution::evolveSnakes()
 {
-    getBest();
-    snakeSecondTmp = new snakesList;
-    snakeTmp = snakeSecondTmp;
+    //snakesList *parentSnakes = nullptr;
+    //parentSnakes = getBest(snakes);
+     getBest(snakes);
+
+    snakesList *newSnakesList = new snakesList;
+    snakesList *snakesListTmp = nullptr;
+    snakesListTmp = newSnakesList;
+
+    //snakeSecondTmp = new snakesList;
+    //snakesListTmp = snakeSecondTmp;
 
     int counter = 1;
     for (int count = 0; count < evolutionParameters.countOfSnakes; count++)
@@ -180,182 +198,154 @@ void Evolution::evolveSnakes()
             evolutionParameters.snakeOneBodyColor
         );
 
-        int parentOneNum = 0;
-        int parentTwoNum = 0;
-
         int parentsCount = ((evolutionParameters.countOfSnakes / 10) * evolutionParameters.countOfBest / 10) + ((evolutionParameters.countOfSnakes / 10) * evolutionParameters.countOfWorst / 10);
         
         std::random_device random_device;
         std::mt19937 generator(random_device());
         std::uniform_int_distribution<> randGen(0, parentsCount - 1);
 
+        int parentOneNum = 0;
+        int parentTwoNum = 0;
+
         while (parentOneNum == parentTwoNum) {
             parentOneNum = randGen(generator);
             parentTwoNum = randGen(generator);
         }
 
-        #ifdef LOGS
-            std::ofstream evolveSnake;
-            evolveSnake.open("logs/evolveSnake.txt");
-        #endif 
-
-        snakeListTmp = parentSnakes;
+        snakesList *firstParent = nullptr;
+        firstParent = parentSnakes;
         for (int countX = 0; countX < parentOneNum; countX++){
-            snakeListTmp = snakeListTmp->nextSnake;
+            firstParent = firstParent->nextSnake;
         }
-        #ifdef LOGS
-            evolveSnake << "PARENT 1 NEURON ID : " << snakeListTmp->currentSnake->network.firstLayer->currentNeuron.neuronId << "\n" << std::endl;
-        #endif
 
-        snakeListSecondTmp = parentSnakes;
+        snakesList *secondParent = nullptr;
+        secondParent = parentSnakes;
         for (int countX = 0; countX < parentTwoNum; countX++){
-            snakeListSecondTmp = snakeListSecondTmp->nextSnake;
+            secondParent = secondParent->nextSnake;
         }
-        #ifdef LOGS
-            evolveSnake << "PARENT 2 NEURON ID : " << snakeListSecondTmp->currentSnake->network.firstLayer->currentNeuron.neuronId << "\n" << std::endl;
-        #endif
         
-        newSnake->network.mergeNetworks(parentSnakes->currentSnake->network.layersList, parentSnakes->currentSnake->network.layersList);
+        newSnake->network.mergeNetworks(firstParent->currentSnake->network.layersList, secondParent->currentSnake->network.layersList);
         
-        snakeSecondTmp->currentSnake = newSnake;
-        snakeSecondTmp->nextSnake = new snakesList;
-        snakeSecondTmp = snakeSecondTmp->nextSnake;
-        snakeSecondTmp->nextSnake = nullptr;
+        snakesListTmp->currentSnake = newSnake;
+        snakesListTmp->nextSnake = new snakesList;
+        snakesListTmp = snakesListTmp->nextSnake;
+        snakesListTmp->nextSnake = nullptr;
+        snakesListTmp->currentSnake = nullptr;
         counter++;
     }
-    squareBar.initField(snakes->currentSnake->field);
+
     deleteSnakes(snakes);
-    snakes = snakeTmp;
+    deleteSnakes(parentSnakes);
+    snakes = newSnakesList;
 }
 
 
-void Evolution::deleteSnakes(snakesList *firstSnake)
+void Evolution::deleteSnakes(snakesList *thisSnakes)
 {
-    snakeSecondTmp = firstSnake;
-    while(snakeSecondTmp->nextSnake){
-        snakeSecondTmp->currentSnake->deleteSnake();
-        delete snakeSecondTmp->currentSnake;
-        snakeSecondTmp->currentSnake = nullptr;
-        snakeFoursTmp = snakeSecondTmp;
-        snakeSecondTmp = snakeSecondTmp->nextSnake;
-        delete snakeFoursTmp;
-        snakeFoursTmp = nullptr;
-    }
-    delete snakeSecondTmp;
-    snakeSecondTmp = nullptr;
+    snakesList *snakesTmpList = nullptr;
+    snakesList *snakesSecondTmpList = nullptr;
 
-    if (bestSnake){
-        snakeListTmp = bestSnake;
-        while(snakeListTmp->nextSnake){
-            snakeListSecondTmp = snakeListTmp;
-            snakeListTmp = snakeListTmp->nextSnake;
-            delete snakeListSecondTmp;
-            snakeListSecondTmp = nullptr;
-        }
-        delete snakeListTmp;
-        bestSnake = nullptr;
-    }
+    snakesTmpList = thisSnakes;
 
-    if (parentSnakes){
-        snakeListTmp = parentSnakes;
-        while(snakeListTmp->nextSnake){
-            snakeListSecondTmp = snakeListTmp;
-            snakeListTmp = snakeListTmp->nextSnake;
-            delete snakeListSecondTmp;
-            snakeListSecondTmp = nullptr;
+    while(snakesTmpList){
+        if (snakesTmpList->currentSnake){
+            snakesTmpList->currentSnake->deleteSnake();
+            //delete snakesTmpList->currentSnake;
         }
-        delete snakeListTmp;
-        snakeListTmp = nullptr;
-        parentSnakes = nullptr;
+        snakesTmpList->currentSnake = nullptr;
+        snakesSecondTmpList = snakesTmpList;
+        snakesTmpList = snakesTmpList->nextSnake;
+        delete snakesSecondTmpList;
+        snakesSecondTmpList = nullptr;
     }
 }
 
 
-void Evolution::getBest()
+void Evolution::getBest(snakesList *thisSnakes)
 {
-    snakeTmp = snakes;
-    bestSnake = new bestSnakesList;
-    bestSnake->currentSnake = snakes->currentSnake;
-    bestSnake->prevSnake = nullptr;
-    bestSnake->nextSnake = nullptr;
+    snakesList *snakesListTmp = nullptr;
+    snakesListTmp = thisSnakes;
 
-    while (snakeTmp->nextSnake){
-        if (snakeTmp->currentSnake->score >= bestSnake->currentSnake->score){
-            snakeListTmp = new bestSnakesList;
-            snakeListTmp->currentSnake = snakeTmp->currentSnake;
-            snakeListTmp->prevSnake = nullptr;
-            snakeListTmp->nextSnake = bestSnake;
-            bestSnake->prevSnake = snakeListTmp;
-            bestSnake = snakeListTmp;
-        } else {
-            snakeListTmp = bestSnake;
-            while(snakeListTmp->nextSnake){
-                if (snakeTmp->currentSnake->score >= snakeListTmp->currentSnake->score){
-                    if (snakeListTmp->nextSnake){
-                        snakeListSecondTmp = new bestSnakesList;
-                        snakeListSecondTmp->currentSnake = snakeTmp->currentSnake;
-                        snakeListSecondTmp->prevSnake = snakeListTmp->prevSnake;
-                        snakeListSecondTmp->nextSnake = snakeListTmp;
-                        snakeListTmp->prevSnake->nextSnake = snakeListSecondTmp;
-                        snakeListTmp->prevSnake = snakeListSecondTmp;
-                        break;
-                    } else {
-                        snakeListSecondTmp = new bestSnakesList;
-                        snakeListSecondTmp->currentSnake = snakeTmp->currentSnake;
-                        snakeListSecondTmp->prevSnake = snakeListTmp;
-                        snakeListSecondTmp->nextSnake = nullptr;
-                        snakeListTmp->nextSnake = snakeListSecondTmp;
-                        break;
-                    }
+
+    bestSnakesList *snakesRating = nullptr;
+    snakesRating = new bestSnakesList;
+
+    snakesRating->currentSnake = snakesListTmp->currentSnake;
+    snakesRating->prevSnake = nullptr;
+    snakesRating->nextSnake = nullptr;
+    bestSnakesList *snakesTmpRating = nullptr;
+    snakesListTmp = snakesListTmp->nextSnake;
+
+    while (snakesListTmp->currentSnake){
+        snakesTmpRating = snakesRating;
+        while(snakesTmpRating->currentSnake){
+        
+            if (snakesListTmp->currentSnake->score >= snakesTmpRating->currentSnake->score){
+                bestSnakesList *snakeTmp = new bestSnakesList;
+                snakeTmp->currentSnake = snakesListTmp->currentSnake;
+                snakeTmp->nextSnake = snakesTmpRating;
+                if (snakesTmpRating->prevSnake != nullptr) {
+                    snakeTmp->prevSnake = snakesTmpRating->prevSnake;
+                    snakesTmpRating->prevSnake->nextSnake = snakeTmp;
+                } else {
+                    snakeTmp->prevSnake = nullptr;
+                    snakesRating = snakeTmp;
                 }
-                snakeListTmp = snakeListTmp->nextSnake;
-                if (!snakeListTmp->nextSnake){
-                    snakeListSecondTmp = new bestSnakesList;
-                    snakeListSecondTmp->currentSnake = snakeTmp->currentSnake;
-                    snakeListSecondTmp->prevSnake = snakeListTmp;
-                    snakeListSecondTmp->nextSnake = nullptr;
-                    snakeListTmp->nextSnake = snakeListSecondTmp;
-                    break;
-                }
+                snakesTmpRating->prevSnake = snakeTmp;
+                break;
+            } else if (!snakesTmpRating->nextSnake){
+                snakesTmpRating->nextSnake = new bestSnakesList;
+                snakesTmpRating->nextSnake->currentSnake = snakesListTmp->currentSnake;
+                snakesTmpRating->nextSnake->nextSnake = nullptr;
+                snakesTmpRating->nextSnake->prevSnake = snakesTmpRating;
+                break;
             }
-            
+            snakesTmpRating = snakesTmpRating->nextSnake;
         }
-        snakeTmp = snakeTmp->nextSnake;
+        snakesListTmp = snakesListTmp->nextSnake;
     }
 
-    snakeListTmp = bestSnake;
-    while(snakeListTmp->nextSnake){
-        snakeListTmp = snakeListTmp->nextSnake;
+    snakesTmpRating = snakesRating;
+    while(snakesTmpRating->nextSnake){
+        snakesTmpRating = snakesTmpRating->nextSnake;
     }
-    worstSnake = snakeListTmp->prevSnake;
+    bestSnakesList *worstSnake = nullptr;
+    worstSnake = snakesTmpRating;
 
-    snakeListTmp = bestSnake;
-    parentSnakes = new bestSnakesList;
-    snakeListSecondTmp = parentSnakes;
-    snakeListSecondTmp->prevSnake = nullptr;
+    bestSnakesList *bestSnake = nullptr;
+    bestSnake = snakesRating;
+
+    parentSnakes = new snakesList;
+    snakesList *parentTmpSnakes = nullptr;
+    parentTmpSnakes = parentSnakes;
+
+
     for (int count = 0; count < ((evolutionParameters.countOfSnakes / 10) * evolutionParameters.countOfBest / 10); count++){
-        snakeListSecondTmp->currentSnake = snakeListTmp->currentSnake;
-        snakeListSecondTmp->nextSnake = new bestSnakesList;
-        snakeListSecondTmp->nextSnake->prevSnake = snakeListSecondTmp;
-        snakeListSecondTmp = snakeListSecondTmp->nextSnake;
-        snakeListSecondTmp->nextSnake = nullptr;
+        parentTmpSnakes->currentSnake = bestSnake->currentSnake;
+        parentTmpSnakes->nextSnake = new snakesList;
+        parentTmpSnakes = parentTmpSnakes->nextSnake;
+        parentTmpSnakes->nextSnake = nullptr;
 
-        snakeListTmp = snakeListTmp->nextSnake;
+        bestSnake = bestSnake->nextSnake;
     }
 
-    snakeListTmp = worstSnake;
     for (int count = 0; count < ((evolutionParameters.countOfSnakes / 10) * evolutionParameters.countOfWorst / 10); count++){
-        snakeListSecondTmp->currentSnake = snakeListTmp->currentSnake;
-        snakeListSecondTmp->nextSnake = new bestSnakesList;
-        snakeListSecondTmp->nextSnake->prevSnake = snakeListSecondTmp;
-        snakeListSecondTmp = snakeListSecondTmp->nextSnake;
-        snakeListSecondTmp->nextSnake = nullptr;
+        parentTmpSnakes->currentSnake = worstSnake->currentSnake;
+        parentTmpSnakes->nextSnake = new snakesList;
+        parentTmpSnakes = parentTmpSnakes->nextSnake;
+        parentTmpSnakes->nextSnake = nullptr;
 
-        snakeListTmp = snakeListTmp->nextSnake;
+        worstSnake = worstSnake->prevSnake;
+    }
+    while (snakesRating){
+        snakesTmpRating = snakesRating;
+        snakesRating = snakesRating->nextSnake;
+        delete snakesTmpRating;
     }
 
-    snakeListTmp = parentSnakes;
-    while(snakeListTmp->nextSnake){
-        snakeListTmp = snakeListTmp->nextSnake;
-    }
+    snakesRating = nullptr;
+    worstSnake = nullptr;
+    bestSnake = nullptr;
+    //deleteSnakes(snakesRating);
+    //return parentSnakes;
 }
