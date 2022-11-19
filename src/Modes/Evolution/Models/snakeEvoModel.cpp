@@ -292,6 +292,4 @@ void SnakeEvoModel::deleteSnake()
         delete snakeHeadTail;
         snakeHeadTail = nullptr;
     }
-    //field.deleteField();
-    //network.deleteNetwork();
 }

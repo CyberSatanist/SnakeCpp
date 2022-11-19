@@ -27,6 +27,12 @@ LifeGame::LifeGame()
 }
 
 
+LifeGame::~LifeGame()
+{
+    field.deleteField();
+}
+
+
 void LifeGame::run()
 {
     timeout(lifeGameParameters.delayDuration);

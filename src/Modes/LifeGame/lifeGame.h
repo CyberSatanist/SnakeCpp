@@ -13,13 +13,14 @@ class LifeGame
         LifeInfoBar infoBar;
         LifeToolsBar toolsBar;
 
-        int key;
+        int key = 0;
 
         void turn();
         void drawScreen();
 
     public:
 	    LifeGame();
+        ~LifeGame();
 	    void run();
 };
 #endif

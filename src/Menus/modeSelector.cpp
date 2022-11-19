@@ -6,16 +6,18 @@
 
 void ModeSelector::menuControllSelect()
 {
-    SnakeGame snakeGame;
-    Evolution evolution;
-    LifeGame lifeGame;
-    
     if (currentChoice == menuChoicesConst::SnakeGameChoice){
-	    snakeGame.run();
+        SnakeGame *snakeGame = new SnakeGame;
+	    snakeGame->run();
+        delete snakeGame;
     } else if (currentChoice == menuChoicesConst::EvolutionChoice){
-	    evolution.run();
+        Evolution *evolution = new Evolution;
+	    evolution->run();
+        delete evolution;
     } else if (currentChoice == menuChoicesConst::LifeGameChoice){
-	    lifeGame.run();
+        LifeGame *lifeGame = new LifeGame;
+	    lifeGame->run();
+        delete lifeGame;
     } else if (currentChoice == menuChoicesConst::Back){
         menuOn = false;
     }

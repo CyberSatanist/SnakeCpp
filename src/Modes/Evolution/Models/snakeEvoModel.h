@@ -13,7 +13,6 @@ extern Screen currentScreen;
 class SnakeEvoModel
 {
     private:
-
 		struct snakeBody{
 	    	int cellX = 0;
 			int cellY = 0;
@@ -51,18 +50,16 @@ class SnakeEvoModel
 		
 		void init(int startX, int startY, int length, int color);
 		void deleteSnake();
-		
 		void move();
 		void getSnakeHeadCoordinates(int* x, int* y);
+		void setVector(int direction);
+		void validation();
+		void death();
 
 //Draw
 		void drawField();
 		void drawStuff();
 		void drawSnake();
 		void drawFood();
-
-		void setVector(int direction);
-		void validation();
-		void death();
 };
 #endif
