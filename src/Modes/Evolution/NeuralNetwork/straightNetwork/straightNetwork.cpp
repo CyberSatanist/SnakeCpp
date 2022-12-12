@@ -163,56 +163,11 @@ void StraightNetwork::neuronActivity()
         while (tempLayer->currentNeuron->tmpConnection->nextConnection){
             switch (tempLayer->currentNeuron->input) {
                 case -1:
-                    tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->up += tempLayer->currentNeuron->wallReaction->up;
-                    if (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->up > 100){
-                        tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->up = 100 - (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->up - 100);
-                    } else if (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->up < -100){
-                        tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->up = -100 - (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->up + 100);
-                    }
-                    tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->down += tempLayer->currentNeuron->wallReaction->down;
-                    if (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->down > 100){
-                        tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->down = 100 - (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->down - 100);
-                    } else if (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->down < -100){
-                        tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->down = -100 - (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->down + 100);
-                    }
-                    tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->left += tempLayer->currentNeuron->wallReaction->left;
-                    if (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->left > 100){
-                        tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->left = 100 - (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->left - 100);
-                    } else if (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->left < -100){
-                        tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->left = -100 - (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->left + 100);
-                    }
-                    tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->right += tempLayer->currentNeuron->wallReaction->right;
-                    if (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->right > 100){
-                        tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->right = 100 - (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->right - 100);
-                    } else if (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->right < -100){
-                        tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->right = -100 - (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->right + 100);
-                    }
+                    tempLayer->currentNeuron->tmpConnection->currentNeuron->addResultReaction(tempLayer->currentNeuron->wallReaction);
+                    tempLayer->currentNeuron->tmpConnection->currentNeuron->addResultReaction(tempLayer->currentNeuron->snakeReaction);
                     break;
                 case 1:
-                    tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->up += tempLayer->currentNeuron->foodReaction->up;
-                    if (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->up > 100){
-                        tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->up = 100 - (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->up - 100);
-                    } else if (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->up < -100){
-                        tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->up = -100 - (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->up + 100);
-                    }
-                    tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->down += tempLayer->currentNeuron->foodReaction->down;
-                    if (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->down > 100){
-                        tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->down = 100 - (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->down - 100);
-                    } else if (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->down < -100){
-                        tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->down = -100 - (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->down + 100);
-                    }
-                    tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->left += tempLayer->currentNeuron->foodReaction->left;
-                    if (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->left > 100){
-                        tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->left = 100 - (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->left - 100);
-                    } else if (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->left < -100){
-                        tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->left = -100 - (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->left + 100);
-                    }
-                    tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->right += tempLayer->currentNeuron->foodReaction->right;
-                    if (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->right > 100){
-                        tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->right = 100 - (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->right - 100);
-                    } else if (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->right < -100){
-                        tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->right = -100 - (tempLayer->currentNeuron->tmpConnection->currentNeuron->resultReaction->right + 100);
-                    }
+                    tempLayer->currentNeuron->tmpConnection->currentNeuron->addResultReaction(tempLayer->currentNeuron->foodReaction);
                     break;
             }
             tempLayer->currentNeuron->tmpConnection = tempLayer->currentNeuron->tmpConnection->nextConnection;
@@ -225,29 +180,7 @@ void StraightNetwork::neuronActivity()
 
     for (int neuronCount = 0; neuronCount < (evolutionParameters.lastLayerNeuronCount - 1); neuronCount++){
         lastNeuron->resultReaction->up += tempLayer->currentNeuron->resultReaction->up;
-        if (lastNeuron->resultReaction->up > 100) {
-            lastNeuron->resultReaction->up = 100 - (lastNeuron->resultReaction->up - 100);
-        } else if (lastNeuron->resultReaction->up < -100) {
-            lastNeuron->resultReaction->up = -100 - (lastNeuron->resultReaction->up + 100);
-        }
-        lastNeuron->resultReaction->down += tempLayer->currentNeuron->resultReaction->down;
-        if (lastNeuron->resultReaction->down > 100) {
-            lastNeuron->resultReaction->down = 100 - (lastNeuron->resultReaction->down - 100);
-        } else if (lastNeuron->resultReaction->down < -100) {
-            lastNeuron->resultReaction->down = -100 - (lastNeuron->resultReaction->down + 100);
-        }
-        lastNeuron->resultReaction->left += tempLayer->currentNeuron->resultReaction->left;
-        if (lastNeuron->resultReaction->left > 100) {
-            lastNeuron->resultReaction->left = 100 - (lastNeuron->resultReaction->left - 100);
-        } else if (lastNeuron->resultReaction->left < -100) {
-            lastNeuron->resultReaction->left = -100 - (lastNeuron->resultReaction->left + 100);
-        }
-        lastNeuron->resultReaction->right += tempLayer->currentNeuron->resultReaction->right;
-        if (lastNeuron->resultReaction->right > 100) {
-            lastNeuron->resultReaction->right = 100 - (lastNeuron->resultReaction->right - 100);
-        } else if (lastNeuron->resultReaction->right < -100) {
-            lastNeuron->resultReaction->right = -100 - (lastNeuron->resultReaction->right + 100);
-        }
+        lastNeuron->addResultReaction(tempLayer->currentNeuron->resultReaction);
         tempLayer = tempLayer->nextNeuron;
     }
 
@@ -270,11 +203,14 @@ void StraightNetwork::mergeNetworks(LayersList *parentOne, LayersList *parentTwo
     std::random_device random_device;
     std::mt19937 generator(random_device());
     std::uniform_int_distribution<> randGen(0, 100);
-    std::uniform_int_distribution<> randSynapse(-10, 10);
     int randChance;
 
     layersListTmp = layersList;
+
+    LayersList *layersListParentOne;
     layersListParentOne = parentOne;
+
+    LayersList *layersListParentTwo;
     layersListParentTwo = parentTwo;
 
     int layer = 1;
@@ -286,35 +222,13 @@ void StraightNetwork::mergeNetworks(LayersList *parentOne, LayersList *parentTwo
         while (tempLayer->nextNeuron){
             randChance = randGen(generator);
             if ((randChance < (evolutionParameters.mutationChance / 2)) | (randChance >  (100 -evolutionParameters.mutationChance))){
-                tempLayer->currentNeuron->foodReaction->up = randSynapse(generator);
-                tempLayer->currentNeuron->foodReaction->down = randSynapse(generator);
-                tempLayer->currentNeuron->foodReaction->left = randSynapse(generator);
-                tempLayer->currentNeuron->foodReaction->right = randSynapse(generator);
-
-                tempLayer->currentNeuron->wallReaction->up = randSynapse(generator);
-                tempLayer->currentNeuron->wallReaction->down = randSynapse(generator);
-                tempLayer->currentNeuron->wallReaction->left = randSynapse(generator);
-                tempLayer->currentNeuron->wallReaction->right = randSynapse(generator);
+                tempLayer->currentNeuron->randomSynapse(tempLayer->currentNeuron->foodReaction);
+                tempLayer->currentNeuron->randomSynapse(tempLayer->currentNeuron->wallReaction);
+                tempLayer->currentNeuron->randomSynapse(tempLayer->currentNeuron->snakeReaction);
             } else if (randChance < 50) {
-                tempLayer->currentNeuron->foodReaction->up = layerParentOne->currentNeuron->foodReaction->up;
-                tempLayer->currentNeuron->foodReaction->down = layerParentOne->currentNeuron->foodReaction->down;
-                tempLayer->currentNeuron->foodReaction->left = layerParentOne->currentNeuron->foodReaction->left;
-                tempLayer->currentNeuron->foodReaction->right = layerParentOne->currentNeuron->foodReaction->right;
-
-                tempLayer->currentNeuron->wallReaction->up = layerParentOne->currentNeuron->wallReaction->up;
-                tempLayer->currentNeuron->wallReaction->down = layerParentOne->currentNeuron->wallReaction->down;
-                tempLayer->currentNeuron->wallReaction->left = layerParentOne->currentNeuron->wallReaction->left;
-                tempLayer->currentNeuron->wallReaction->right = layerParentOne->currentNeuron->wallReaction->right;
+                tempLayer->currentNeuron->mergeReactions(layerParentOne->currentNeuron);
             } else {
-                tempLayer->currentNeuron->foodReaction->up = layerParentTwo->currentNeuron->foodReaction->up;
-                tempLayer->currentNeuron->foodReaction->down = layerParentTwo->currentNeuron->foodReaction->down;
-                tempLayer->currentNeuron->foodReaction->left = layerParentTwo->currentNeuron->foodReaction->left;
-                tempLayer->currentNeuron->foodReaction->right = layerParentTwo->currentNeuron->foodReaction->right;
-
-                tempLayer->currentNeuron->wallReaction->up = layerParentTwo->currentNeuron->wallReaction->up;
-                tempLayer->currentNeuron->wallReaction->down = layerParentTwo->currentNeuron->wallReaction->down;
-                tempLayer->currentNeuron->wallReaction->left = layerParentTwo->currentNeuron->wallReaction->left;
-                tempLayer->currentNeuron->wallReaction->right = layerParentTwo->currentNeuron->wallReaction->right;
+                tempLayer->currentNeuron->mergeReactions(layerParentTwo->currentNeuron);
             }
             tempLayer = tempLayer->nextNeuron;
             layerParentOne = layerParentOne->nextNeuron;

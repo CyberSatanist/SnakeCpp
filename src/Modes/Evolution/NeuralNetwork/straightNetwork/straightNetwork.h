@@ -13,10 +13,6 @@ class StraightNetwork : public Network
         StraightNetwork();
         void deleteNetwork();
         bool test = true;
-
-        #ifdef LOGS
-            EvoField field;
-        #endif
         
         int useMind(EvoField evoField, int headX, int headY);
 
@@ -43,17 +39,10 @@ class StraightNetwork : public Network
         LayersList *layersList = nullptr;
         LayersList *layersListTmp = nullptr;
         LayersList *layersListSecondTmp = nullptr;
-        LayersList *layersListParentOne = nullptr;
-        LayersList *layersListParentTwo = nullptr;
-
-
-        void mergeNetworks(struct LayersList *parentOne, struct LayersList *parentTwo);
-
-
-        float randFloat;
 
 
         void tests();
+        void mergeNetworks(struct LayersList *parentOne, struct LayersList *parentTwo);
         void addLayers(int countOfLayers);
         void addNeurons(NeuronsList *firstNeuron, int neuronsCount);
 

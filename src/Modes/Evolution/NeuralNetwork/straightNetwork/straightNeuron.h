@@ -5,6 +5,7 @@ class StraightNeuron
 {
     public:
         StraightNeuron();
+        ~StraightNeuron(){};
 
         int neuronId;
         int input = 0;
@@ -31,6 +32,11 @@ class StraightNeuron
         Reactions *resultReaction = nullptr;
 
         void deleteNeuron();
+        void addResultReaction(Reactions *reaction);
+        void mergeReactions(StraightNeuron *parentNeuron);
+        void setCurrentReaction(Reactions *childReaction, Reactions *parentReaction);
+        void validateReaction(int *reactionInt);
+        void randomSynapse(Reactions *reaction);
 };
 
 #endif

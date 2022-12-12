@@ -9,37 +9,78 @@ StraightNeuron::StraightNeuron()
     neuronId = evolutionParameters.neuronIdCounter;
     evolutionParameters.neuronIdCounter++;
 
-    std::random_device random_device;
-    std::mt19937 generator(random_device());
-    std::uniform_int_distribution<> randGen(-10, 10);
 
     foodReaction = new Reactions;
-    foodReaction->up = randGen(generator);
-    foodReaction->down = randGen(generator);
-    foodReaction->left = randGen(generator);
-    foodReaction->right = randGen(generator);
+    randomSynapse(foodReaction);
 
     wallReaction = new Reactions;
-    wallReaction->up = randGen(generator);
-    wallReaction->down = randGen(generator);
-    wallReaction->left = randGen(generator);
-    wallReaction->right = randGen(generator);
+    randomSynapse(wallReaction);
 
     freeReaction = new Reactions;
-    freeReaction->up = randGen(generator);
-    freeReaction->down = randGen(generator);
-    freeReaction->left = randGen(generator);
-    freeReaction->right = randGen(generator);
+    randomSynapse(freeReaction);
 
     snakeReaction = new Reactions;
-    snakeReaction->up = randGen(generator);
-    snakeReaction->down = randGen(generator);
-    snakeReaction->left = randGen(generator);
-    snakeReaction->right = randGen(generator);
+    randomSynapse(snakeReaction);
 
     resultReaction = new Reactions;
 
     firstConnection = NULL;
+}
+
+
+void StraightNeuron::addResultReaction(Reactions *reaction)
+{
+    resultReaction->up += reaction->up;
+    validateReaction(&(resultReaction->up));
+
+    resultReaction->down += reaction->down;
+    validateReaction(&(resultReaction->down));
+
+    resultReaction->left += reaction->left;
+    validateReaction(&(resultReaction->left));
+
+    resultReaction->right += reaction->right;
+    validateReaction(&(resultReaction->right));
+}
+
+
+void StraightNeuron::validateReaction(int *reactionInt)
+{
+    if (*reactionInt > 100){
+        *reactionInt = 100 - (*reactionInt - 100);
+    } else if (*reactionInt < -100){
+        *reactionInt = -100 - (*reactionInt + 100);
+    }
+}
+
+
+void StraightNeuron::randomSynapse(Reactions *reaction)
+{
+    std::random_device random_device;
+    std::mt19937 generator(random_device());
+    std::uniform_int_distribution<> randGen(-10, 10);
+
+    reaction->up = randGen(generator);
+    reaction->down = randGen(generator);
+    reaction->left = randGen(generator);
+    reaction->right = randGen(generator);
+}
+
+
+void StraightNeuron::mergeReactions(StraightNeuron *parentNeuron)
+{
+    setCurrentReaction(foodReaction, parentNeuron->foodReaction);
+    setCurrentReaction(snakeReaction, parentNeuron->snakeReaction);
+    setCurrentReaction(wallReaction, parentNeuron->wallReaction);
+}
+
+
+void StraightNeuron::setCurrentReaction(Reactions *childReaction, Reactions *parentReaction)
+{
+    childReaction->up = parentReaction->up;
+    childReaction->down = parentReaction->down;
+    childReaction->left = parentReaction->left;
+    childReaction->right = parentReaction->right;
 }
 
 
