@@ -69,6 +69,8 @@ void StraightNetwork::initLayers()
 
 void StraightNetwork::addNeurons(NeuronsList *firstNeuron, int neuronsCount)
 {
+    NeuronsList *tempLayer = nullptr;
+
     tempLayer = firstNeuron;
     tempLayer->currentNeuron = new StraightNeuron;
     lastNeuron = tempLayer->currentNeuron;
@@ -86,6 +88,8 @@ void StraightNetwork::addNeurons(NeuronsList *firstNeuron, int neuronsCount)
 
 void StraightNetwork::initNeuronConnections()
 {
+    NeuronsList *tempLayer = nullptr;
+
     layersListTmp = layersList;
     while(layersListTmp){
         tempLayer = layersListTmp->currentNeuronsList;
@@ -113,6 +117,8 @@ void StraightNetwork::initNeuronConnections()
 
 int StraightNetwork::useMind(EvoField evoField, int headX, int headY)
 {
+
+    NeuronsList *tempLayer = nullptr;
     int radius = (sqrt(evolutionParameters.firstLayerNeuronCount) -1) / 2;
 
     tempLayer = layersList->currentNeuronsList;
@@ -135,11 +141,11 @@ int StraightNetwork::useMind(EvoField evoField, int headX, int headY)
                         tempLayer->currentNeuron->input = -1; //-0->33
                     break;
                     case Field::Wall:
-                        tempLayer->currentNeuron->input = -1; //-1->0
+                        tempLayer->currentNeuron->input = -2; //-1->0
                     break;
                 }
             } else {
-                tempLayer->currentNeuron->input = -1; 
+                tempLayer->currentNeuron->input = -2; 
             }
             tempLayer = tempLayer->nextNeuron;
         }
@@ -156,18 +162,25 @@ int StraightNetwork::useMind(EvoField evoField, int headX, int headY)
 
 void StraightNetwork::neuronActivity()
 {
+
+    NeuronsList *tempLayer = nullptr;
     layersListTmp = layersList;
     tempLayer = layersListTmp->currentNeuronsList;
     while (tempLayer->nextNeuron){
         tempLayer->currentNeuron->tmpConnection = tempLayer->currentNeuron->firstConnection;
         while (tempLayer->currentNeuron->tmpConnection->nextConnection){
             switch (tempLayer->currentNeuron->input) {
-                case -1:
+                case -2:
                     tempLayer->currentNeuron->tmpConnection->currentNeuron->addResultReaction(tempLayer->currentNeuron->wallReaction);
+                    break;
+                case -1:
                     tempLayer->currentNeuron->tmpConnection->currentNeuron->addResultReaction(tempLayer->currentNeuron->snakeReaction);
                     break;
                 case 1:
                     tempLayer->currentNeuron->tmpConnection->currentNeuron->addResultReaction(tempLayer->currentNeuron->foodReaction);
+                    break;
+                case 0:
+                    tempLayer->currentNeuron->tmpConnection->currentNeuron->addResultReaction(tempLayer->currentNeuron->freeReaction);
                     break;
             }
             tempLayer->currentNeuron->tmpConnection = tempLayer->currentNeuron->tmpConnection->nextConnection;
@@ -213,8 +226,11 @@ void StraightNetwork::mergeNetworks(LayersList *parentOne, LayersList *parentTwo
     LayersList *layersListParentTwo;
     layersListParentTwo = parentTwo;
 
-    int layer = 1;
-    int neuron = 1;
+    NeuronsList *layerParentOne = nullptr;
+    NeuronsList *layerParentTwo = nullptr;
+
+    NeuronsList *tempLayer = nullptr;
+
     while(layersListTmp){
         tempLayer = layersListTmp->currentNeuronsList;
         layerParentOne = layersListParentOne->currentNeuronsList;
@@ -225,6 +241,7 @@ void StraightNetwork::mergeNetworks(LayersList *parentOne, LayersList *parentTwo
                 tempLayer->currentNeuron->randomSynapse(tempLayer->currentNeuron->foodReaction);
                 tempLayer->currentNeuron->randomSynapse(tempLayer->currentNeuron->wallReaction);
                 tempLayer->currentNeuron->randomSynapse(tempLayer->currentNeuron->snakeReaction);
+                tempLayer->currentNeuron->randomSynapse(tempLayer->currentNeuron->freeReaction);
             } else if (randChance < 50) {
                 tempLayer->currentNeuron->mergeReactions(layerParentOne->currentNeuron);
             } else {
@@ -233,39 +250,19 @@ void StraightNetwork::mergeNetworks(LayersList *parentOne, LayersList *parentTwo
             tempLayer = tempLayer->nextNeuron;
             layerParentOne = layerParentOne->nextNeuron;
             layerParentTwo = layerParentTwo->nextNeuron;
-            neuron++;
         }
         layersListTmp = layersListTmp->nextLayer; 
         layersListParentOne = layersListParentOne->nextLayer;
         layersListParentTwo = layersListParentTwo->nextLayer;
-        layer++;
     }
-}
-
-
-void StraightNetwork::tests()
-{
-   /* #ifdef LOGS
-        std::ofstream useMindOutput;
-        useMindOutput.open("logs/useMindOutput.txt");
-
-        field.initField(
-            evolutionParameters.currentFieldSizeX,
-            evolutionParameters.currentFieldSizeY,
-            evolutionParameters.fullFieldSizeX,
-            evolutionParameters.fullFieldSizeY
-        );
-        field.initEvoField();
-
-        testNetwork();
-        useMindOutput << useMind(field, 15, 15) << " OUTPUT " << std::endl;
-        useMindOutput.close();
-    #endif*/
 }
 
 
 void StraightNetwork::deleteNetwork()
 {
+    NeuronsList *tempSecondLayer = nullptr;
+    NeuronsList *tempLayer = nullptr;
+
     layersListTmp = layersList;
     while(layersListTmp){
         tempLayer = layersListTmp->currentNeuronsList;

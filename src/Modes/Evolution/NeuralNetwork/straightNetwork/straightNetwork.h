@@ -22,14 +22,8 @@ class StraightNetwork : public Network
         };
         NeuronsList *firstLayer;
         NeuronsList *lastLayer;
-        NeuronsList *tempLayer;
-        NeuronsList *tempSecondLayer;
         NeuronsList *nextLayer;
-        NeuronsList *outputLayer;
         StraightNeuron *lastNeuron;
-
-        NeuronsList *layerParentOne;
-        NeuronsList *layerParentTwo;
 
         struct  LayersList {
             int layerId;
@@ -41,7 +35,6 @@ class StraightNetwork : public Network
         LayersList *layersListSecondTmp = nullptr;
 
 
-        void tests();
         void mergeNetworks(struct LayersList *parentOne, struct LayersList *parentTwo);
         void addLayers(int countOfLayers);
         void addNeurons(NeuronsList *firstNeuron, int neuronsCount);
@@ -51,7 +44,6 @@ class StraightNetwork : public Network
         void initLayers();
         void initNeuronConnections();
         void neuronActivity();
-        void testNetwork();
 
 
 };

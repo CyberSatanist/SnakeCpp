@@ -4,12 +4,13 @@ CFLAGS=-c
 WARNINGS=-Wall
 DEBUG=-g -O0
 LOGS=-D LOGS
-LIBFLAGS=-lncurses
+LIBFLAGS=-lncurses -l sqlite3
 SOURCES=-I src/ -I src/Modes/
 
 ROOT=src/
 MAIN=$(ROOT)Main/
 SCREEN=$(ROOT)Screen/
+DATABASE=$(ROOT)Database/
 FIELD=$(ROOT)Field/
 MENUS=$(ROOT)Menus/
 BARS=$(ROOT)Bars/
@@ -35,6 +36,7 @@ LIFEGAME_BARS=$(LIFEGAME)Bars/
 
 FILES=$(MAIN)main.cpp \
 	$(SCREEN)screen.cpp \
+	$(DATABASE)database.cpp \
 	$(FIELD)field.cpp \
 	$(BARS)infoBar.cpp \
 	$(BARS)toolsBar.cpp \

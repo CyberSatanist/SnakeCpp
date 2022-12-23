@@ -4,6 +4,7 @@
 #include <iostream>
 
 extern EvolutionParameters evolutionParameters;
+extern Database *database;
 
 Evolution::Evolution()
 {
@@ -83,6 +84,16 @@ void Evolution::run()
         toolsBar.menuControllHandler(key);
         if (!evolutionParameters.gameOn){
             deleteSnakes(snakes);
+        }
+
+        if (evolutionParameters.saveGame){
+            saveGame(snakes);
+            evolutionParameters.saveGame = false;
+        }
+
+        if (evolutionParameters.loadGame){
+            loadGame(snakes);
+            evolutionParameters.loadGame = false;
         }
     }
     currentScreen.clearScreen();
@@ -271,8 +282,6 @@ void Evolution::getBest(snakesList *thisSnakes)
     snakesRating = new bestSnakesList;
 
     snakesRating->currentSnake = snakesListTmp->currentSnake;
-    snakesRating->prevSnake = nullptr;
-    snakesRating->nextSnake = nullptr;
     bestSnakesList *snakesTmpRating = nullptr;
     snakesListTmp = snakesListTmp->nextSnake;
 
@@ -348,4 +357,61 @@ void Evolution::getBest(snakesList *thisSnakes)
     bestSnake = nullptr;
     //deleteSnakes(snakesRating);
     //return parentSnakes;
+}
+
+
+int Evolution::saveGame(snakesList *thisSnakes)
+{
+    sqlite3_stmt *stmt;
+
+    std::string request = "INSERT INTO straight_network_session ( "
+                                "generation, best_score, turns_to_death, count_of_snakes, snake_length, count_of_food, "
+                                "count_of_borders, first_layer_neuron_count, last_layer_neuron_count, output_layer_neuron_count, "
+                                "count_of_best, count_of_worst, mutation_chance, game_sub_mode_id "
+                            ") values ("
+                                "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, (SELECT ID FROM game_sub_modes WHERE name='Straight Network') "
+                            ")";
+
+    int result = sqlite3_prepare_v2(database->ppDb, request.c_str(), -1, &stmt, NULL);
+    if (result) {
+        printf("Error executing sql statement\n");
+        sqlite3_close(database->ppDb);
+        exit(1);
+    }
+
+    sqlite3_bind_int(stmt, 1, evolutionParameters.generation);
+    sqlite3_bind_int(stmt, 2, evolutionParameters.theBestScore);
+    sqlite3_bind_int(stmt, 3, evolutionParameters.turnsToDeath);
+    sqlite3_bind_int(stmt, 4, evolutionParameters.countOfSnakes);
+    sqlite3_bind_int(stmt, 5, evolutionParameters.snakeLength);
+    sqlite3_bind_int(stmt, 6, evolutionParameters.countOfFood);
+    sqlite3_bind_int(stmt, 7, evolutionParameters.countOfBorders);
+    sqlite3_bind_int(stmt, 8, evolutionParameters.firstLayerNeuronCount);
+    sqlite3_bind_int(stmt, 9, evolutionParameters.lastLayerNeuronCount);
+    sqlite3_bind_int(stmt, 10, evolutionParameters.outputLayerNeuronCount);
+    sqlite3_bind_int(stmt, 11, evolutionParameters.countOfBest);
+    sqlite3_bind_int(stmt, 12, evolutionParameters.countOfWorst);
+    sqlite3_bind_int(stmt, 13, evolutionParameters.mutationChance);
+
+    sqlite3_step(stmt);
+
+    sqlite3_finalize(stmt);
+
+    sqlite3_exec(ppDb, "SELECT ID FROM straight_network_session ORDER BY ID DESC", saveSnakes, 0, &(database->errmsg));
+
+    return 0;
+
+}
+
+
+int saveSnakes(void *NotUsed, int argc, char **argv, char **azColName)
+{
+    
+    return 0;
+}
+
+
+int Evolution::loadGame(snakesList *thisSnakes)
+{
+    return 0;
 }

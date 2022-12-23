@@ -5,6 +5,7 @@
 #include <Evolution/Bars/evoToolsBar.h>
 #include <Evolution/Bars/evoSquareBar.h>
 #include <Evolution/Models/snakeEvoModel.h>
+#include <Database/database.h>
 
 extern Screen currentScreen;
 
@@ -32,12 +33,15 @@ class Evolution
         };
 
         void turn(snakesList *thisSnakes);
+        int saveGame(snakesList *thisSnakes);
+        int loadGame(snakesList *thisSnakes);
         void drawScreen();
         void evolveSnakes();
         void getBest(snakesList* thisSnakes);
         void initSnakes(snakesList *thisSnakes);
         void drawStuff();
         void deleteSnakes(snakesList *thisSnakes);
+        static int saveSnakes(void *NotUsed, int argc, char **argv, char **azColName);
 
     public:
         Evolution();

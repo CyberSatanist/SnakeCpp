@@ -7,7 +7,9 @@ extern EvolutionParameters evolutionParameters;
 void EvoToolsBar::menuControllSelect()
 {
     if (currentChoice == toolsBarChoicesConst::Save){
+        evolutionParameters.saveGame = true;
     } else if (currentChoice == toolsBarChoicesConst::Load){
+        evolutionParameters.loadGame = true;
     } else if (currentChoice == toolsBarChoicesConst::SpeedUp){
         if (evolutionParameters.delayDuration == 1) {
             evolutionParameters.delayDuration = 200;

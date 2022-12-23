@@ -72,6 +72,7 @@ void StraightNeuron::mergeReactions(StraightNeuron *parentNeuron)
     setCurrentReaction(foodReaction, parentNeuron->foodReaction);
     setCurrentReaction(snakeReaction, parentNeuron->snakeReaction);
     setCurrentReaction(wallReaction, parentNeuron->wallReaction);
+    setCurrentReaction(freeReaction, parentNeuron->freeReaction);
 }
 
 

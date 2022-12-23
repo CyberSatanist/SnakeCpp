@@ -7,6 +7,8 @@ class EvolutionParameters : public Parameters
 {
     public:
         int delayDuration = 10;
+        bool saveGame = false;
+        bool loadGame = false;
 
 //Statistic info
         int generation = 1;
