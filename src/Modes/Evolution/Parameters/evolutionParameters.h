@@ -25,7 +25,7 @@ class EvolutionParameters : public Parameters
 
 //SnakeParameters
         int countOfSnakes = 100;
-        int snakeLength = 6;
+        int snakeLength = 2;
         int snakeHeadColor = COLOR_YELLOW;
         int snakeOneBodyColor = COLOR_GREEN;
         int snakeTwoBodyColor = COLOR_BLACK;
@@ -51,7 +51,7 @@ class EvolutionParameters : public Parameters
         int foodCellColor = COLOR_RED;
 
 //Neural Network
-        int countOfLayers = 0;
+        int countOfLayers = 1;
         int countOfNeuronsInLayer = 0;
         int neuronIdCounter = 1;
         int layerIdCounter = 1;

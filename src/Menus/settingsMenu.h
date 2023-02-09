@@ -2,22 +2,19 @@
 #define SETTINGSMENU_H
 
 #include "menu.h"
+#include "SnakeGame/Menus/snakeSettingsMenu.h"
+#include "Evolution/Menus/evoSettingsMenu.h"
 
 
 class SettingsMenu : public Menu
 {
+
+    public:
+        SettingsMenu();
+        ~SettingsMenu() {};
     
+
     private:
-
-        static const int menuChoiceCount = 3;
-
-        std::string menuChoices[menuChoiceCount] = 
-	    {
-            "Snake Game settings",
-	       	"Evolution settings",
-    		"Back"
-	    };
-
         enum menuChoicesConst 
 	    {
             SnakeGameSettignsChoice, 
@@ -25,12 +22,10 @@ class SettingsMenu : public Menu
 		    Back
 	    };
 
+		SnakeSettingsMenu snakeSettingsMenu;
+		EvoSettingsMenu evoSettingsMenu;
+
         void menuControllSelect() override;
 
-    public:
-        SettingsMenu() {
-            this->menuConst = menuChoiceCount;
-            this->menuTitle = "   ~S E T T I N G S  S E L E C T O R~   ";
-        };
 };
 #endif

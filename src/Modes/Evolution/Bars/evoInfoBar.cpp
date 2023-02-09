@@ -4,6 +4,37 @@
 extern EvolutionParameters evolutionParameters;
 
 
+EvoInfoBar::EvoInfoBar(int xStart, int yStart, int xEnd, int yEnd) : InfoBar(xStart, yStart, xEnd, yEnd)
+{
+    barTitle = "~INFORMATION~";
+
+    barChoices = 
+    {
+        "Gen.",
+        "Best Id",
+        "Max Food",
+        "Alive",
+        "Mutations",
+        "TurnsToDeath",
+        "Time",
+
+        "Best Score",
+        "Score",
+        "Food",
+        "Turns",
+        "TurnsLeft",
+        "Borders",
+        "Speed"
+    };
+
+    rows = barChoices.size() / 2;
+    columns = barChoices.size() / rows;
+
+    firstBarTitle = Generation;
+    lastBarTitle = Speed;
+};
+
+
 int EvoInfoBar::getParameter(int count)
 {
     switch(count) {
@@ -18,6 +49,9 @@ int EvoInfoBar::getParameter(int count)
             break;
         case Score:
             return evolutionParameters.score;
+            break;
+        case Food:
+            return evolutionParameters.countOfFood;
             break;
         case MutChance:
             return evolutionParameters.mutationChance;
@@ -37,16 +71,16 @@ int EvoInfoBar::getParameter(int count)
         case TurnsLeft:
             return evolutionParameters.hightTurnsLeft;
             break;
+        case TurnsToDeath:
+            return evolutionParameters.turnsToDeath;
+            break;
+        case Borders:
+            return evolutionParameters.countOfBorders;
+            break;
         case Speed:
             return evolutionParameters.delayDuration;
             break;
         default:
             return 0;
     }
-}
-
-void EvoInfoBar::writeString(int count)
-{
-    const char *string = infoBarChoices[count].c_str();
-    currentScreen.writeText(string);
 }

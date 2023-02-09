@@ -4,12 +4,14 @@
 
 class Screen
 {
-
     protected:
         int hight, width, key;
         enum { colors_count = 8 };
 
     public:
+		Screen();
+		~Screen();
+
 		static constexpr int all_colors[colors_count] = {
 		    COLOR_BLACK, COLOR_RED, COLOR_GREEN, COLOR_YELLOW,
 			COLOR_BLUE, COLOR_MAGENTA, COLOR_CYAN, COLOR_WHITE
@@ -19,16 +21,14 @@ class Screen
 	    	UP, DOWN, LEFT, RIGHT, SELECT, ESCAPE, NOTHING
 		};
         
-		Screen();
-		int getHight() { return hight ;}
-		int getWidth() { return width ;}
+		inline int getHight() { return hight ;}
+		inline int getWidth() { return width ;}
 		controll_keys controllHandler();
 		void endFrame();
 		void clearScreen();
 		void writeText(const char* text);
 		void setCursor(int x, int y);
 		void setColor(int fg, int bg);
-		void finishWindow();
 
 };
 #endif

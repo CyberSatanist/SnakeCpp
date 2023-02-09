@@ -4,12 +4,17 @@
 extern EvolutionParameters evolutionParameters;
 
 
-void SnakeEvoModel::init(int startX, int startY, int length, int color)
+SnakeEvoModel::SnakeEvoModel(int startX, int startY, int length, int color)
+    : field(evolutionParameters.currentFieldSizeX, evolutionParameters.currentFieldSizeY, evolutionParameters.fullFieldSizeX, evolutionParameters.fullFieldSizeY)
 {
-    initField();
-
     snakeId = evolutionParameters.snakeIdCounter;
     evolutionParameters.snakeIdCounter++;
+}
+
+
+void SnakeEvoModel::init(int startX, int startY, int length, int color)
+{
+    delete currentBody; 
 
     currentBody = new snakeBody;
 
@@ -37,6 +42,7 @@ void SnakeEvoModel::init(int startX, int startY, int length, int color)
     initFood();
     initBorders();
 }
+
 
 void SnakeEvoModel::drawField()
 {
@@ -132,25 +138,6 @@ void SnakeEvoModel::validation()
 
 void SnakeEvoModel::setVector(int direction)
 {
-
-    /*float vetc = network.useMind(field, snakeHeadTail->firstCell->cellX, snakeHeadTail->firstCell->cellY);
-
-    if (vetc >= 0.5){
-        direction = Screen::controll_keys::RIGHT;
-    } else if ((vetc < 0.5) & (vetc >= 0)){
-        direction = Screen::controll_keys::UP;
-    } else if ((vetc < 0) & (vetc >= -0.5)){
-        direction = Screen::controll_keys::LEFT;
-    } else if ((vetc < -0.5)){
-        direction = Screen::controll_keys::DOWN;
-    }
-    #ifdef LOGS
-        std::ofstream setVector;
-        setVector.open("logs/setVector.txt");
-        setVector << "Vector: " << vetc << std::endl;
-        setVector << "Direction: " << direction << std::endl;
-        setVector.close();
-    #endif*/
     direction = network.useMind(field, snakeHeadTail->firstCell->cellX, snakeHeadTail->firstCell->cellY);
 
     switch (direction) {
@@ -178,24 +165,12 @@ void SnakeEvoModel::setVector(int direction)
 }
 
 
-void SnakeEvoModel::initField()
-{
-    field.initField(
-        evolutionParameters.currentFieldSizeX,
-        evolutionParameters.currentFieldSizeY,
-        evolutionParameters.fullFieldSizeX,
-        evolutionParameters.fullFieldSizeY
-    );
-    field.initEvoField();
-}
-
-
 void SnakeEvoModel::initFood()
 {
     std::random_device random_device;
     std::mt19937 generator(random_device());
-    std::uniform_int_distribution<> randGenX(field.currentBeginX + 1, field.fullSizeX - 1);
-    std::uniform_int_distribution<> randGenY(field.currentBeginY + 1, field.fullSizeY - 1);
+    std::uniform_int_distribution<> randGenX(field.getCurrentBeginX() + 1, field.getFullSizeX() - 1);
+    std::uniform_int_distribution<> randGenY(field.getCurrentBeginY() + 1, field.getFullSizeY() - 1);
     int foodX = randGenX(generator);
     int foodY = randGenY(generator);
 
@@ -214,8 +189,8 @@ void SnakeEvoModel::initBorders()
 {
     std::random_device random_device;
     std::mt19937 generator(random_device());
-    std::uniform_int_distribution<> randGenX(field.currentBeginX + 1, field.fullSizeX - 1);
-    std::uniform_int_distribution<> randGenY(field.currentBeginY + 1, field.fullSizeY - 1);
+    std::uniform_int_distribution<> randGenX(field.getCurrentBeginX() + 1, field.getFullSizeX() - 1);
+    std::uniform_int_distribution<> randGenY(field.getCurrentBeginY() + 1, field.getFullSizeY() - 1);
     int borderX = randGenX(generator);
     int borderY = randGenY(generator);
 
@@ -253,8 +228,8 @@ void SnakeEvoModel::newFood()
 {
     std::random_device random_device;
     std::mt19937 generator(random_device());
-    std::uniform_int_distribution<> randGenX(field.currentBeginX + 1, field.fullSizeX - 1);
-    std::uniform_int_distribution<> randGenY(field.currentBeginY + 1, field.fullSizeY - 1);
+    std::uniform_int_distribution<> randGenX(field.getCurrentBeginX() + 1, field.getFullSizeX() - 1);
+    std::uniform_int_distribution<> randGenY(field.getCurrentBeginY() + 1, field.getFullSizeY() - 1);
     int foodX = randGenX(generator);
     int foodY = randGenY(generator);
 
@@ -272,13 +247,12 @@ void SnakeEvoModel::death()
     evolutionParameters.aliveSnakes--;
 }
 
+
 void SnakeEvoModel::deleteSnake()
 {
 	snakeBody* snakeTmp = nullptr;
 	snakeBody* snakeSecondTmp = nullptr;
 
-    field.deleteField();
-    network.deleteNetwork();
     if (snakeHeadTail){
         snakeTmp = snakeHeadTail->firstCell;
         while(snakeTmp)

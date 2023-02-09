@@ -1,5 +1,6 @@
 #include "settings.h"
 
+
 void Settings::run()
 {
     currentScreen.clearScreen();
@@ -15,7 +16,7 @@ void Settings::run()
 void Settings::menuFrame()
 {
     int count = 0;
-    currentMenuTitle = firstMenuTitle;
+    int currentMenuTitle = firstMenuTitle;
     for (int currentColumn = 1; currentColumn <= columns; currentColumn++) {
         for (int currentRow = 1; currentRow <= rows; currentRow++) {
             currentScreen.setCursor(
@@ -31,11 +32,9 @@ void Settings::menuFrame()
             writeString(count);
 
             if (count > colorsFrom) {
-                currentParameter = getParameter(currentMenuTitle);
-                printColor(currentParameter);
+                printColor(getParameter(currentMenuTitle));
             } else {
-                currentParameter = getParameter(currentMenuTitle);
-                printParameter(currentParameter);
+                printParameter(getParameter(currentMenuTitle));
             }
             
             currentMenuTitle++;
@@ -43,12 +42,12 @@ void Settings::menuFrame()
         }
     }
 
-    for (int currentButton = 0; currentButton < buttonsConst; currentButton++){
+    for (int currentButton = 0; currentButton < (int) buttonChoices.size(); currentButton++){
         currentScreen.setCursor(
-            currentScreen.getHight() / (rows + buttonsConst) * (rows + currentButton + 1),
+            currentScreen.getHight() / (rows + (int) buttonChoices.size()) * (rows + currentButton + 1),
             currentScreen.getWidth() / 2
         );
-        if (currentChoice == (menuConst + buttonsConst - 1)) {
+        if (currentChoice == ((int) menuChoices.size() + (int) buttonChoices.size() - 1)) {
             setMenuChosenColor();
         } else {
             setMenuLineColor();
@@ -64,13 +63,13 @@ void Settings::menuControllHandler()
     switch(currentScreen.controllHandler()) {
         case currentScreen.controll_keys::UP: 
             if (currentChoice == 0) {
-                currentChoice = menuConst + buttonsConst - 1;
+                currentChoice = (int) menuChoices.size() + (int) buttonChoices.size() - 1;
             } else {
                 currentChoice--;
             }
             break;
         case currentScreen.controll_keys::DOWN: 
-            if (currentChoice == menuConst + buttonsConst - 1) {
+            if (currentChoice == (int) menuChoices.size() + (int) buttonChoices.size() - 1) {
                 currentChoice = 0;
             } else {
                 currentChoice++;
@@ -95,13 +94,9 @@ void Settings::menuControllHandler()
 
 void Settings::printParameter(int parameter)
 {
-    std::string parameterString;
-    parameterString = std::to_string(parameter);
-    const char *parameterChar = parameterString.c_str();
-
     currentScreen.writeText(space);
     currentScreen.writeText(leftArrow);
-	currentScreen.writeText(parameterChar);
+	currentScreen.writeText(std::to_string(parameter).c_str());
     currentScreen.writeText(rightArrow);
 }
 
@@ -137,11 +132,10 @@ void Settings::printColor(int parameter)
             parameterString = "White";
             break;
     }
-    const char *parameterChar = parameterString.c_str();
     
     currentScreen.writeText(space);
     currentScreen.writeText(leftArrow);
-	currentScreen.writeText(parameterChar);
+	currentScreen.writeText(parameterString.c_str());
     currentScreen.writeText(rightArrow);
 }
 
@@ -161,4 +155,16 @@ void Settings::setMenuLineColor()
 void Settings::setMenuTitleColor()
 {
     currentScreen.setColor(COLOR_BLACK, COLOR_YELLOW);
+}
+
+
+void Settings::writeString(int count)
+{
+    currentScreen.writeText(menuChoices.at(count).c_str());
+}
+
+
+void Settings::writeButton(int count)
+{
+    currentScreen.writeText(buttonChoices.at(count).c_str());
 }

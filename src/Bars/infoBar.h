@@ -1,38 +1,18 @@
 #ifndef INFO_BAR_H
 #define INFO_BAR_H
-#include <Screen/screen.h>
-#include <string>
 
-extern Screen currentScreen;
+#include "Bars/bar.h"
 
-class InfoBar
+
+class InfoBar : public Bar
 {
-    protected:
-        std::string barTitle;
-        enum infoBarChoicesConst {}; 
+    public:
+        InfoBar(int xStart, int yStart, int xEnd, int yEnd) : Bar(xStart, yStart, xEnd, yEnd) {};
+        ~InfoBar() {};
 
-        int count;
-        int rows;
-        int columns;
-        bool infoBarOn = false;
-
-        int infoBarXStart;
-        int infoBarYStart;
-        int infoBarXEnd;
-        int infoBarYEnd;
-
-        int firstInfoBarTitle;
-        int currentInfoBarTitle;
-        int lastInfoBarTitle;
-        int currentInfoParameter;
+        void drawBar() override;
 
         virtual int getParameter(int count) { return 0; };
-        virtual void writeString(int count) {};
-        void printParameter(int parameter);
-
-    public:
-        void initInfoBar(int xStart, int yStart, int xEnd, int yEnd);
-        void drawInfoBar();
 
 };
 

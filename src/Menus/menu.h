@@ -2,21 +2,29 @@
 #define MENU_H
 
 #include <string>
-#include <Screen/screen.h>
+#include <vector>
+#include "Screen/screen.h"
 
 extern Screen currentScreen;
 
 class Menu
 {
+    public:
+        Menu() {};
+        ~Menu() {};
+
+    
+    public:
+        void run();
+
 
     protected:
         int currentChoice = 0;
         int menuChoiceCount = 0;
         bool menuOn = false;
 
-        int menuConst;
         std::string menuTitle;
-        std::string menuChoices[0];
+        std::vector<std::string> menuChoices;
         enum menuChoicesConst {}; 
 
         virtual void menuControllSelect(){};
@@ -26,12 +34,6 @@ class Menu
         void setMenuChosenColor();
         void setMenuLineColor();
         void setMenuTitleColor();
-
-    public:
-        void run();
-
-
-
 
 };
 #endif

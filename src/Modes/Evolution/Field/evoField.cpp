@@ -1,6 +1,18 @@
 #include "evoField.h"
 
 
+EvoField::EvoField(int currentX, int currentY, int fullX, int fullY) : Field(currentX, currentY, fullX, fullY)
+{
+    for (int countX = 0; countX < fullSizeX; countX++) {
+        for (int countY = 0; countY < fullSizeY; countY++) {
+            if ((countX == 0) || (countY == 0) || (countX == (fullSizeX - 1)) || (countY == (fullSizeY - 1))) {
+                setCell(countX, countY, Field::Wall);
+            }
+        }
+    }
+}
+
+
 void EvoField::drawCell(int cellX, int cellY)
 {
     if(getCell(cellX, cellY) == Field::Free){
@@ -19,18 +31,6 @@ void EvoField::drawCell(int cellX, int cellY)
         currentScreen.setColor(evolutionParameters.foodCellColor, evolutionParameters.foodCellColor);
         currentScreen.setCursor(cellX, cellY);
         currentScreen.writeText(" ");
-    }
-}
-
-
-void EvoField::initEvoField()
-{
-    for (int countX = 0; countX < fullSizeX; countX++) {
-        for (int countY = 0; countY < fullSizeY; countY++) {
-            if ((countX == 0) || (countY == 0) || (countX == (fullSizeX - 1)) || (countY == (fullSizeY - 1))) {
-                setCell(countX, countY, Field::Wall);
-            }
-        }
     }
 }
 

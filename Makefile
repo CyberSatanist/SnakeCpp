@@ -27,6 +27,7 @@ EVOLUTION_MENUS=$(EVOLUTION)Menus/
 EVOLUTION_NEURAL_NETWORK=$(EVOLUTION)NeuralNetwork/
 EVOLUTION_STANDART_NETWORK=$(EVOLUTION_NEURAL_NETWORK)standartNetwork/
 EVOLUTION_STAIGHT_NETWORK=$(EVOLUTION_NEURAL_NETWORK)straightNetwork/
+EVOLUTION_SIMPLE_NETWORK=$(EVOLUTION_NEURAL_NETWORK)simpleNetwork/
 EVOLUTION_BARS=$(EVOLUTION)Bars/
 
 LIFEGAME=$(MODES)LifeGame/
@@ -38,6 +39,7 @@ FILES=$(MAIN)main.cpp \
 	$(SCREEN)screen.cpp \
 	$(DATABASE)database.cpp \
 	$(FIELD)field.cpp \
+	$(BARS)bar.cpp \
 	$(BARS)infoBar.cpp \
 	$(BARS)toolsBar.cpp \
 	$(BARS)squareBar.cpp \
@@ -59,7 +61,7 @@ FILES=$(MAIN)main.cpp \
 	$(EVOLUTION_STANDART_NETWORK)standartNetwork.cpp \
 	$(EVOLUTION_STANDART_NETWORK)standartNeuron.cpp \
 	$(EVOLUTION_STAIGHT_NETWORK)straightNetwork.cpp \
-	$(EVOLUTION_STAIGHT_NETWORK)straightNeuron.cpp \
+	$(EVOLUTION_SIMPLE_NETWORK)simpleNetwork.cpp \
 	$(EVOLUTION_BARS)evoInfoBar.cpp \
 	$(EVOLUTION_BARS)evoToolsBar.cpp \
 	$(EVOLUTION_BARS)evoSquareBar.cpp \

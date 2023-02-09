@@ -6,6 +6,9 @@ extern SnakeParameters snakeParameters;
 
 void SnakeGame::run()
 {
+    currentScreen.endFrame();
+    currentScreen.clearScreen();
+    
 	SnakeModel newSnake;
 	newSnake.init(currentScreen);
 	snakes->currentSnake = newSnake;

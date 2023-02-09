@@ -1,50 +1,41 @@
 #ifndef STRAIGHT_NETWROK_H
 #define STRAIGHT_NETWROK_H
 
-#include <fstream>
-#include <iostream>
-#include "straightNeuron.h"
-#include <Evolution/Field/evoField.h>
-#include <NeuralNetwork/network.h>
+#include "Evolution/Field/evoField.h"
+#include "NeuralNetwork/network.h"
+
 
 class StraightNetwork : public Network
 {
+    int *foodNeuronsUp;
+    int *foodNeuronsDown;
+    int *foodNeuronsLeft;
+    int *foodNeuronsRight;
+    int *wallNeuronsUp;
+    int *wallNeuronsDown;
+    int *wallNeuronsLeft;
+    int *wallNeuronsRight;
+
+    int up = 0;
+    int down = 0;
+    int left = 0;
+    int right = 0;
+
     public:
         StraightNetwork();
-        void deleteNetwork();
-        bool test = true;
+        ~StraightNetwork();
         
-        int useMind(EvoField evoField, int headX, int headY);
+        int useMind(EvoField &evoField, int headX, int headY);
+        void mergeNetworks(StraightNetwork *parentOne, StraightNetwork *parentTwo);
 
-        struct NeuronsList {
-            StraightNeuron *currentNeuron;
-            struct NeuronsList *nextNeuron; 
-        };
-        NeuronsList *firstLayer;
-        NeuronsList *lastLayer;
-        NeuronsList *nextLayer;
-        StraightNeuron *lastNeuron;
-
-        struct  LayersList {
-            int layerId;
-            NeuronsList *currentNeuronsList;
-            struct LayersList *nextLayer;
-        };
-        LayersList *layersList = nullptr;
-        LayersList *layersListTmp = nullptr;
-        LayersList *layersListSecondTmp = nullptr;
-
-
-        void mergeNetworks(struct LayersList *parentOne, struct LayersList *parentTwo);
-        void addLayers(int countOfLayers);
-        void addNeurons(NeuronsList *firstNeuron, int neuronsCount);
+        //Save-load
+        void saveNetwork() {};
+        void loadNetwork() {};
+        
 
     private:
-        void initNetwork();
-        void initLayers();
-        void initNeuronConnections();
-        void neuronActivity();
-
+        int neuronActivity(int result);
+        int validateResult(int result, int weight);
 
 };
 

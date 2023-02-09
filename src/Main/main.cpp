@@ -9,20 +9,13 @@ Screen currentScreen;
 SnakeParameters snakeParameters;
 EvolutionParameters evolutionParameters;
 LifeGameParameters lifeGameParameters;
-Database *database;
+Database database;
 
 
 int main()
 {
-    database = new Database();
-    database->check();
-
     MainMenu mainMenu;
     mainMenu.run();
-
-    currentScreen.finishWindow();
-    
-    delete database;
  
     return 0;
 }

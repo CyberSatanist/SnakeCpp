@@ -1,7 +1,21 @@
 #include "modeSelector.h"
-#include <SnakeGame/snakeGame.h>
-#include <Evolution/evolution.h>
-#include <LifeGame/lifeGame.h>
+#include "SnakeGame/snakeGame.h"
+#include "Evolution/evolution.h"
+#include "LifeGame/lifeGame.h"
+
+
+ModeSelector::ModeSelector()
+{
+    menuTitle = "   ~M O D E  S E L E C T O R~   ";
+
+    menuChoices = 
+    {
+        "Snake Game",
+        "Evolution",
+        "Life Game",
+        "Back"
+    };
+}
 
 
 void ModeSelector::menuControllSelect()

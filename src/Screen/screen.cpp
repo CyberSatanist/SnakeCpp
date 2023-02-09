@@ -4,6 +4,7 @@
 
 Screen::Screen()
 {
+    key = 0;
     initscr();
     cbreak();
     keypad(stdscr, 1);
@@ -11,6 +12,13 @@ Screen::Screen()
     curs_set(0);
     start_color();
     getmaxyx(stdscr, hight, width);
+}
+
+
+Screen::~Screen()
+{
+    clearScreen();
+    endwin();
 }
 
 void Screen::endFrame() 
@@ -35,10 +43,6 @@ void Screen::setCursor(int x, int y)
     move(x , y);
 }
 
-void Screen::finishWindow()
-{
-    endwin();
-}
 
 void Screen::setColor(int fg, int bg)
 {

@@ -4,23 +4,40 @@
 extern LifeGameParameters lifeGameParameters;
 
 
-void LifeToolsBar::menuControllSelect()
+LifeToolsBar::LifeToolsBar(int xStart, int yStart, int xEnd, int yEnd) : ToolsBar(xStart, yStart, xEnd, yEnd)
 {
-    if (currentChoice == toolsBarChoicesConst::Save){
-    } else if (currentChoice == toolsBarChoicesConst::Load){
-    } else if (currentChoice == toolsBarChoicesConst::Left){
-    } else if (currentChoice == toolsBarChoicesConst::Right){
-    } else if (currentChoice == toolsBarChoicesConst::Up){
-    } else if (currentChoice == toolsBarChoicesConst::Down){
-    } else if (currentChoice == toolsBarChoicesConst::Pause){
-    } else if (currentChoice == toolsBarChoicesConst::Exit){
-        lifeGameParameters.gameOn = false;
-    }
+    barTitle = "~TOOLS~";
+ 
+    barChoices =
+    {
+        "Save current state",
+        "Load state",
+        "Move Left",
+        "Move Right",
+        "Move Up",
+        "Move Down",
+        "Pause",
+        "Exit",
+    };
+
+    rows = 2;
+    columns = barChoices.size() / rows;
+
+    firstBarTitle = Save;
+    lastBarTitle = Exit;
 }
 
 
-void LifeToolsBar::writeString(int count)
+void LifeToolsBar::menuControllSelect()
 {
-    const char *string = toolsBarChoices[count].c_str();
-    currentScreen.writeText(string);
+    if (currentChoice == barChoicesConst::Save){
+    } else if (currentChoice == barChoicesConst::Load){
+    } else if (currentChoice == barChoicesConst::Left){
+    } else if (currentChoice == barChoicesConst::Right){
+    } else if (currentChoice == barChoicesConst::Up){
+    } else if (currentChoice == barChoicesConst::Down){
+    } else if (currentChoice == barChoicesConst::Pause){
+    } else if (currentChoice == barChoicesConst::Exit){
+        lifeGameParameters.gameOn = false;
+    }
 }

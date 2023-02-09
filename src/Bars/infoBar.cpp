@@ -1,52 +1,32 @@
 #include "infoBar.h"
 
-void InfoBar::initInfoBar(int xStart, int yStart, int xEnd, int yEnd)
+extern Screen currentScreen;
+
+
+void InfoBar::drawBar()
 {
-    infoBarXStart = xStart;
-    infoBarYStart = yStart;
-    infoBarXEnd = xEnd;
-    infoBarYEnd = yEnd;
-}
+    int currentBarTitle = firstBarTitle;
+    int count = 0;
 
-
-void InfoBar::drawInfoBar()
-{
-    currentInfoBarTitle = firstInfoBarTitle;
-    count = 0;
-
-    for (int x = infoBarXStart ; x < infoBarXEnd; x++){
-        currentScreen.setCursor(x, infoBarYStart - 1);
-        currentScreen.setColor(COLOR_YELLOW, COLOR_YELLOW);
-        currentScreen.writeText(" ");
-    }
-
+    drawBorders();
+    
     for (int currentColumn = 1; currentColumn <= columns; currentColumn++) {
         for (int currentRow = 1; currentRow <= rows; currentRow++) {
              currentScreen.setCursor(
-                infoBarXStart + (infoBarXEnd - infoBarXStart) / (rows + 1) * currentRow,
-                infoBarYStart + (infoBarYEnd - infoBarYStart) / (columns + 3) * currentColumn * 2 - currentColumn * 2
+                startX + (endX - startX) / (rows + 1) * currentRow,
+                startY + (endY - startY) / (columns + 3) * currentColumn * 2 - currentColumn * 2
             );
             
             currentScreen.setColor(COLOR_WHITE, COLOR_BLACK);
             writeString(count);
 
             currentScreen.setCursor(
-                1 + infoBarXStart + (infoBarXEnd - infoBarXStart) / (rows + 1) * currentRow,
-                infoBarYStart + (infoBarYEnd - infoBarYStart) / (columns + 3) * currentColumn * 2 - currentColumn * 2
+                1 + startX + (endX - startX) / (rows + 1) * currentRow,
+                startY + (endY - startY) / (columns + 3) * currentColumn * 2 - currentColumn * 2
             );
-            currentInfoParameter = getParameter(currentInfoBarTitle);
-            printParameter(currentInfoParameter);
-            currentInfoBarTitle++;
+            printParameter(getParameter(currentBarTitle));
+            currentBarTitle++;
             count++;
         }
     }
-}
-
-
-void InfoBar::printParameter(int parameter)
-{
-    std::string parameterString;
-    parameterString = std::to_string(parameter);
-    const char *parameterChar = parameterString.c_str();
-	currentScreen.writeText(parameterChar);
 }

@@ -6,18 +6,12 @@
 
 class ModeSelector : public Menu
 {
-    
+    public:
+        ModeSelector();
+        ~ModeSelector() {};
+
+
     private:
-
-        static const int menuChoiceCount = 4;
-
-        std::string menuChoices[menuChoiceCount] = 
-	    {
-            "Snake Game",
-	       	"Evolution",
-            "Life Game",
-    		"Back"
-	    };
 
         enum menuChoicesConst 
 	    {
@@ -28,11 +22,6 @@ class ModeSelector : public Menu
 	    };
 
         void menuControllSelect() override;
-
-    public:
-        ModeSelector() {
-            this->menuConst = menuChoiceCount;
-            this->menuTitle = "   ~M O D E  S E L E C T O R~   ";
-        };
+        
 };
 #endif

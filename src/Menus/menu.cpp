@@ -2,17 +2,19 @@
 
 void Menu::menuFrame()
 {
+    //Drawing title
     currentScreen.setCursor(
-        currentScreen.getHight() / (menuConst) - 6,
+        currentScreen.getHight() / ((int) menuChoices.size()) - 6,
         (currentScreen.getWidth() - menuTitle.length()) / 2);
     setMenuTitleColor();
-    const char *title = menuTitle.c_str();
-    currentScreen.writeText(title);
+    currentScreen.writeText(menuTitle.c_str());
     currentScreen.endFrame();
-    for (int count = 0; count < menuConst; count++) {
+
+    //Drawing menu choises
+    for (int count = 0; count < (int) menuChoices.size(); count++) {
       currentScreen.setCursor(
-            (currentScreen.getHight() / (menuConst + 2) * (count+2)),
-            (currentScreen.getWidth() / 2) - (menuChoices[count].length())/2
+            (currentScreen.getHight() / ((int) menuChoices.size() + 2) * (count + 2)),
+            (currentScreen.getWidth() / 2) - (menuChoices.at(count).length()) / 2
         );
 
         if (currentChoice == count) {
@@ -20,10 +22,8 @@ void Menu::menuFrame()
         } else {
             setMenuLineColor();
         }
-                
-        const char *string = menuChoices[count].c_str();
         
-        currentScreen.writeText(string);
+        currentScreen.writeText(menuChoices.at(count).c_str());
     }
 }
 
@@ -45,13 +45,13 @@ void Menu::menuControllHandler()
     switch(currentScreen.controllHandler()) {
         case currentScreen.controll_keys::UP: 
             if (currentChoice == 0) {
-                currentChoice = menuConst - 1;
+                currentChoice = (int) menuChoices.size() - 1;
             } else {
                 currentChoice--;
             }
             break;
         case currentScreen.controll_keys::DOWN: 
-            if (currentChoice == menuConst -1) {
+            if (currentChoice == (int) menuChoices.size() -1) {
                 currentChoice = 0;
             } else {
                 currentChoice++;
@@ -74,7 +74,7 @@ void Menu::menuControllHandler()
 
 void Menu::setMenuChosenColor()
 {
-    currentScreen.setColor(COLOR_BLACK, COLOR_WHITE);
+    currentScreen.setColor(COLOR_BLACK, COLOR_YELLOW);
 }
 
 

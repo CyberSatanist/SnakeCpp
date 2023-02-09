@@ -1,11 +1,9 @@
 #ifndef STANDART_NETWROK_H
 #define STANDART_NETWORK_H
 
-#include <fstream>
-#include <iostream>
 #include "standartNeuron.h"
-#include <Evolution/Field/evoField.h>
-#include <NeuralNetwork/network.h>
+#include "NeuralNetwork/network.h"
+#include "Evolution/Field/evoField.h"
 
 class StandartNetwork : public Network
 {
@@ -15,10 +13,6 @@ class StandartNetwork : public Network
         
         bool test = true;
 
-        #ifdef LOGS
-            EvoField field;
-        #endif
-        
         float useMind(EvoField evoField, int headX, int headY);
 
         struct NeuronsList {

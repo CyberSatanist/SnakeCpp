@@ -67,7 +67,7 @@ int Database::dropDatabase()
     std::cout << "Failed to drop " << errmsg <<  std::endl;
   }
 
-  result = sqlite3_exec(ppDb, "DROP TABLE IF EXISTS straight_network_session;", nullptr, 0, &errmsg);
+  result = sqlite3_exec(ppDb, "DROP TABLE IF EXISTS straight_network_sessions;", nullptr, 0, &errmsg);
   if (result) {
     std::cout << "Failed to drop " << errmsg <<  std::endl;
   }
@@ -192,7 +192,7 @@ int Database::createStandartNetworkSessionTable()
 {
   int result;
 
-  std::string request = "CREATE TABLE IF NOT EXISTS straight_network_session( "
+  std::string request = "CREATE TABLE IF NOT EXISTS straight_network_sessions( "
                           "ID                         INTEGER   NOT NULL Primary key AUTOINCREMENT, "
                           "generation                 BIGINT    NOT NULL, "
                           "best_score                 BIGINT    NOT NULL, "
@@ -225,8 +225,8 @@ int Database::createStandartNetworkSessionTable()
               "ID                          INTEGER   NOT NULL Primary key AUTOINCREMENT, "
               "snake_number                BIGINT    NOT NULL, "
               "count_of_layers             BIGINT    NOT NULL, "
-              "straight_network_session_id INTEGER   NOT NULL, "
-              "FOREIGN KEY (straight_network_session_id) REFERENCES straight_network_session(ID) "
+              "straight_network_sessions_id INTEGER   NOT NULL, "
+              "FOREIGN KEY (straight_network_sessions_id) REFERENCES straight_network_sessions(ID) "
             ");";
 
   result = sqlite3_exec(ppDb, request.c_str(), nullptr, 0, &errmsg);
@@ -276,10 +276,6 @@ int Database::createStandartNetworkSessionTable()
               "snake_reaction_down         INTEGER   NOT NULL, "
               "snake_reaction_left         INTEGER   NOT NULL, "
               "snake_reaction_right        INTEGER   NOT NULL, "
-              "result_reaction_up          INTEGER   NOT NULL, "
-              "result_reaction_down        INTEGER   NOT NULL, "
-              "result_reaction_left        INTEGER   NOT NULL, "
-              "result_reaction_right       INTEGER   NOT NULL, "
               "straight_network_layers_id  INTEGER   NOT NULL, "
               "FOREIGN KEY (straight_network_layers_id) REFERENCES straight_network_layers(ID) "
             ");";
@@ -314,25 +310,25 @@ int Database::createStandartNetworkSessionTable()
 
 int Database::show()
 {
-  printf("\n\n game_modes\n");
+  printf("\n\n\n\n @@@@@\ngame_modes\n@@@@@\n\n");
   sqlite3_exec(ppDb, "SELECT * FROM game_modes", callback, 0, &errmsg);
 
-  printf("\n\n game_sub_modes\n");
+  printf("\n\n\n\n@@@@@\n game_sub_modes\n@@@@@\n\n");
   sqlite3_exec(ppDb, "SELECT * FROM game_sub_modes", callback, 0, &errmsg);
 
-  printf("\n\n straight_network_session\n");
-  sqlite3_exec(ppDb, "SELECT * FROM straight_network_session", callback, 0, &errmsg);
+  printf("\n\n\n\n@@@@@\n straight_network_sessions\n@@@@@\n\n");
+  sqlite3_exec(ppDb, "SELECT * FROM straight_network_sessions", callback, 0, &errmsg);
 
-  printf("\n\n straight_network_snakes\n");
+  printf("\n\n\n\n@@@@@\n straight_network_snakes\n@@@@@\n\n");
   sqlite3_exec(ppDb, "SELECT * FROM straight_network_snakes", callback, 0, &errmsg);
 
-  printf("\n\n straight_network_layers\n");
+  printf("\n\n\n\n@@@@@\n straight_network_layers\n@@@@@\n\n");
   sqlite3_exec(ppDb, "SELECT * FROM straight_network_layers", callback, 0, &errmsg);
 
-  printf("\n\n straight_network_neurons\n");
+  printf("\n\n\n\n@@@@@\n straight_network_neurons\n@@@@@\n\n");
   sqlite3_exec(ppDb, "SELECT * FROM straight_network_neurons", callback, 0, &errmsg);
 
-  printf("\n\n straight_network_connections\n");
+  printf("\n\n\n\n@@@@@\n straight_network_connections\n@@@@@\n\n");
   sqlite3_exec(ppDb, "SELECT * FROM straight_network_connections", callback, 0, &errmsg);
 
   return 0;

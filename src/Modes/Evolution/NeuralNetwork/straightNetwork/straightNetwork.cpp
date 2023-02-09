@@ -7,291 +7,164 @@ extern EvolutionParameters evolutionParameters;
 
 StraightNetwork::StraightNetwork()
 {
-    initNetwork();
-    initLayers();
-    initNeuronConnections();
-}
+    std::random_device random_device;
+    std::mt19937 generator(random_device());
+    std::uniform_int_distribution<> randGen(-100, 100);
 
+    foodNeuronsUp = new int [evolutionParameters.firstLayerNeuronCount];
+    foodNeuronsDown = new int [evolutionParameters.firstLayerNeuronCount];
+    foodNeuronsLeft = new int [evolutionParameters.firstLayerNeuronCount];
+    foodNeuronsRight = new int [evolutionParameters.firstLayerNeuronCount];
 
-void StraightNetwork::initNetwork()
-{
-    evolutionParameters.layerIdCounter = 1;
-    layersList = nullptr;
-    int countOfLayers = 2;
-    addLayers(countOfLayers);
+    wallNeuronsUp = new int [evolutionParameters.firstLayerNeuronCount];
+    wallNeuronsDown = new int [evolutionParameters.firstLayerNeuronCount];
+    wallNeuronsLeft = new int [evolutionParameters.firstLayerNeuronCount];
+    wallNeuronsRight = new int [evolutionParameters.firstLayerNeuronCount];
+    for (int neuronCount = 0; neuronCount < evolutionParameters.firstLayerNeuronCount; neuronCount++){
+        foodNeuronsUp[neuronCount] = randGen(generator);
+        foodNeuronsDown[neuronCount] = randGen(generator);
+        foodNeuronsLeft[neuronCount] = randGen(generator);
+        foodNeuronsRight[neuronCount] = randGen(generator);
 
-}
-
-
-void StraightNetwork::addLayers(int countOfLayers)
-{
-    for (int count = 0; count < countOfLayers; count++){
-        if(!layersList){
-            layersList = new LayersList;
-            layersListTmp = layersList;
-
-            firstLayer = new NeuronsList;
-            layersListTmp->currentNeuronsList = firstLayer;
-            layersListTmp->layerId = evolutionParameters.layerIdCounter;
-            evolutionParameters.layerIdCounter++;
-            layersListTmp->nextLayer = nullptr;
-        } else {
-            layersListTmp = layersList;
-            while(layersList->nextLayer){
-                layersList = layersList->nextLayer;
-            }
-
-            layersListTmp->nextLayer = new LayersList;
-            layersListTmp = layersListTmp->nextLayer;
-            layersListTmp->layerId = evolutionParameters.layerIdCounter;
-            evolutionParameters.layerIdCounter++;
-
-            layersListTmp->currentNeuronsList = new NeuronsList;
-            lastLayer = layersListTmp->currentNeuronsList;
-            layersListTmp->nextLayer = nullptr;
-        }
+        wallNeuronsUp[neuronCount] = randGen(generator);
+        wallNeuronsDown[neuronCount] = randGen(generator);
+        wallNeuronsLeft[neuronCount] = randGen(generator);
+        wallNeuronsRight[neuronCount] = randGen(generator);
     }
 }
 
 
-void StraightNetwork::initLayers()
+StraightNetwork::~StraightNetwork()
 {
-    layersListTmp = layersList;
+    delete[] foodNeuronsUp;
+    delete[] foodNeuronsDown;
+    delete[] foodNeuronsLeft;
+    delete[] foodNeuronsRight;
 
-    //first layer
-    addNeurons(layersListTmp->currentNeuronsList, evolutionParameters.firstLayerNeuronCount);
-    layersListTmp = layersListTmp->nextLayer;
-
-    //last layer
-    addNeurons(layersListTmp->currentNeuronsList, evolutionParameters.lastLayerNeuronCount);
+    delete[] wallNeuronsUp;
+    delete[] wallNeuronsDown;
+    delete[] wallNeuronsLeft;
+    delete[] wallNeuronsRight;
 }
 
 
-void StraightNetwork::addNeurons(NeuronsList *firstNeuron, int neuronsCount)
+int StraightNetwork::useMind(EvoField &evoField, int headX, int headY)
 {
-    NeuronsList *tempLayer = nullptr;
-
-    tempLayer = firstNeuron;
-    tempLayer->currentNeuron = new StraightNeuron;
-    lastNeuron = tempLayer->currentNeuron;
-    tempLayer->nextNeuron = nullptr;
-
-    for (int count = 1; count < neuronsCount; count++){
-        tempLayer->nextNeuron = new NeuronsList;
-        tempLayer = tempLayer->nextNeuron;
-        tempLayer->currentNeuron = new StraightNeuron;
-        lastNeuron = tempLayer->currentNeuron;
-        tempLayer->nextNeuron = nullptr;
-    }
-}
-
-
-void StraightNetwork::initNeuronConnections()
-{
-    NeuronsList *tempLayer = nullptr;
-
-    layersListTmp = layersList;
-    while(layersListTmp){
-        tempLayer = layersListTmp->currentNeuronsList;
-
-        while (tempLayer->nextNeuron){
-            tempLayer->currentNeuron->tmpConnection = new StraightNeuron::Connections;
-            tempLayer->currentNeuron->tmpConnection->nextConnection = nullptr;
-            tempLayer->currentNeuron->firstConnection = tempLayer->currentNeuron->tmpConnection;
-            if (layersListTmp->nextLayer){
-                nextLayer = layersListTmp->nextLayer->currentNeuronsList;
-                while(nextLayer->nextNeuron){
-                    tempLayer->currentNeuron->tmpConnection->currentNeuron = nextLayer->currentNeuron;
-                    tempLayer->currentNeuron->tmpConnection->nextConnection = new StraightNeuron::Connections;
-                    tempLayer->currentNeuron->tmpConnection = tempLayer->currentNeuron->tmpConnection->nextConnection;
-                    tempLayer->currentNeuron->tmpConnection->nextConnection = nullptr;
-                    nextLayer = nextLayer->nextNeuron;
-                }
-            }
-            tempLayer = tempLayer->nextNeuron;
-        }
-        layersListTmp = layersListTmp->nextLayer; 
-    }
-}
-
-
-int StraightNetwork::useMind(EvoField evoField, int headX, int headY)
-{
-
-    NeuronsList *tempLayer = nullptr;
     int radius = (sqrt(evolutionParameters.firstLayerNeuronCount) -1) / 2;
+    int neuronCount = 0;
+    int result = 0;
 
-    tempLayer = layersList->currentNeuronsList;
     for (int countX = (headX - radius); countX <= (headX + radius); countX++){
-        for (int countY = (headY - radius); countY <= (headY + radius); countY++){
+        for (int countY = (headY - radius); countY <= (headY + radius); countY++, neuronCount++){
             if (
-                (countX > evoField.currentBeginX)
-                & (countX < evoField.fullSizeX)
-                & (countY > evoField.currentBeginY)
-                & (countY < evoField.fullSizeY)
+                (countX > evoField.getCurrentBeginX())
+                && (countX < evoField.getFullSizeX())
+                && (countY > evoField.getCurrentBeginY())
+                && (countY < evoField.getFullSizeY())
             ) {
                 switch (evoField.getCell(countX, countY)){
+                    //case Field::Free:
+                    //    result = validateResult(result, wallNeurons[neuronCount]);
+                    //    break;
                     case Field::Food:
-                        tempLayer->currentNeuron->input = 1; //1->0
-                        break;
-                    case Field::Free:
-                        tempLayer->currentNeuron->input = 0;//0->33
+                        up = validateResult(up, foodNeuronsUp[neuronCount]);
+                        down = validateResult(down, foodNeuronsDown[neuronCount]);
+                        left = validateResult(left, foodNeuronsLeft[neuronCount]);
+                        right = validateResult(right, foodNeuronsRight[neuronCount]);
                         break;
                     case Field::Snake:
-                        tempLayer->currentNeuron->input = -1; //-0->33
-                    break;
+                        up = validateResult(up, wallNeuronsUp[neuronCount]);
+                        down = validateResult(down, wallNeuronsDown[neuronCount]);
+                        left = validateResult(left, wallNeuronsLeft[neuronCount]);
+                        right = validateResult(right, wallNeuronsRight[neuronCount]);
+                        break;
                     case Field::Wall:
-                        tempLayer->currentNeuron->input = -2; //-1->0
-                    break;
+                        up = validateResult(up, wallNeuronsUp[neuronCount]);
+                        down = validateResult(down, wallNeuronsDown[neuronCount]);
+                        left = validateResult(left, wallNeuronsLeft[neuronCount]);
+                        right = validateResult(right, wallNeuronsRight[neuronCount]);
+                        break;
                 }
             } else {
-                tempLayer->currentNeuron->input = -2; 
+                up = validateResult(up, wallNeuronsUp[neuronCount]);
+                down = validateResult(down, wallNeuronsDown[neuronCount]);
+                left = validateResult(left, wallNeuronsLeft[neuronCount]);
+                right = validateResult(right, wallNeuronsRight[neuronCount]);
             }
-            tempLayer = tempLayer->nextNeuron;
         }
     }
-    neuronActivity();
 
-    layersListTmp = layersList;
-    while(layersListTmp->nextLayer){
-        layersListTmp = layersListTmp->nextLayer;
-    }
-    return lastNeuron->direction;
+    return neuronActivity(result);
 }
 
 
-void StraightNetwork::neuronActivity()
+int StraightNetwork::validateResult(int result, int weight)
 {
-
-    NeuronsList *tempLayer = nullptr;
-    layersListTmp = layersList;
-    tempLayer = layersListTmp->currentNeuronsList;
-    while (tempLayer->nextNeuron){
-        tempLayer->currentNeuron->tmpConnection = tempLayer->currentNeuron->firstConnection;
-        while (tempLayer->currentNeuron->tmpConnection->nextConnection){
-            switch (tempLayer->currentNeuron->input) {
-                case -2:
-                    tempLayer->currentNeuron->tmpConnection->currentNeuron->addResultReaction(tempLayer->currentNeuron->wallReaction);
-                    break;
-                case -1:
-                    tempLayer->currentNeuron->tmpConnection->currentNeuron->addResultReaction(tempLayer->currentNeuron->snakeReaction);
-                    break;
-                case 1:
-                    tempLayer->currentNeuron->tmpConnection->currentNeuron->addResultReaction(tempLayer->currentNeuron->foodReaction);
-                    break;
-                case 0:
-                    tempLayer->currentNeuron->tmpConnection->currentNeuron->addResultReaction(tempLayer->currentNeuron->freeReaction);
-                    break;
-            }
-            tempLayer->currentNeuron->tmpConnection = tempLayer->currentNeuron->tmpConnection->nextConnection;
-        }
-        tempLayer = tempLayer->nextNeuron;
+    result += weight;
+    if (result > 100){
+        return 100 - (result - 100);
+    } else if (result < -100) {
+        return -100 - (result + 100);
     }
+    return result;
+}
 
-    layersListTmp = layersListTmp->nextLayer;
-    tempLayer = layersListTmp->currentNeuronsList;
 
-    for (int neuronCount = 0; neuronCount < (evolutionParameters.lastLayerNeuronCount - 1); neuronCount++){
-        lastNeuron->resultReaction->up += tempLayer->currentNeuron->resultReaction->up;
-        lastNeuron->addResultReaction(tempLayer->currentNeuron->resultReaction);
-        tempLayer = tempLayer->nextNeuron;
-    }
-
-    if ((lastNeuron->resultReaction->up > lastNeuron->resultReaction->down) & (lastNeuron->resultReaction->up > lastNeuron->resultReaction->left) & (lastNeuron->resultReaction->up > lastNeuron->resultReaction->right)) {
-        lastNeuron->direction = Screen::controll_keys::UP;
-    } else if ((lastNeuron->resultReaction->down > lastNeuron->resultReaction->up) & (lastNeuron->resultReaction->down > lastNeuron->resultReaction->left) & (lastNeuron->resultReaction->down > lastNeuron->resultReaction->right)) {
-        lastNeuron->direction = Screen::controll_keys::DOWN;
-    } else if ((lastNeuron->resultReaction->left > lastNeuron->resultReaction->up) & (lastNeuron->resultReaction->left > lastNeuron->resultReaction->down) & (lastNeuron->resultReaction->left > lastNeuron->resultReaction->right)) {
-        lastNeuron->direction = Screen::controll_keys::LEFT;
-    } else if ((lastNeuron->resultReaction->right > lastNeuron->resultReaction->up) & (lastNeuron->resultReaction->right > lastNeuron->resultReaction->down) & (lastNeuron->resultReaction->right > lastNeuron->resultReaction->left)) {
-        lastNeuron->direction = Screen::controll_keys::RIGHT;
+int StraightNetwork::neuronActivity(int result)
+{
+    if ((up > down) && (up > left) && (up > right)) {
+        return Screen::controll_keys::UP;
+    } else if ((down > up) && (down > left) && (down > right)) {
+        return Screen::controll_keys::DOWN;
+    } else if ((left > up) && (left > down) && (left >right)) {
+        return Screen::controll_keys::LEFT;
+    } else {
+        return Screen::controll_keys::RIGHT;
     }
 }
 
 
-
-
-void StraightNetwork::mergeNetworks(LayersList *parentOne, LayersList *parentTwo)
+void StraightNetwork::mergeNetworks(StraightNetwork *parentOne, StraightNetwork *parentTwo)
 {
     std::random_device random_device;
     std::mt19937 generator(random_device());
-    std::uniform_int_distribution<> randGen(0, 100);
-    int randChance;
+    std::uniform_int_distribution<> randGen(-100, 100);
 
-    layersListTmp = layersList;
+    std::mt19937 parentGenerator(random_device());
+    std::uniform_int_distribution<> parentRandom(0, 100);
 
-    LayersList *layersListParentOne;
-    layersListParentOne = parentOne;
+    for (int neuronCount = 0; neuronCount < evolutionParameters.firstLayerNeuronCount; neuronCount++){
+        int randChance = parentRandom(parentGenerator);
+        if ((randChance < (evolutionParameters.mutationChance / 2)) || (randChance >  (100 -evolutionParameters.mutationChance))){
+            wallNeuronsUp[neuronCount] = randGen(generator) / 10;
+            wallNeuronsDown[neuronCount] = randGen(generator) / 10;
+            wallNeuronsLeft[neuronCount] = randGen(generator) / 10;
+            wallNeuronsRight[neuronCount] = randGen(generator) / 10;
 
-    LayersList *layersListParentTwo;
-    layersListParentTwo = parentTwo;
+            foodNeuronsUp[neuronCount] = randGen(generator) / 10;
+            foodNeuronsDown[neuronCount] = randGen(generator) / 10;
+            foodNeuronsLeft[neuronCount] = randGen(generator) / 10;
+            foodNeuronsRight[neuronCount] = randGen(generator) / 10;
+        } else if (randChance < 50) {
+            wallNeuronsUp[neuronCount] = parentOne->wallNeuronsUp[neuronCount];
+            wallNeuronsDown[neuronCount] = parentOne->wallNeuronsDown[neuronCount];
+            wallNeuronsLeft[neuronCount] = parentOne->wallNeuronsLeft[neuronCount];
+            wallNeuronsRight[neuronCount] = parentOne->wallNeuronsRight[neuronCount];
 
-    NeuronsList *layerParentOne = nullptr;
-    NeuronsList *layerParentTwo = nullptr;
+            foodNeuronsUp[neuronCount] = parentOne->foodNeuronsUp[neuronCount];
+            foodNeuronsDown[neuronCount] = parentOne->foodNeuronsDown[neuronCount];
+            foodNeuronsLeft[neuronCount] = parentOne->foodNeuronsLeft[neuronCount];
+            foodNeuronsRight[neuronCount] = parentOne->foodNeuronsRight[neuronCount];
+        } else {
+            wallNeuronsUp[neuronCount] = parentTwo->wallNeuronsUp[neuronCount];
+            wallNeuronsDown[neuronCount] = parentTwo->wallNeuronsDown[neuronCount];
+            wallNeuronsLeft[neuronCount] = parentTwo->wallNeuronsLeft[neuronCount];
+            wallNeuronsRight[neuronCount] = parentTwo->wallNeuronsRight[neuronCount];
 
-    NeuronsList *tempLayer = nullptr;
-
-    while(layersListTmp){
-        tempLayer = layersListTmp->currentNeuronsList;
-        layerParentOne = layersListParentOne->currentNeuronsList;
-        layerParentTwo = layersListParentTwo->currentNeuronsList;
-        while (tempLayer->nextNeuron){
-            randChance = randGen(generator);
-            if ((randChance < (evolutionParameters.mutationChance / 2)) | (randChance >  (100 -evolutionParameters.mutationChance))){
-                tempLayer->currentNeuron->randomSynapse(tempLayer->currentNeuron->foodReaction);
-                tempLayer->currentNeuron->randomSynapse(tempLayer->currentNeuron->wallReaction);
-                tempLayer->currentNeuron->randomSynapse(tempLayer->currentNeuron->snakeReaction);
-                tempLayer->currentNeuron->randomSynapse(tempLayer->currentNeuron->freeReaction);
-            } else if (randChance < 50) {
-                tempLayer->currentNeuron->mergeReactions(layerParentOne->currentNeuron);
-            } else {
-                tempLayer->currentNeuron->mergeReactions(layerParentTwo->currentNeuron);
-            }
-            tempLayer = tempLayer->nextNeuron;
-            layerParentOne = layerParentOne->nextNeuron;
-            layerParentTwo = layerParentTwo->nextNeuron;
+            foodNeuronsUp[neuronCount] = parentTwo->foodNeuronsUp[neuronCount];
+            foodNeuronsDown[neuronCount] = parentTwo->foodNeuronsDown[neuronCount];
+            foodNeuronsLeft[neuronCount] = parentTwo->foodNeuronsLeft[neuronCount];
+            foodNeuronsRight[neuronCount] = parentTwo->foodNeuronsRight[neuronCount];
         }
-        layersListTmp = layersListTmp->nextLayer; 
-        layersListParentOne = layersListParentOne->nextLayer;
-        layersListParentTwo = layersListParentTwo->nextLayer;
     }
-}
-
-
-void StraightNetwork::deleteNetwork()
-{
-    NeuronsList *tempSecondLayer = nullptr;
-    NeuronsList *tempLayer = nullptr;
-
-    layersListTmp = layersList;
-    while(layersListTmp){
-        tempLayer = layersListTmp->currentNeuronsList;
-        while (tempLayer){
-            tempSecondLayer = tempLayer;
-            tempLayer = tempLayer->nextNeuron;
-            tempSecondLayer->currentNeuron->deleteNeuron();
-            tempSecondLayer->nextNeuron = nullptr;
-            delete tempSecondLayer->currentNeuron;
-            tempSecondLayer->currentNeuron = nullptr;
-            delete tempSecondLayer;
-            tempSecondLayer = nullptr;
-        }
-        //tempLayer->currentNeuron->deleteNeuron();
-        //delete tempLayer->currentNeuron;
-        delete tempLayer;
-        tempLayer = nullptr;
-
-        layersListSecondTmp = layersListTmp;
-        layersListTmp = layersListTmp->nextLayer;
-        layersListSecondTmp->nextLayer = nullptr;
-        delete layersListSecondTmp;
-        layersListSecondTmp = nullptr;
-    }
-    delete layersListTmp;
-    layersListTmp = nullptr;
-    firstLayer = nullptr;
-    lastLayer = nullptr;
-    nextLayer = nullptr;
-    lastNeuron = nullptr;
-    layersList = nullptr;
 }

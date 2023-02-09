@@ -1,7 +1,36 @@
 #include "snakeSettingsMenu.h"
-#include <SnakeGame/Parameters/snakeParameters.h>
+#include "SnakeGame/Parameters/snakeParameters.h"
 
 extern SnakeParameters snakeParameters;
+
+
+SnakeSettingsMenu::SnakeSettingsMenu()
+{
+    menuTitle = "   ~S E T T I N G S  M E N U~   ";
+    
+    menuChoices = 
+    {
+        "Game speed",
+        "Length of snakes",
+        "Count of snakes",
+        "Count of foods",
+
+        "Snake head color",
+        "Food color",
+        "Snake body color one",
+        "Snake body color two",
+    };
+
+    buttonChoices = { "Back" };
+    
+    rows = (int) menuChoices.size() / 2;
+    columns = (int) menuChoices.size() / rows;
+
+    colorsFrom = 3;
+
+    firstMenuTitle = GameSpeed;
+    lastMenuTitle = SnakeBodyColorTwo;
+};
 
 
 void SnakeSettingsMenu::setParameter(int currentChoice, int side)
@@ -163,21 +192,7 @@ int SnakeSettingsMenu::getParameter(int count)
 
 void SnakeSettingsMenu::menuControllSelect()
 {
-    if (currentChoice == (menuConst + buttonsConst - 1)){
+    if (currentChoice == ((int) menuChoices.size() + (int) buttonChoices.size() - 1)){
         settingsOn = false;
     }
-}
-
-
-void SnakeSettingsMenu::writeString(int count)
-{
-    const char *string = menuChoices[count].c_str();
-    currentScreen.writeText(string);
-}
-
-
-void SnakeSettingsMenu::writeButton(int count)
-{
-    const char *string = buttonChoices[count].c_str();
-    currentScreen.writeText(string);
 }

@@ -1,36 +1,4 @@
 #include "lifeGame.h"
-#include <LifeGame/Parameters/lifeGameParameters.h>
-
-extern LifeGameParameters lifeGameParameters;
-
-LifeGame::LifeGame()
-{
-    infoBar.initInfoBar(
-        lifeGameParameters.infoBarStartX,
-        lifeGameParameters.infoBarStartY,
-        lifeGameParameters.infoBarEndX,
-        lifeGameParameters.infoBarEndY
-    );
-    toolsBar.initToolsBar(
-        lifeGameParameters.toolsBarStartX,
-        lifeGameParameters.toolsBarStartY, 
-        lifeGameParameters.toolsBarEndX, 
-        lifeGameParameters.toolsBarEndY
-    );
-    field.initField(
-        lifeGameParameters.currentFieldSizeX,
-        lifeGameParameters.currentFieldSizeY,
-        lifeGameParameters.fullFieldSizeX,
-        lifeGameParameters.fullFieldSizeY
-    );   
-
-}
-
-
-LifeGame::~LifeGame()
-{
-    field.deleteField();
-}
 
 
 void LifeGame::run()
@@ -64,7 +32,7 @@ void LifeGame::turn()
 void LifeGame::drawScreen()
 {
     field.drawField();
-    infoBar.drawInfoBar();
-    toolsBar.drawToolsBar();
+    infoBar.drawBar();
+    toolsBar.drawBar();
     currentScreen.endFrame();
 }

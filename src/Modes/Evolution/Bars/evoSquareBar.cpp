@@ -4,35 +4,25 @@
 extern EvolutionParameters evolutionParameters;
 
 
-void EvoSquareBar::initField(Field thatField)
+EvoSquareBar::EvoSquareBar(int xStart, int yStart, int xEnd, int yEnd)
+    : SquareBar(xStart, yStart, xEnd, yEnd)
 {
-    field = thatField;
-    mapSizeX = squareBarXEnd - squareBarXStart;
-    mapSizeY = squareBarYEnd - squareBarYStart;
-    fieldSizeX = field.fullSizeX;
-    fieldSizeY = field.fullSizeY;
-    stepX =  fieldSizeX / mapSizeX + 1;
-    stepY =  fieldSizeY / mapSizeY + 1;
+    mapSizeX = endX - startX;
+    mapSizeY = endY - startY;
 }
 
-void EvoSquareBar::drawMap(Field thatField)
+void EvoSquareBar::drawMap(const Field &field)
 {
-    field = thatField;
+    drawBorders();
 
-    for (int x = squareBarXStart; x < squareBarXEnd; x++){
-        currentScreen.setCursor(x, squareBarYStart - 1);
-        currentScreen.setColor(COLOR_YELLOW, COLOR_YELLOW);
-        currentScreen.writeText(" ");
-    }
-    for (int y = squareBarYStart ; y < squareBarYEnd; y++){
-        currentScreen.setCursor(squareBarXStart - 1, y);
-        currentScreen.setColor(COLOR_YELLOW, COLOR_YELLOW);
-        currentScreen.writeText(" ");
-    }
+    fieldSizeX = field.getFullSizeX();
+    fieldSizeY = field.getFullSizeY();
+    stepX =  fieldSizeX / mapSizeX + 1;
+    stepY =  fieldSizeY / mapSizeY + 1;
 
-    for (int mapX = squareBarXStart, x = 0; mapX < squareBarXEnd; mapX++, x++){
-        for (int mapY = squareBarYStart, y = 0; mapY < squareBarYEnd; mapY++, y++){
-            drawCell(mapX, mapY, getColor(x, y, stepX, stepY));
+    for (int mapX = startX + 1, x = 0; mapX < endX - 1; mapX++, x++){
+        for (int mapY = startY + 1, y = 0; mapY < endY - 1; mapY++, y++){
+            drawCell(mapX, mapY, getColor(x, y, stepX, stepY, field));
         }
     }
 }
@@ -64,24 +54,27 @@ void EvoSquareBar::drawCell(int cellX, int cellY, int color)
 }
 
 
-int EvoSquareBar::getColor(int mapX, int mapY, int stepX, int stepY)
+int EvoSquareBar::getColor(int mapX, int mapY, int stepX, int stepY, const Field &field)
 {
     bool wall = false;
     bool food = false;
     bool free = false;
     for (int countX = (mapX * stepX); countX < (mapX * stepX + stepX); countX++){
-        if ((countX >= 0) & (countX <= (field.fullSizeX - 1))) {
+        if ((countX >= 0) && (countX <= (fieldSizeX - 1))) {
             for (int countY = (mapY * stepY); countY < (mapY * stepY + stepY); countY++) {
-                if ((countY >= 0) & (countY <= (field.fullSizeY - 1))) {
-                    if (field.getCell(countX, countY) == Field::Snake){
-                        return Field::Snake;
-                    }
-                    if (field.getCell(countX, countY) == Field::Wall){
-                        wall = true;
-                    } else if (field.getCell(countX, countY) == Field::Food){
-                        food  = true;
-                    } else if (field.getCell(countX, countY) == Field::Free){
-                        free  = true;
+                if ((countY >= 0) && (countY <= (fieldSizeY - 1))) {
+                    switch(field.getCell(countX, countY)) {
+                        case Field::Snake:
+                            return Field::Snake;
+                        case Field::Wall:
+                            wall = true;
+                            break;
+                        case Field::Food:
+                            food  = true;
+                            break;
+                        case Field::Free:
+                            free  = true;
+                            break;
                     }
                 }
             }

@@ -4,6 +4,23 @@
 extern LifeGameParameters lifeGameParameters;
 
 
+LifeInfoBar::LifeInfoBar(int xStart, int yStart, int xEnd, int yEnd) : InfoBar(xStart, yStart, xEnd, yEnd)
+{
+    barTitle = "~INFORMATION~";
+ 
+    barChoices = 
+    {
+        "Turn"
+    };
+
+    rows = barChoices.size();
+    columns = barChoices.size() / rows;
+
+    firstBarTitle = Turn;
+    lastBarTitle = Turn;
+}
+
+
 int LifeInfoBar::getParameter(int count)
 {
     switch(count) {
@@ -13,11 +30,4 @@ int LifeInfoBar::getParameter(int count)
         default:
             return 0;
     }
-}
-
-
-void LifeInfoBar::writeString(int count)
-{
-    const char *string = infoBarChoices[count].c_str();
-    currentScreen.writeText(string);
 }

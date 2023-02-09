@@ -1,12 +1,20 @@
 #include "mainmenu.h"
-#include "modeSelector.h"
-#include <Menus/settingsMenu.h>
-#include <Menus/controllsMenu.h>
-#include <Screen/screen.h>
-        
-ModeSelector modeSelector;
-SettingsMenu settingsMenu;        
-ControllsMenu controllsMenu;
+#include "Screen/screen.h"
+
+
+MainMenu::MainMenu()
+{
+    menuTitle = "   ~M A I N   M E N U~   ";
+
+    menuChoices = 
+    {
+        "Select Mode",
+        "Settings",
+        "Controlls",
+        "Exit"
+    };
+}
+
 
 void MainMenu::menuControllSelect()
 {

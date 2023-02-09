@@ -2,6 +2,19 @@
 #include <Menus/controllsMenu.h>
 
 
+PauseMenu::PauseMenu()
+{
+    menuTitle = "   ~P A U S E  M E N U~   ";
+    
+    menuChoices = 
+    {
+        "Continue",
+        "Controlls",
+        "Exit to Mode Selector" 
+    };
+}
+
+
 bool PauseMenu::getGameOnBool()
 {
     return snakeBool;

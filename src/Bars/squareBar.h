@@ -1,26 +1,14 @@
 #ifndef SQUARE_BAR_H
 #define SQUARE_BAR_H
-#include <Screen/screen.h>
-#include <string>
 
-extern Screen currentScreen;
+#include "Bars/bar.h"
 
-class SquareBar
+
+class SquareBar : public Bar
 {
-    protected:
-        std::string barTitle;
-
-        bool squareBarOn = false;
-
-        int squareBarXStart;
-        int squareBarYStart;
-        int squareBarXEnd;
-        int squareBarYEnd;
-
-
     public:
-        void initSquareBar(int xStart, int yStart, int xEnd, int yEnd);
-        virtual void drawInfoBar() {};
+        SquareBar(int xStart, int yStart, int xEnd, int yEnd) : Bar(xStart, yStart, xEnd, yEnd) {};
+        ~SquareBar() {};
 
 };
 

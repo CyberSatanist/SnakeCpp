@@ -199,10 +199,10 @@ float StandartNetwork::useMind(EvoField evoField, int headX, int headY)
     for (int countX = (headX - radius); countX <= (headX + radius); countX++){
         for (int countY = (headY - radius); countY <= (headY + radius); countY++){
             if (
-                (countX > evoField.currentBeginX) & 
-                (countX < evoField.fullSizeX) & 
-                (countY > evoField.currentBeginY) & 
-                (countY < evoField.fullSizeY)
+                (countX > evoField.getCurrentBeginX()) && 
+                (countX < evoField.getFullSizeX()) && 
+                (countY > evoField.getCurrentBeginY()) && 
+                (countY < evoField.getFullSizeY())
             ) {
                 switch (evoField.getCell(countX, countY)){
                     case Field::Food:

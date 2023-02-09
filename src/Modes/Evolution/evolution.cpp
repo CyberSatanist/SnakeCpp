@@ -1,32 +1,9 @@
 #include "evolution.h"
-#include <Evolution/Parameters/evolutionParameters.h>
-#include <fstream>
-#include <iostream>
 
-extern EvolutionParameters evolutionParameters;
-extern Database *database;
+#include "Database/database.h"
 
-Evolution::Evolution()
-{
-    infoBar.initInfoBar(
-        evolutionParameters.infoBarStartX,
-        evolutionParameters.infoBarStartY,
-        evolutionParameters.infoBarEndX,
-        evolutionParameters.infoBarEndY
-    );
-    toolsBar.initToolsBar(
-        evolutionParameters.toolsBarStartX,
-        evolutionParameters.toolsBarStartY, 
-        evolutionParameters.toolsBarEndX, 
-        evolutionParameters.toolsBarEndY
-    );
-    squareBar.initSquareBar(
-        evolutionParameters.squareBarStartX,
-        evolutionParameters.squareBarStartY, 
-        evolutionParameters.squareBarEndX, 
-        evolutionParameters.squareBarEndY
-    );
-}
+
+extern Database database;
 
 
 void Evolution::run()
@@ -41,7 +18,7 @@ void Evolution::run()
     evolutionParameters.snakeIdCounter = 1;
     evolutionParameters.aliveSnakes = 0;
 
-    snakes = new snakesList;
+    snakes = new SnakeEvoModel[evolutionParameters.countOfSnakes];
     initSnakes(snakes);
 
 	evolutionParameters.gameOn = true;
@@ -54,16 +31,13 @@ void Evolution::run()
             evolutionParameters.hightTurnsLeft--;
             evolutionParameters.turn++;
             evolutionParameters.time++;
-            snakesList *snakesListTmp = nullptr;
-            snakesListTmp = snakes;
-            while(snakesListTmp->nextSnake){
-                if (snakesListTmp->currentSnake->isAlive)
+
+            for (int count = 0; count < evolutionParameters.countOfSnakes; count++) {
+                if (snakes[count].getIsAlive())
                 {
-                    snakesListTmp->currentSnake->setVector(key);
+                    snakes[count].setVector(key);
                 }
-                snakesListTmp = snakesListTmp->nextSnake;
             }
-            snakesListTmp = nullptr;
         }
 
         if (evolutionParameters.aliveSnakes < 1){
@@ -81,18 +55,19 @@ void Evolution::run()
 
         drawScreen();
         drawStuff();
+
         toolsBar.menuControllHandler(key);
         if (!evolutionParameters.gameOn){
             deleteSnakes(snakes);
         }
 
         if (evolutionParameters.saveGame){
-            saveGame(snakes);
+      //      saveGame(snakes);
             evolutionParameters.saveGame = false;
         }
 
         if (evolutionParameters.loadGame){
-            loadGame(snakes);
+          //  loadGame(snakes);
             evolutionParameters.loadGame = false;
         }
     }
@@ -100,23 +75,18 @@ void Evolution::run()
 }
 
 
-void Evolution::turn(struct snakesList *thisSnakes)
+void Evolution::turn(SnakeEvoModel *snakes)
 {
-    snakesList *snakesListTmp = nullptr;
-    snakesListTmp = thisSnakes;
-    while(snakesListTmp->nextSnake){
-        if (snakesListTmp->currentSnake->isAlive)
-        {
-            snakesListTmp->currentSnake->score++;
-            if (snakesListTmp->currentSnake->score > evolutionParameters.score){
-                evolutionParameters.score = snakesListTmp->currentSnake->score;
-                evolutionParameters.bestSnakeId = snakesListTmp->currentSnake->snakeId;
+    for (int count = 0; count < evolutionParameters.countOfSnakes; count++) {
+        if (snakes[count].getIsAlive()){
+            snakes[count].increaseScore();
+            if (snakes[count].getScore() > evolutionParameters.score){
+                evolutionParameters.score = snakes[count].getScore();
+                evolutionParameters.bestSnakeId = snakes[count].getId();
             }
-            snakesListTmp->currentSnake->move();
+            snakes[count].move();
         }
-        snakesListTmp = snakesListTmp->nextSnake;
     }
-    snakesListTmp = nullptr;
 
     currentScreen.endFrame();
     currentScreen.clearScreen();
@@ -125,84 +95,60 @@ void Evolution::turn(struct snakesList *thisSnakes)
 
 void Evolution::drawScreen()
 {
-    infoBar.drawInfoBar();
-    toolsBar.drawToolsBar();
+    infoBar.drawBar();
+    toolsBar.drawBar();
 
-    snakesList *snakesListTmp = nullptr;
-    snakesListTmp = snakes;
-    do {
-        if (snakesListTmp->currentSnake->isAlive){
-            snakesListTmp->currentSnake->drawField();
-            squareBar.drawMap(snakesListTmp->currentSnake->field);
+    for (int count = 0; count < evolutionParameters.countOfSnakes; count++){
+        if(snakes[count].getIsAlive()){
+            snakes[count].drawField();
+            squareBar.drawMap(snakes[count].getField());
             break;
         }
-        snakesListTmp = snakesListTmp->nextSnake;
-    } while (snakesListTmp->nextSnake);
-    snakesListTmp = nullptr;
+    }
 }
 
 
 void Evolution::drawStuff()
 {
-    snakesList *snakesListTmp = nullptr;
-    snakesListTmp = snakes;
-
-    while(snakesListTmp->nextSnake) {
-        if (snakesListTmp->currentSnake->isAlive) { 
-            snakesListTmp->currentSnake->drawStuff();
+    for (int count = 0; count < evolutionParameters.countOfSnakes; count++) {
+        if(snakes[count].getIsAlive()){
+            snakes[count].drawStuff();
         }
-	    snakesListTmp = snakesListTmp->nextSnake;
     }
-    snakesListTmp = nullptr; 
 }
 
 
-void Evolution::initSnakes(snakesList *thisSnakes)
+void Evolution::initSnakes(SnakeEvoModel *snakes)
 {
-    snakesList *snakesListTmp = nullptr;
-    snakesListTmp = thisSnakes;
+    int snakeStartX = evolutionParameters.fullFieldSizeX / 2;
+    int snakeStartY = evolutionParameters.fullFieldSizeY / 2;
+    int snakeLength = evolutionParameters.snakeLength;
+    int snakeColor = evolutionParameters.snakeOneBodyColor;
 
-    for (int count = 0; count < evolutionParameters.countOfSnakes; count++)
-	{
-        SnakeEvoModel *newSnake = new SnakeEvoModel;
-        newSnake->init(
-            evolutionParameters.fullFieldSizeX / 2,
-            evolutionParameters.fullFieldSizeY / 2,
-            evolutionParameters.snakeLength,
-            evolutionParameters.snakeOneBodyColor
+    for (int count = 0; count < evolutionParameters.countOfSnakes; count++) {
+        snakes[count].init(
+            snakeStartX,
+            snakeStartY,
+            snakeLength,
+            snakeColor
         );
-        snakesListTmp->currentSnake = newSnake;
-        snakesListTmp->nextSnake = new snakesList;
-        snakesListTmp = snakesListTmp->nextSnake;
-        snakesListTmp->nextSnake = nullptr;
-        snakesListTmp->currentSnake = nullptr;
     }
-    snakesListTmp = nullptr;
-    squareBar.initField(snakes->currentSnake->field);
 }
 
 
 void Evolution::evolveSnakes()
 {
-    //snakesList *parentSnakes = nullptr;
-    //parentSnakes = getBest(snakes);
-     getBest(snakes);
+    snakesRatingList *parentSnakesList = getParentsList(snakes);
 
-    snakesList *newSnakesList = new snakesList;
-    snakesList *snakesListTmp = nullptr;
-    snakesListTmp = newSnakesList;
 
-    //snakeSecondTmp = new snakesList;
-    //snakesListTmp = snakeSecondTmp;
-
+    SnakeEvoModel *nextGeneration = new SnakeEvoModel[evolutionParameters.countOfSnakes];
     int counter = 1;
-    for (int count = 0; count < evolutionParameters.countOfSnakes; count++)
-	{
-        SnakeEvoModel *newSnake = new SnakeEvoModel;
+    for (int count = 0; count < evolutionParameters.countOfSnakes; count++) {
         if ((evolutionParameters.fullFieldSizeY / 2) + (count * 2) + counter > (evolutionParameters.fullFieldSizeY - 3)){
             counter = 1;
         }
-        newSnake->init(
+
+        nextGeneration[count].init(
             evolutionParameters.fullFieldSizeX / 2,
             evolutionParameters.fullFieldSizeY / 2,
             evolutionParameters.snakeLength,
@@ -223,195 +169,152 @@ void Evolution::evolveSnakes()
             parentTwoNum = randGen(generator);
         }
 
-        snakesList *firstParent = nullptr;
-        firstParent = parentSnakes;
+        snakesRatingList *firstParent = parentSnakesList;
         for (int countX = 0; countX < parentOneNum; countX++){
-            firstParent = firstParent->nextSnake;
+            firstParent = firstParent->nextPlace;
         }
 
-        snakesList *secondParent = nullptr;
-        secondParent = parentSnakes;
+        snakesRatingList *secondParent = parentSnakesList;
         for (int countX = 0; countX < parentTwoNum; countX++){
-            secondParent = secondParent->nextSnake;
+            secondParent = secondParent->nextPlace;
         }
         
-        newSnake->network.mergeNetworks(firstParent->currentSnake->network.layersList, secondParent->currentSnake->network.layersList);
-        
-        snakesListTmp->currentSnake = newSnake;
-        snakesListTmp->nextSnake = new snakesList;
-        snakesListTmp = snakesListTmp->nextSnake;
-        snakesListTmp->nextSnake = nullptr;
-        snakesListTmp->currentSnake = nullptr;
+        nextGeneration[count].network.mergeNetworks(&(snakes[firstParent->snakeNumber].network), &(snakes[secondParent->snakeNumber].network));
         counter++;
     }
 
     deleteSnakes(snakes);
-    deleteSnakes(parentSnakes);
-    snakes = newSnakesList;
-}
-
-
-void Evolution::deleteSnakes(snakesList *thisSnakes)
-{
-    snakesList *snakesTmpList = nullptr;
-    snakesList *snakesSecondTmpList = nullptr;
-
-    snakesTmpList = thisSnakes;
-
-    while(snakesTmpList){
-        if (snakesTmpList->currentSnake){
-            snakesTmpList->currentSnake->deleteSnake();
-            //delete snakesTmpList->currentSnake;
-        }
-        snakesTmpList->currentSnake = nullptr;
-        snakesSecondTmpList = snakesTmpList;
-        snakesTmpList = snakesTmpList->nextSnake;
-        delete snakesSecondTmpList;
-        snakesSecondTmpList = nullptr;
+    while (parentSnakesList){
+        snakesRatingList *tempPlace = parentSnakesList;
+        parentSnakesList = parentSnakesList->nextPlace;
+        delete tempPlace;
     }
+
+    snakes = nextGeneration;
 }
 
 
-void Evolution::getBest(snakesList *thisSnakes)
+void Evolution::deleteSnakes(SnakeEvoModel *snakes)
 {
-    snakesList *snakesListTmp = nullptr;
-    snakesListTmp = thisSnakes;
+    for (int count = 0; count  < evolutionParameters.countOfSnakes; count++){
+        snakes[count].deleteSnake();
+    }
+    delete[] snakes;
+}
 
 
-    bestSnakesList *snakesRating = nullptr;
-    snakesRating = new bestSnakesList;
+Evolution::snakesRatingList* Evolution::getParentsList(SnakeEvoModel *snakes)
+{
+    snakesRatingList *firstPlace = new snakesRatingList;
+    snakesRatingList *lastPlace = nullptr;
+    snakesRatingList *tempRating = firstPlace;
 
-    snakesRating->currentSnake = snakesListTmp->currentSnake;
-    bestSnakesList *snakesTmpRating = nullptr;
-    snakesListTmp = snakesListTmp->nextSnake;
+    //Make snakes rating
+    tempRating->snakeNumber = 0;
+    tempRating->snakeScore = snakes[0].getScore();
+    tempRating->nextPlace = nullptr;
+    tempRating->prevPlace = nullptr;
+    bool isSet = false;
 
-    while (snakesListTmp->currentSnake){
-        snakesTmpRating = snakesRating;
-        while(snakesTmpRating->currentSnake){
-        
-            if (snakesListTmp->currentSnake->score >= snakesTmpRating->currentSnake->score){
-                bestSnakesList *snakeTmp = new bestSnakesList;
-                snakeTmp->currentSnake = snakesListTmp->currentSnake;
-                snakeTmp->nextSnake = snakesTmpRating;
-                if (snakesTmpRating->prevSnake != nullptr) {
-                    snakeTmp->prevSnake = snakesTmpRating->prevSnake;
-                    snakesTmpRating->prevSnake->nextSnake = snakeTmp;
+    for (int count = 1; count < evolutionParameters.countOfSnakes; count++){
+        tempRating = firstPlace;
+        while(tempRating->nextPlace){
+            if (snakes[count].getScore() >= tempRating->snakeScore) {
+                if (!tempRating->prevPlace){
+                    tempRating->prevPlace = new snakesRatingList;
+                    tempRating->prevPlace->nextPlace = tempRating;
+                    tempRating = tempRating->prevPlace;
+                    tempRating->prevPlace = nullptr;
+                    firstPlace = tempRating;
                 } else {
-                    snakeTmp->prevSnake = nullptr;
-                    snakesRating = snakeTmp;
+                    snakesRatingList *newPlace = new snakesRatingList;
+                    newPlace->prevPlace = tempRating->prevPlace;
+                    newPlace->nextPlace = tempRating;
+                    tempRating->prevPlace->nextPlace = newPlace;
+                    tempRating->prevPlace = newPlace;
+                    tempRating = newPlace;
                 }
-                snakesTmpRating->prevSnake = snakeTmp;
-                break;
-            } else if (!snakesTmpRating->nextSnake){
-                snakesTmpRating->nextSnake = new bestSnakesList;
-                snakesTmpRating->nextSnake->currentSnake = snakesListTmp->currentSnake;
-                snakesTmpRating->nextSnake->nextSnake = nullptr;
-                snakesTmpRating->nextSnake->prevSnake = snakesTmpRating;
+
+                tempRating->snakeNumber = count;
+                tempRating->snakeScore = snakes[count].getScore();
+                isSet = true;
                 break;
             }
-            snakesTmpRating = snakesTmpRating->nextSnake;
+            tempRating = tempRating->nextPlace;
         }
-        snakesListTmp = snakesListTmp->nextSnake;
+        if (isSet){
+            isSet = false;
+            continue;
+        }
+
+        if (snakes[count].getScore() >= tempRating->snakeScore) {
+            if (!tempRating->prevPlace){
+                tempRating->prevPlace = new snakesRatingList;
+                tempRating->prevPlace->nextPlace = tempRating;
+                tempRating = tempRating->prevPlace;
+                tempRating->prevPlace = nullptr;
+                firstPlace = tempRating;
+            } else {
+                snakesRatingList *newPlace = new snakesRatingList;
+                newPlace->prevPlace = tempRating->prevPlace;
+                newPlace->nextPlace = tempRating;
+                tempRating->prevPlace->nextPlace = newPlace;
+                tempRating->prevPlace = newPlace;
+                tempRating = newPlace;
+            }
+            lastPlace = tempRating->nextPlace;
+            tempRating->snakeNumber = count;
+            tempRating->snakeScore = snakes[count].getScore();
+            continue;
+        }
+
+        tempRating->nextPlace = new snakesRatingList;
+        tempRating->nextPlace->prevPlace = tempRating;
+        tempRating = tempRating->nextPlace;
+        tempRating->nextPlace = nullptr;
+        tempRating->snakeNumber = count;
+        tempRating->snakeScore = snakes[count].getScore();
+        lastPlace = tempRating;
     }
 
-    snakesTmpRating = snakesRating;
-    while(snakesTmpRating->nextSnake){
-        snakesTmpRating = snakesTmpRating->nextSnake;
-    }
-    bestSnakesList *worstSnake = nullptr;
-    worstSnake = snakesTmpRating;
 
-    bestSnakesList *bestSnake = nullptr;
-    bestSnake = snakesRating;
-
-    parentSnakes = new snakesList;
-    snakesList *parentTmpSnakes = nullptr;
-    parentTmpSnakes = parentSnakes;
-
+    //Make parents list
+    snakesRatingList *parentsList = new snakesRatingList;
+    snakesRatingList *secondTempList = firstPlace;
+    tempRating = parentsList;
+    tempRating->prevPlace = nullptr;
+    tempRating->nextPlace = nullptr;
+    tempRating->snakeNumber = secondTempList->snakeNumber;
+    tempRating->snakeScore = secondTempList->snakeScore;
+    secondTempList = secondTempList->nextPlace;
 
     for (int count = 0; count < ((evolutionParameters.countOfSnakes / 10) * evolutionParameters.countOfBest / 10); count++){
-        parentTmpSnakes->currentSnake = bestSnake->currentSnake;
-        parentTmpSnakes->nextSnake = new snakesList;
-        parentTmpSnakes = parentTmpSnakes->nextSnake;
-        parentTmpSnakes->nextSnake = nullptr;
+        tempRating->nextPlace = new snakesRatingList;
+        tempRating = tempRating->nextPlace;
+        tempRating->nextPlace = nullptr;
+        tempRating->snakeNumber = secondTempList->snakeNumber;
+        tempRating->snakeScore = secondTempList->snakeScore;
 
-        bestSnake = bestSnake->nextSnake;
+        secondTempList = secondTempList->nextPlace;
     }
 
+    secondTempList = lastPlace;
     for (int count = 0; count < ((evolutionParameters.countOfSnakes / 10) * evolutionParameters.countOfWorst / 10); count++){
-        parentTmpSnakes->currentSnake = worstSnake->currentSnake;
-        parentTmpSnakes->nextSnake = new snakesList;
-        parentTmpSnakes = parentTmpSnakes->nextSnake;
-        parentTmpSnakes->nextSnake = nullptr;
+        tempRating->nextPlace = new snakesRatingList;
+        tempRating = tempRating->nextPlace;
+        tempRating->nextPlace = nullptr;
+        tempRating->snakeNumber = secondTempList->snakeNumber;
+        tempRating->snakeScore = secondTempList->snakeScore;
 
-        worstSnake = worstSnake->prevSnake;
-    }
-    while (snakesRating){
-        snakesTmpRating = snakesRating;
-        snakesRating = snakesRating->nextSnake;
-        delete snakesTmpRating;
+        secondTempList = secondTempList->prevPlace;
     }
 
-    snakesRating = nullptr;
-    worstSnake = nullptr;
-    bestSnake = nullptr;
-    //deleteSnakes(snakesRating);
-    //return parentSnakes;
-}
-
-
-int Evolution::saveGame(snakesList *thisSnakes)
-{
-    sqlite3_stmt *stmt;
-
-    std::string request = "INSERT INTO straight_network_session ( "
-                                "generation, best_score, turns_to_death, count_of_snakes, snake_length, count_of_food, "
-                                "count_of_borders, first_layer_neuron_count, last_layer_neuron_count, output_layer_neuron_count, "
-                                "count_of_best, count_of_worst, mutation_chance, game_sub_mode_id "
-                            ") values ("
-                                "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, (SELECT ID FROM game_sub_modes WHERE name='Straight Network') "
-                            ")";
-
-    int result = sqlite3_prepare_v2(database->ppDb, request.c_str(), -1, &stmt, NULL);
-    if (result) {
-        printf("Error executing sql statement\n");
-        sqlite3_close(database->ppDb);
-        exit(1);
+    while(firstPlace) {
+        tempRating = firstPlace;
+        firstPlace = firstPlace->nextPlace;
+        delete tempRating;
     }
 
-    sqlite3_bind_int(stmt, 1, evolutionParameters.generation);
-    sqlite3_bind_int(stmt, 2, evolutionParameters.theBestScore);
-    sqlite3_bind_int(stmt, 3, evolutionParameters.turnsToDeath);
-    sqlite3_bind_int(stmt, 4, evolutionParameters.countOfSnakes);
-    sqlite3_bind_int(stmt, 5, evolutionParameters.snakeLength);
-    sqlite3_bind_int(stmt, 6, evolutionParameters.countOfFood);
-    sqlite3_bind_int(stmt, 7, evolutionParameters.countOfBorders);
-    sqlite3_bind_int(stmt, 8, evolutionParameters.firstLayerNeuronCount);
-    sqlite3_bind_int(stmt, 9, evolutionParameters.lastLayerNeuronCount);
-    sqlite3_bind_int(stmt, 10, evolutionParameters.outputLayerNeuronCount);
-    sqlite3_bind_int(stmt, 11, evolutionParameters.countOfBest);
-    sqlite3_bind_int(stmt, 12, evolutionParameters.countOfWorst);
-    sqlite3_bind_int(stmt, 13, evolutionParameters.mutationChance);
 
-    sqlite3_step(stmt);
-
-    sqlite3_finalize(stmt);
-
-    sqlite3_exec(ppDb, "SELECT ID FROM straight_network_session ORDER BY ID DESC", saveSnakes, 0, &(database->errmsg));
-
-    return 0;
-
-}
-
-
-int saveSnakes(void *NotUsed, int argc, char **argv, char **azColName)
-{
-    
-    return 0;
-}
-
-
-int Evolution::loadGame(snakesList *thisSnakes)
-{
-    return 0;
+    return parentsList;
 }

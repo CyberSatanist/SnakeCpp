@@ -1,7 +1,30 @@
 #include "evoSettingsMenu.h"
-#include <Evolution/Parameters/evolutionParameters.h>
+#include "Evolution/Parameters/evolutionParameters.h"
 
 extern EvolutionParameters evolutionParameters;
+
+
+EvoSettingsMenu::EvoSettingsMenu()
+{
+    menuTitle = "   ~E V O  S E T T I N G S  M E N U~   ";
+
+    menuChoices = {
+        "Game speed",
+        "Length of snakes",
+        "Count of snakes",
+        "Count of foods",
+        "Count of Neural Layers",
+        "Count of Neurons in Layer"
+    };
+
+    buttonChoices = { "Back" };
+    
+    rows = (int) menuChoices.size() / 2;
+    columns = (int) menuChoices.size() / rows;
+    colorsFrom = 5;
+    firstMenuTitle = GameSpeed;
+    lastMenuTitle = NeuronsCount;
+};
 
 
 void EvoSettingsMenu::setParameter(int currentChoice, int side)
@@ -24,7 +47,7 @@ void EvoSettingsMenu::setParameter(int currentChoice, int side)
                 break;
             case SnakesCount:
                 if (evolutionParameters.countOfSnakes == 1){
-                    evolutionParameters.countOfSnakes = 500;
+                    evolutionParameters.countOfSnakes = 1000;
                 } else {
                     evolutionParameters.countOfSnakes--;
                 }
@@ -68,7 +91,7 @@ void EvoSettingsMenu::setParameter(int currentChoice, int side)
                 }
                 break;
             case SnakesCount:
-                if (evolutionParameters.countOfSnakes == 500){
+                if (evolutionParameters.countOfSnakes == 1000){
                     evolutionParameters.countOfSnakes = 1;
                 } else {
                     evolutionParameters.countOfSnakes++;
@@ -129,21 +152,7 @@ int EvoSettingsMenu::getParameter(int count)
 
 void EvoSettingsMenu::menuControllSelect()
 {
-    if (currentChoice == (menuConst + buttonsConst - 1)){
+    if (currentChoice == ((int) menuChoices.size() + (int) buttonChoices.size() - 1)){
         settingsOn = false;
     }
-}
-
-
-void EvoSettingsMenu::writeString(int count)
-{
-    const char *string = menuChoices[count].c_str();
-    currentScreen.writeText(string);
-}
-
-
-void EvoSettingsMenu::writeButton(int count)
-{
-    const char *string = buttonChoices[count].c_str();
-    currentScreen.writeText(string);
 }
