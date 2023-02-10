@@ -69,6 +69,7 @@ FILES=$(MAIN)main.cpp \
 	$(LIFEGAME_FIELD)lifeField.cpp \
 	$(LIFEGAME_BARS)lifeInfoBar.cpp \
 	$(LIFEGAME_BARS)lifeToolsBar.cpp \
+	$(LIFEGAME_BARS)lifeSquareBar.cpp \
 
 
 all: main

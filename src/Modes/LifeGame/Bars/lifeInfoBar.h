@@ -11,7 +11,7 @@ class LifeInfoBar : public InfoBar
 
 
     private:
-        enum barChoicesConst {Turn};
+        enum barChoicesConst {CellsCount, Speed, Turn};
 
         int getParameter(int count) override;
 

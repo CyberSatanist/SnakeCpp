@@ -6,7 +6,12 @@
 class LifeGameParameters : public Parameters
 {
     public:
-        int delayDuration = 5;
+        int delayDuration = 80;
+        bool pauseOn = false;
+        bool reset = false;
+        bool clean = false;
+        bool moveField = false;
+        bool drawCells = false;
 
         //Statistic info
         int turn = 0;
@@ -16,11 +21,13 @@ class LifeGameParameters : public Parameters
         int currentEndY = 0;
 
         //CellModel
-        int countOfCells = 10;
         int cellsToLive;
+        int cellStartBornChance = 2;
+        int cellsCount = 0;
         
-        int cellColor = COLOR_RED;
-        int BackGroundColor = COLOR_RED;
+        int cellColor = COLOR_BLUE;
+        int freeCellColor = COLOR_WHITE;
+        int frameColor = COLOR_BLACK;
 
         //Full size of field
 };

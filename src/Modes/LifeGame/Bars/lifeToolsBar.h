@@ -11,7 +11,13 @@ class LifeToolsBar : public ToolsBar
         ~LifeToolsBar() {};
 
     private:
-        enum barChoicesConst {Save, Load, Left, Right, Up, Down, Pause, Exit};
+        enum barChoicesConst {
+            Save,        Load,
+            Pause,       Reset,
+            SpeedUp,     SpeedDown,
+            MoveField,   DrawCells,
+            CleanUp,     Exit
+        };
 
         void menuControllSelect() override;
 

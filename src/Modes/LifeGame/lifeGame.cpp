@@ -15,9 +15,14 @@ void LifeGame::run()
         key = currentScreen.controllHandler();
         turn();
         drawScreen();
-        toolsBar.menuControllHandler(key);
+        if (lifeGameParameters.moveField){
+            field.moveHandler(key);
+        } else if (lifeGameParameters.drawCells){
+            field.drawCellsHandler(key);
+        } else {
+            toolsBar.menuControllHandler(key);
+        }
 
-        lifeGameParameters.turn++;
     }
     currentScreen.clearScreen();
 }
@@ -25,7 +30,16 @@ void LifeGame::run()
 
 void LifeGame::turn()
 {
-
+    if (lifeGameParameters.reset){
+        lifeGameParameters.reset = false;
+        field.reset();
+    } else if (lifeGameParameters.clean){
+        lifeGameParameters.clean = false;
+        field.clean();
+    } else if (!lifeGameParameters.pauseOn) {
+        field.makeTurn();
+        lifeGameParameters.turn++;
+    }
 }
 
 
@@ -34,5 +48,6 @@ void LifeGame::drawScreen()
     field.drawField();
     infoBar.drawBar();
     toolsBar.drawBar();
+    squareBar.drawMap(field);
     currentScreen.endFrame();
 }

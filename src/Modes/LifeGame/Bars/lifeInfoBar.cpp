@@ -10,13 +10,15 @@ LifeInfoBar::LifeInfoBar(int xStart, int yStart, int xEnd, int yEnd) : InfoBar(x
  
     barChoices = 
     {
-        "Turn"
+        "Cells count",
+        "Speed",
+        "Turn",
     };
 
     rows = barChoices.size();
     columns = barChoices.size() / rows;
 
-    firstBarTitle = Turn;
+    firstBarTitle = CellsCount;
     lastBarTitle = Turn;
 }
 
@@ -24,6 +26,12 @@ LifeInfoBar::LifeInfoBar(int xStart, int yStart, int xEnd, int yEnd) : InfoBar(x
 int LifeInfoBar::getParameter(int count)
 {
     switch(count) {
+        case CellsCount:
+            return lifeGameParameters.cellsCount;
+            break;
+        case Speed:
+            return lifeGameParameters.delayDuration;
+            break;
         case Turn:
             return lifeGameParameters.turn;
             break;

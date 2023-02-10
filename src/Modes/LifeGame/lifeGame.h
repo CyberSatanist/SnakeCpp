@@ -5,6 +5,7 @@
 #include "LifeGame/Field/lifeField.h"
 #include "LifeGame/Bars/lifeInfoBar.h"
 #include "LifeGame/Bars/lifeToolsBar.h"
+#include "LifeGame/Bars/lifeSquareBar.h"
 #include "LifeGame/Parameters/lifeGameParameters.h"
 
 extern LifeGameParameters lifeGameParameters;
@@ -18,6 +19,7 @@ class LifeGame
         LifeField field;
         LifeInfoBar infoBar;
         LifeToolsBar toolsBar;
+        LifeSquareBar squareBar;
 
         int key = 0;
 
@@ -29,8 +31,8 @@ class LifeGame
             : field(
                 lifeGameParameters.currentFieldSizeX,
                 lifeGameParameters.currentFieldSizeY,
-                lifeGameParameters.fullFieldSizeX,
-                lifeGameParameters.fullFieldSizeY
+                lifeGameParameters.fullFieldSizeX * 2,
+                lifeGameParameters.fullFieldSizeY * 2
             ), 
             infoBar(
                 lifeGameParameters.infoBarStartX,
@@ -43,6 +45,12 @@ class LifeGame
                 lifeGameParameters.toolsBarStartY, 
                 lifeGameParameters.toolsBarEndX, 
                 lifeGameParameters.toolsBarEndY
+            ),
+            squareBar(
+                lifeGameParameters.squareBarStartX,
+                lifeGameParameters.squareBarStartY, 
+                lifeGameParameters.squareBarEndX, 
+                lifeGameParameters.squareBarEndY
             ) {};
         ~LifeGame() {};
 	    void run();

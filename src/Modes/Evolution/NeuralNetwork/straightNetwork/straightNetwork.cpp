@@ -1,7 +1,7 @@
-#include "straightNetwork.h"
-#include <Evolution/Parameters/evolutionParameters.h>
 #include <random>
 #include <math.h>
+#include "straightNetwork.h"
+#include "Evolution/Parameters/evolutionParameters.h"
 
 extern EvolutionParameters evolutionParameters;
 

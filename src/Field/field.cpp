@@ -3,8 +3,8 @@
 
 Field::Field(int currentX, int currentY, int fullX, int fullY)
 {
-    currentSizeX = currentX;
-    currentSizeY = currentY;
+    sizeX = currentSizeX = currentX;
+    sizeY = currentSizeY = currentY;
     fullSizeX = fullX;
     fullSizeY = fullY;
 
@@ -32,10 +32,10 @@ Field::Field(const Field &field)
         delete[] fieldMap;
     }
 
-    currentBeginX = field.getCurrentBeginX();
-    currentBeginY = field.getCurrentBeginY();
-    currentSizeX = field.getCurrentSizeX();
-    currentSizeY = field.getCurrentSizeY();
+    beginX = currentBeginX = field.getBeginX();
+    beginY = currentBeginY = field.getBeginY();
+    sizeX = currentSizeX = field.getSizeX();
+    sizeY = currentSizeY = field.getSizeY();
     fullSizeX = field.getFullSizeX();
     fullSizeY = field.getFullSizeY();
 
@@ -62,10 +62,10 @@ Field& Field::operator=(const Field &field)
         delete[] fieldMap;
     }
 
-    currentBeginX = field.getCurrentBeginX();
-    currentBeginY = field.getCurrentBeginY();
-    currentSizeX = field.getCurrentSizeX();
-    currentSizeY = field.getCurrentSizeY();
+    beginX = currentBeginX = field.getBeginX();
+    beginY = currentBeginY = field.getBeginY();
+    sizeX = currentSizeX = field.getSizeX();
+    sizeY = currentSizeY = field.getSizeY();
     fullSizeX = field.getFullSizeX();
     fullSizeY = field.getFullSizeY();
 
@@ -93,8 +93,8 @@ Field::~Field()
 
 void Field::drawField()
 {
-    for(int countX = currentBeginX; countX < currentSizeX; countX++){
-        for(int countY = currentBeginY; countY < currentSizeY; countY++){
+    for(int countX = beginX; countX < sizeX; countX++){
+        for(int countY = beginY; countY < sizeY; countY++){
             drawCell(countX, countY);
         }
     }
@@ -103,7 +103,7 @@ void Field::drawField()
 
 void Field::moveFieldUp() 
 {
-    if (currentBeginX != 0) {
+    if (currentBeginX > 0) {
         currentBeginX--;
         currentSizeX--;
     }
@@ -111,7 +111,7 @@ void Field::moveFieldUp()
 
 void Field::moveFieldDown() 
 {
-    if (currentSizeX != fullSizeX) {
+    if (currentSizeX < fullSizeX) {
         currentBeginX++;
         currentSizeX++;
     }
@@ -119,7 +119,7 @@ void Field::moveFieldDown()
 
 void Field::moveFieldLeft()
 {
-    if (currentBeginY != 0) {
+    if (currentBeginY > 0) {
         currentBeginY--;
         currentSizeY--;
     }
@@ -127,7 +127,7 @@ void Field::moveFieldLeft()
 
 void Field::moveFieldRight()
 {    
-    if (currentSizeY != fullSizeY) {
+    if (currentSizeY < fullSizeY) {
         currentBeginY++;
         currentSizeY++;
     }

@@ -8,6 +8,10 @@ extern Screen currentScreen;
 class Field 
 {
     protected:
+        int beginX = 0;
+        int beginY = 0;
+        int sizeX;
+        int sizeY;
         int currentBeginX = 0;
         int currentBeginY = 0;
         int currentSizeX;
@@ -23,10 +27,14 @@ class Field
         ~Field();
         Field& operator= (const Field &field);
 
-        enum spaceTypes {Free, Food, Snake, Wall, Cell, Nothing};
+        enum spaceTypes {Free, Food, Snake, Wall, Cell, Frame, Cursor, Nothing};
         
         void drawField();
 
+        inline int getBeginX() const { return beginX; };
+        inline int getBeginY() const { return beginY; };
+        inline int getSizeX() const { return sizeX; };
+        inline int getSizeY() const { return sizeY; };
         inline int getCurrentBeginX() const { return currentBeginX; };
         inline int getCurrentBeginY() const { return currentBeginY; };
         inline int getCurrentSizeX() const { return currentSizeX; };
