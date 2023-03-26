@@ -1,61 +1,33 @@
 #ifndef STANDART_NETWROK_H
 #define STANDART_NETWORK_H
 
-#include "standartNeuron.h"
-#include "NeuralNetwork/network.h"
 #include "Evolution/Field/evoField.h"
+#include "Evolution/Parameters/evolutionParameters.h"
 
-class StandartNetwork : public Network
+extern EvolutionParameters evolutionParameters;
+
+class StandartNetwork
 {
+    float *inputLayer;
+    float **hiddenLayers;
+    float *outputLayer;
+
+
     public:
         StandartNetwork();
-        void deleteNetwork();
-        
-        bool test = true;
+        ~StandartNetwork();
 
-        float useMind(EvoField evoField, int headX, int headY);
-
-        struct NeuronsList {
-            StandartNeuron currentNeuron;
-            struct NeuronsList *nextNeuron; 
-        };
-        NeuronsList* firstLayer = new NeuronsList;
-        NeuronsList* lastLayer = new NeuronsList;
-        NeuronsList* tempLayer = new NeuronsList;
-        NeuronsList* tempSecondLayer = new NeuronsList;
-        NeuronsList* nextLayer = new NeuronsList;
-        NeuronsList* outputLayer = new NeuronsList;
-
-        NeuronsList *layerParentOne;
-        NeuronsList *layerParentTwo;
-
-        struct  LayersList {
-            int layerId;
-            NeuronsList currentNeuronsList;
-            struct LayersList *nextLayer;
-        };
-        LayersList* layersList = new LayersList;
-        LayersList* layersListTmp = new LayersList;
-        LayersList* layersListSecondTmp = new LayersList;
-        LayersList* layersListParentOne = new LayersList;
-        LayersList* layersListParentTwo = new LayersList;
+        int useMind(EvoField &evoField, int headX, int headY);
+        void mergeNetworks(StandartNetwork *parentOne, StandartNetwork *parentTwo);
 
 
-        void mergeNetworks(struct LayersList *parentOne, struct LayersList *parentTwo);
-
-
-        float randFloat;
-
-
-        void tests();
 
     private:
         void initNetwork();
-        void initLayers();
-        void initNeurons();
-        void neuronActivity();
-        void testNetwork();
-
+        void initLayer(float *layer, int neuronsCount);
+        int neuronActivity();
+        float* sumVectors(float *firstVector, int firstVectorSize, float *secondVector, int secondVectorSize);
+  
 };
 
 #endif

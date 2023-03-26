@@ -12,7 +12,6 @@ class LifeToolsBar : public ToolsBar
 
     private:
         enum barChoicesConst {
-            Save,        Load,
             Pause,       Reset,
             SpeedUp,     SpeedDown,
             MoveField,   DrawCells,

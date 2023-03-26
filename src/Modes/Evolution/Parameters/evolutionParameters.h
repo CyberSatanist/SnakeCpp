@@ -1,14 +1,12 @@
 #ifndef EVOLUTION_PARAMETERS_H
 #define EVOLUTION_PARAMETERS_H
 
-#include <Parameters/parameters.h>
+#include "Parameters/parameters.h"
 
 class EvolutionParameters : public Parameters
 {
     public:
         int delayDuration = 10;
-        bool saveGame = false;
-        bool loadGame = false;
 
 //Statistic info
         int generation = 1;
@@ -20,7 +18,7 @@ class EvolutionParameters : public Parameters
         int bestSnakeId = 0;
         int bestFood = 0;
         int snakeIdCounter = 1;
-        int turnsToDeath = 100;
+        int turnsToDeath = 500;
         int hightTurnsLeft = turnsToDeath;
 
 //SnakeParameters
@@ -51,14 +49,13 @@ class EvolutionParameters : public Parameters
         int foodCellColor = COLOR_RED;
 
 //Neural Network
-        int countOfLayers = 1;
-        int countOfNeuronsInLayer = 0;
-        int neuronIdCounter = 1;
-        int layerIdCounter = 1;
+        enum networkTypes{StandartNetworkType, StraightNetworkType, SimpleNetworkType};
+        int currentNetwork = SimpleNetworkType;
 
-        int firstLayerNeuronCount = 81;
-        int lastLayerNeuronCount = 4;
-        int outputLayerNeuronCount = 1;
+        int inputLayerNeuronCount = 81;
+        int countOfHiddenLayers = 2;
+        int hiddenLayerNeuronCount = 5;
+        int outputLayerNeuronCount = 4;
 
 //Generetions
         int countOfBest = 30;

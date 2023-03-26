@@ -12,9 +12,9 @@ SimpleNetwork::SimpleNetwork()
     std::mt19937 generator(random_device());
     std::uniform_int_distribution<> randGen(1, 19);
 
-    foodNeurons = new float [evolutionParameters.firstLayerNeuronCount];
-    wallNeurons = new float [evolutionParameters.firstLayerNeuronCount];
-    for (int neuronCount = 0; neuronCount < evolutionParameters.firstLayerNeuronCount; neuronCount++){
+    foodNeurons = new float [evolutionParameters.inputLayerNeuronCount];
+    wallNeurons = new float [evolutionParameters.inputLayerNeuronCount];
+    for (int neuronCount = 0; neuronCount < evolutionParameters.inputLayerNeuronCount; neuronCount++){
         foodNeurons[neuronCount] = randGen(generator) / 10;
         wallNeurons[neuronCount] = randGen(generator) / 10;
     }
@@ -30,7 +30,7 @@ SimpleNetwork::~SimpleNetwork()
 
 int SimpleNetwork::useMind(EvoField &evoField, int headX, int headY)
 {
-    int radius = (sqrt(evolutionParameters.firstLayerNeuronCount) -1) / 2;
+    int radius = (sqrt(evolutionParameters.inputLayerNeuronCount) -1) / 2;
     int neuronCount = 0;
     float result = 1;
 
@@ -101,7 +101,7 @@ void SimpleNetwork::mergeNetworks(SimpleNetwork *parentOne, SimpleNetwork *paren
     std::mt19937 parentGenerator(random_device());
     std::uniform_int_distribution<> parentRandom(0, 100);
 
-    for (int neuronCount = 0; neuronCount < evolutionParameters.firstLayerNeuronCount; neuronCount++){
+    for (int neuronCount = 0; neuronCount < evolutionParameters.inputLayerNeuronCount; neuronCount++){
         int randChance = parentRandom(parentGenerator);
         if ((randChance < (evolutionParameters.mutationChance / 2)) || (randChance >  (100 -evolutionParameters.mutationChance))){
             wallNeurons[neuronCount] = randGen(generator) / 10;

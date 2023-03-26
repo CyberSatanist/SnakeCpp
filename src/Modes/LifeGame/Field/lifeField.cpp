@@ -45,11 +45,20 @@ void LifeField::makeTurn()
                     }
                 }
             }
-            if ((neighborsCount > 2) && (neighborsCount < 5)) {
-                newField[countX][countY] = Field::Cell;
-                lifeGameParameters.cellsCount++;
+            if (fieldMap[countX][countY] == Field::Cell){
+                if ((neighborsCount == 3) || (neighborsCount == 4)) {
+                    newField[countX][countY] = Field::Cell;
+                    lifeGameParameters.cellsCount++;
+                } else {
+                    newField[countX][countY] = Field::Free;
+                }
             } else {
-                newField[countX][countY] = Field::Free;
+                if ((neighborsCount == 3)) {
+                    newField[countX][countY] = Field::Cell;
+                    lifeGameParameters.cellsCount++;
+                } else {
+                    newField[countX][countY] = Field::Free;
+                }
             }
         }
     }
@@ -77,6 +86,7 @@ void LifeField::reset()
     std::mt19937 generator(random_device());
     std::uniform_int_distribution<> randGen(0, 100);
     lifeGameParameters.cellsCount = 0;
+    lifeGameParameters.turn = 0;
 
     fieldMap = new int* [fullSizeX];
     for (int countX = 0; countX < fullSizeX; countX++){
@@ -96,6 +106,7 @@ void LifeField::reset()
 
 void LifeField::clean()
 {
+    lifeGameParameters.turn = 0;
     for (int countX = 0; countX < fullSizeX; countX++){
         for (int countY = 0; countY < fullSizeY; countY++){
             fieldMap[countX][countY] = Field::Free;
@@ -121,8 +132,8 @@ void LifeField::drawCellsHandler(int key)
 {
     if (!isCursorSet) {
         isCursorSet = true;
-        cursorX = currentBeginX;
-        cursorY = currentBeginY;
+        cursorX = currentBeginX + (currentSizeX - currentBeginX) / 2;
+        cursorY = currentBeginY + (currentSizeY - currentBeginY) / 2;
     }
 
     currentScreen.setColor(COLOR_GREEN, COLOR_GREEN);

@@ -2,10 +2,9 @@
 #define STRAIGHT_NETWROK_H
 
 #include "Evolution/Field/evoField.h"
-#include "NeuralNetwork/network.h"
 
 
-class StraightNetwork : public Network
+class StraightNetwork
 {
     int *foodNeuronsUp;
     int *foodNeuronsDown;
@@ -27,10 +26,6 @@ class StraightNetwork : public Network
         
         int useMind(EvoField &evoField, int headX, int headY);
         void mergeNetworks(StraightNetwork *parentOne, StraightNetwork *parentTwo);
-
-        //Save-load
-        void saveNetwork() {};
-        void loadNetwork() {};
         
 
     private:

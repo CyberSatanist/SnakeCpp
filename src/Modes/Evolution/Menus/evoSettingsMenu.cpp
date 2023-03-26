@@ -13,8 +13,10 @@ EvoSettingsMenu::EvoSettingsMenu()
         "Length of snakes",
         "Count of snakes",
         "Count of foods",
-        "Count of Neural Layers",
-        "Count of Neurons in Layer"
+        "Count of Neurons in Input Layer",
+        "Count of Hidden Layers",
+        "Count of Neurons in Hidden Layer",
+        "Count of Neurons in Output Layer",
     };
 
     buttonChoices = { "Back" };
@@ -23,7 +25,7 @@ EvoSettingsMenu::EvoSettingsMenu()
     columns = (int) menuChoices.size() / rows;
     colorsFrom = 5;
     firstMenuTitle = GameSpeed;
-    lastMenuTitle = NeuronsCount;
+    lastMenuTitle = OutputLayerNeuronsCount;
 };
 
 
@@ -59,18 +61,32 @@ void EvoSettingsMenu::setParameter(int currentChoice, int side)
                     evolutionParameters.countOfFood--;
                 }
                 break;
-            case LayersCount:
-                if (evolutionParameters.countOfLayers == 1){
-                    evolutionParameters.countOfLayers = 20;
+            case InputLayerNeuronsCount:
+                if (evolutionParameters.inputLayerNeuronCount == 1){
+                    evolutionParameters.inputLayerNeuronCount = 121;
                 } else {
-                    evolutionParameters.countOfLayers--;
+                    evolutionParameters.inputLayerNeuronCount--;
                 }
                 break;
-            case NeuronsCount:
-                if (evolutionParameters.countOfNeuronsInLayer == 1){
-                    evolutionParameters.countOfNeuronsInLayer = 100;
+            case HiddenLayersCount:
+                if (evolutionParameters.countOfHiddenLayers == 1){
+                    evolutionParameters.countOfHiddenLayers = 30;
                 } else {
-                    evolutionParameters.countOfNeuronsInLayer--;
+                    evolutionParameters.countOfHiddenLayers--;
+                }
+                break;
+            case HiddenLayerNeuronsCount:
+                if (evolutionParameters.hiddenLayerNeuronCount == 1){
+                    evolutionParameters.hiddenLayerNeuronCount = 121;
+                } else {
+                    evolutionParameters.hiddenLayerNeuronCount--;
+                }
+                break;
+            case OutputLayerNeuronsCount:
+                if (evolutionParameters.outputLayerNeuronCount == 1){
+                    evolutionParameters.outputLayerNeuronCount = 121;
+                } else {
+                    evolutionParameters.outputLayerNeuronCount--;
                 }
                 break;
         }
@@ -104,18 +120,32 @@ void EvoSettingsMenu::setParameter(int currentChoice, int side)
                     evolutionParameters.countOfFood++;
                 }
                 break;
-            case LayersCount:
-                if (evolutionParameters.countOfLayers == 20){
-                    evolutionParameters.countOfLayers = 1;
+            case InputLayerNeuronsCount:
+                if (evolutionParameters.inputLayerNeuronCount == 121){
+                    evolutionParameters.inputLayerNeuronCount = 1;
                 } else {
-                    evolutionParameters.countOfLayers++;
+                    evolutionParameters.inputLayerNeuronCount++;
                 }
                 break;
-            case NeuronsCount:
-                if (evolutionParameters.countOfNeuronsInLayer == 100){
-                    evolutionParameters.countOfNeuronsInLayer = 1;
+            case HiddenLayersCount:
+                if (evolutionParameters.countOfHiddenLayers == 30){
+                    evolutionParameters.countOfHiddenLayers = 1;
                 } else {
-                    evolutionParameters.countOfNeuronsInLayer++;
+                    evolutionParameters.countOfHiddenLayers++;
+                }
+                break;
+            case HiddenLayerNeuronsCount:
+                if (evolutionParameters.hiddenLayerNeuronCount == 121){
+                    evolutionParameters.hiddenLayerNeuronCount = 1;
+                } else {
+                    evolutionParameters.hiddenLayerNeuronCount++;
+                }
+                break;
+            case OutputLayerNeuronsCount:
+                if (evolutionParameters.outputLayerNeuronCount == 121){
+                    evolutionParameters.outputLayerNeuronCount = 1;
+                } else {
+                    evolutionParameters.outputLayerNeuronCount++;
                 }
                 break;
         }
@@ -138,11 +168,17 @@ int EvoSettingsMenu::getParameter(int count)
         case FoodsCount:
             return evolutionParameters.countOfFood;
             break;
-        case LayersCount:
-            return evolutionParameters.countOfLayers;
+        case InputLayerNeuronsCount:
+            return evolutionParameters.inputLayerNeuronCount;
             break;
-        case NeuronsCount:
-            return evolutionParameters.countOfNeuronsInLayer;
+        case HiddenLayersCount:
+            return evolutionParameters.countOfHiddenLayers;
+            break;
+        case HiddenLayerNeuronsCount:
+            return evolutionParameters.hiddenLayerNeuronCount;
+            break;
+        case OutputLayerNeuronsCount:
+            return evolutionParameters.outputLayerNeuronCount;
             break;
         default:
             return 0;

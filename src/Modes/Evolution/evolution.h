@@ -11,6 +11,7 @@
 extern Screen currentScreen;
 extern EvolutionParameters evolutionParameters;
 
+template <class Network>
 class Evolution
 {
     public:
@@ -29,7 +30,7 @@ class Evolution
 
         int key = 0;
 
-        SnakeEvoModel *snakes = nullptr;
+        SnakeEvoModel<Network> *snakes = nullptr;
 
         struct snakesRatingList{
             int snakeNumber;
@@ -38,21 +39,13 @@ class Evolution
             struct snakesRatingList *prevPlace;
         };
 
-        void turn(SnakeEvoModel *snakes);
+        void turn(SnakeEvoModel<Network> *snakes);
         void drawScreen();
         void evolveSnakes();
-        snakesRatingList* getParentsList(SnakeEvoModel *snakes);
-        void initSnakes(SnakeEvoModel *snakes);
+        snakesRatingList* getParentsList(SnakeEvoModel<Network> *snakes);
+        void initSnakes(SnakeEvoModel<Network> *snakes);
         void drawStuff();
-        void deleteSnakes(SnakeEvoModel *snakes);
-/*
-        //Save-load
-        int saveGame(snakesList *thisSnakes) {};
-        int loadGame(snakesList *thisSnakes) {};
-        static int saveSnakes(void *NotUsed, int argc, char **argv, char **azColName) {};
-        static int loadSession(void *NotUsed, int argc, char **argv, char **azColName) {};
-        static int loadSnake(void *NotUsed, int argc, char **argv, char **azColName) {};
-        static int loadNeurons(void *NotUsed, int argc, char **argv, char **azColName) {};*/
+        void deleteSnakes(SnakeEvoModel<Network> *snakes);
 
 };
 #endif

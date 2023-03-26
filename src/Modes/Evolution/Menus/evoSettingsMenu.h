@@ -12,7 +12,11 @@ class EvoSettingsMenu : public Settings
     private:
         enum menuChoicesConst 
 	    {
-            GameSpeed, SnakesLength, SnakesCount, FoodsCount, LayersCount, NeuronsCount
+            //GameSpeed, SnakesLength, SnakesCount,
+            //FoodsCount, LayersCount, NeuronsCount
+
+            GameSpeed, SnakesLength, SnakesCount, FoodsCount,
+            InputLayerNeuronsCount, HiddenLayersCount, HiddenLayerNeuronsCount, OutputLayerNeuronsCount,
 	    };
 
         enum buttonChoicesConst 

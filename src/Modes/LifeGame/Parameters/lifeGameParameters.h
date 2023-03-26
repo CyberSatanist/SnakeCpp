@@ -22,7 +22,7 @@ class LifeGameParameters : public Parameters
 
         //CellModel
         int cellsToLive;
-        int cellStartBornChance = 2;
+        int cellStartBornChance = 7;
         int cellsCount = 0;
         
         int cellColor = COLOR_BLUE;

@@ -10,7 +10,6 @@ SOURCES=-I src/ -I src/Modes/
 ROOT=src/
 MAIN=$(ROOT)Main/
 SCREEN=$(ROOT)Screen/
-DATABASE=$(ROOT)Database/
 FIELD=$(ROOT)Field/
 MENUS=$(ROOT)Menus/
 BARS=$(ROOT)Bars/
@@ -37,7 +36,6 @@ LIFEGAME_BARS=$(LIFEGAME)Bars/
 
 FILES=$(MAIN)main.cpp \
 	$(SCREEN)screen.cpp \
-	$(DATABASE)database.cpp \
 	$(FIELD)field.cpp \
 	$(BARS)bar.cpp \
 	$(BARS)infoBar.cpp \
@@ -46,6 +44,7 @@ FILES=$(MAIN)main.cpp \
 	$(MENUS)menu.cpp \
 	$(MENUS)mainmenu.cpp \
 	$(MENUS)modeSelector.cpp \
+	$(MENUS)neuralNetworkSelector.cpp \
 	$(MENUS)settings.cpp \
 	$(MENUS)settingsMenu.cpp \
 	$(MENUS)controllsMenu.cpp \
@@ -59,7 +58,6 @@ FILES=$(MAIN)main.cpp \
 	$(EVOLUTION_MODELS)snakeEvoModel.cpp \
 	$(EVOLUTION_MENUS)evoSettingsMenu.cpp \
 	$(EVOLUTION_STANDART_NETWORK)standartNetwork.cpp \
-	$(EVOLUTION_STANDART_NETWORK)standartNeuron.cpp \
 	$(EVOLUTION_STAIGHT_NETWORK)straightNetwork.cpp \
 	$(EVOLUTION_SIMPLE_NETWORK)simpleNetwork.cpp \
 	$(EVOLUTION_BARS)evoInfoBar.cpp \

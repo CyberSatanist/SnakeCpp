@@ -2,9 +2,8 @@
 #define SIMPLE_NETWROK_H
 
 #include "Evolution/Field/evoField.h"
-#include "NeuralNetwork/network.h"
 
-class SimpleNetwork : public Network
+class SimpleNetwork
 {
     float *foodNeurons;
     float *wallNeurons;
@@ -15,10 +14,6 @@ class SimpleNetwork : public Network
         
         int useMind(EvoField &evoField, int headX, int headY);
         void mergeNetworks(SimpleNetwork *parentOne, SimpleNetwork *parentTwo);
-
-        //Save-load
-        void saveNetwork() {};
-        void loadNetwork() {};
         
 
     private:

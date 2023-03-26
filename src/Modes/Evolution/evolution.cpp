@@ -1,12 +1,11 @@
 #include "evolution.h"
-
-#include "Database/database.h"
-
-
-extern Database database;
+#include "Evolution/NeuralNetwork/standartNetwork/standartNetwork.h"
+#include "Evolution/NeuralNetwork/straightNetwork/straightNetwork.h"
+#include "Evolution/NeuralNetwork/simpleNetwork/simpleNetwork.h"
 
 
-void Evolution::run()
+template <class Network>
+void Evolution<Network>::run()
 {
     timeout(evolutionParameters.delayDuration);
 
@@ -18,7 +17,7 @@ void Evolution::run()
     evolutionParameters.snakeIdCounter = 1;
     evolutionParameters.aliveSnakes = 0;
 
-    snakes = new SnakeEvoModel[evolutionParameters.countOfSnakes];
+    snakes = new SnakeEvoModel<Network>[evolutionParameters.countOfSnakes];
     initSnakes(snakes);
 
 	evolutionParameters.gameOn = true;
@@ -33,8 +32,7 @@ void Evolution::run()
             evolutionParameters.time++;
 
             for (int count = 0; count < evolutionParameters.countOfSnakes; count++) {
-                if (snakes[count].getIsAlive())
-                {
+                if (snakes[count].getIsAlive()) {
                     snakes[count].setVector(key);
                 }
             }
@@ -60,22 +58,13 @@ void Evolution::run()
         if (!evolutionParameters.gameOn){
             deleteSnakes(snakes);
         }
-
-        if (evolutionParameters.saveGame){
-      //      saveGame(snakes);
-            evolutionParameters.saveGame = false;
-        }
-
-        if (evolutionParameters.loadGame){
-          //  loadGame(snakes);
-            evolutionParameters.loadGame = false;
-        }
     }
     currentScreen.clearScreen();
 }
 
 
-void Evolution::turn(SnakeEvoModel *snakes)
+template <class Network>
+void Evolution<Network>::turn(SnakeEvoModel<Network> *snakes)
 {
     for (int count = 0; count < evolutionParameters.countOfSnakes; count++) {
         if (snakes[count].getIsAlive()){
@@ -93,7 +82,8 @@ void Evolution::turn(SnakeEvoModel *snakes)
 }
 
 
-void Evolution::drawScreen()
+template <class Network>
+void Evolution<Network>::drawScreen()
 {
     infoBar.drawBar();
     toolsBar.drawBar();
@@ -108,7 +98,8 @@ void Evolution::drawScreen()
 }
 
 
-void Evolution::drawStuff()
+template <class Network>
+void Evolution<Network>::drawStuff()
 {
     for (int count = 0; count < evolutionParameters.countOfSnakes; count++) {
         if(snakes[count].getIsAlive()){
@@ -118,7 +109,8 @@ void Evolution::drawStuff()
 }
 
 
-void Evolution::initSnakes(SnakeEvoModel *snakes)
+template <class Network>
+void Evolution<Network>::initSnakes(SnakeEvoModel<Network> *snakes)
 {
     int snakeStartX = evolutionParameters.fullFieldSizeX / 2;
     int snakeStartY = evolutionParameters.fullFieldSizeY / 2;
@@ -126,22 +118,18 @@ void Evolution::initSnakes(SnakeEvoModel *snakes)
     int snakeColor = evolutionParameters.snakeOneBodyColor;
 
     for (int count = 0; count < evolutionParameters.countOfSnakes; count++) {
-        snakes[count].init(
-            snakeStartX,
-            snakeStartY,
-            snakeLength,
-            snakeColor
-        );
+        snakes[count].init(new Network(), snakeStartX, snakeStartY, snakeLength, snakeColor);
     }
 }
 
 
-void Evolution::evolveSnakes()
+template <class Network>
+void Evolution<Network>::evolveSnakes()
 {
     snakesRatingList *parentSnakesList = getParentsList(snakes);
 
 
-    SnakeEvoModel *nextGeneration = new SnakeEvoModel[evolutionParameters.countOfSnakes];
+    SnakeEvoModel<Network> *nextGeneration = new SnakeEvoModel<Network>[evolutionParameters.countOfSnakes];
     int counter = 1;
     for (int count = 0; count < evolutionParameters.countOfSnakes; count++) {
         if ((evolutionParameters.fullFieldSizeY / 2) + (count * 2) + counter > (evolutionParameters.fullFieldSizeY - 3)){
@@ -149,6 +137,7 @@ void Evolution::evolveSnakes()
         }
 
         nextGeneration[count].init(
+            new Network(),
             evolutionParameters.fullFieldSizeX / 2,
             evolutionParameters.fullFieldSizeY / 2,
             evolutionParameters.snakeLength,
@@ -179,7 +168,7 @@ void Evolution::evolveSnakes()
             secondParent = secondParent->nextPlace;
         }
         
-        nextGeneration[count].network.mergeNetworks(&(snakes[firstParent->snakeNumber].network), &(snakes[secondParent->snakeNumber].network));
+        nextGeneration[count].network->mergeNetworks(snakes[firstParent->snakeNumber].network, snakes[secondParent->snakeNumber].network);
         counter++;
     }
 
@@ -194,7 +183,8 @@ void Evolution::evolveSnakes()
 }
 
 
-void Evolution::deleteSnakes(SnakeEvoModel *snakes)
+template <class Network>
+void Evolution<Network>::deleteSnakes(SnakeEvoModel<Network> *snakes)
 {
     for (int count = 0; count  < evolutionParameters.countOfSnakes; count++){
         snakes[count].deleteSnake();
@@ -203,7 +193,8 @@ void Evolution::deleteSnakes(SnakeEvoModel *snakes)
 }
 
 
-Evolution::snakesRatingList* Evolution::getParentsList(SnakeEvoModel *snakes)
+template <class Network>
+typename Evolution<Network>::snakesRatingList* Evolution<Network>::getParentsList(SnakeEvoModel<Network> *snakes)
 {
     snakesRatingList *firstPlace = new snakesRatingList;
     snakesRatingList *lastPlace = nullptr;
@@ -318,3 +309,10 @@ Evolution::snakesRatingList* Evolution::getParentsList(SnakeEvoModel *snakes)
 
     return parentsList;
 }
+
+
+template class Evolution<StandartNetwork>;
+
+template class Evolution<StraightNetwork>;
+
+template class Evolution<SimpleNetwork>;

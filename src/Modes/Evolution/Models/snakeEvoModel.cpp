@@ -1,10 +1,13 @@
 #include "snakeEvoModel.h"
-#include <Evolution/Parameters/evolutionParameters.h>
+#include "Evolution/NeuralNetwork/standartNetwork/standartNetwork.h"
+#include "Evolution/NeuralNetwork/straightNetwork/straightNetwork.h"
+#include "Evolution/NeuralNetwork/simpleNetwork/simpleNetwork.h"
+#include "Evolution/Parameters/evolutionParameters.h"
 
 extern EvolutionParameters evolutionParameters;
 
-
-SnakeEvoModel::SnakeEvoModel(int startX, int startY, int length, int color)
+template <class Network>
+SnakeEvoModel<Network>::SnakeEvoModel(int startX, int startY, int length, int color)
     : field(evolutionParameters.currentFieldSizeX, evolutionParameters.currentFieldSizeY, evolutionParameters.fullFieldSizeX, evolutionParameters.fullFieldSizeY)
 {
     snakeId = evolutionParameters.snakeIdCounter;
@@ -12,8 +15,11 @@ SnakeEvoModel::SnakeEvoModel(int startX, int startY, int length, int color)
 }
 
 
-void SnakeEvoModel::init(int startX, int startY, int length, int color)
+template <class Network>
+void SnakeEvoModel<Network>::init(Network *newNetwork, int startX, int startY, int length, int color)
 {
+    network = newNetwork;
+
     delete currentBody; 
 
     currentBody = new snakeBody;
@@ -44,25 +50,30 @@ void SnakeEvoModel::init(int startX, int startY, int length, int color)
 }
 
 
-void SnakeEvoModel::drawField()
+template <class Network>
+void SnakeEvoModel<Network>::drawField()
 {
     field.drawField();
 }
 
-void SnakeEvoModel::drawStuff()
+
+template <class Network>
+void SnakeEvoModel<Network>::drawStuff()
 {
     field.drawSnakeAndFood();
 }
 
 
-void SnakeEvoModel::getSnakeHeadCoordinates(int* x, int* y)
+template <class Network>
+void SnakeEvoModel<Network>::getSnakeHeadCoordinates(int* x, int* y)
 {
     *x = snakeHeadTail->firstCell->cellX;
     *y = snakeHeadTail->firstCell->cellY;
 }
 
 
-void SnakeEvoModel::newCell()
+template <class Network>
+void SnakeEvoModel<Network>::newCell()
 {
 	snakeBody* snakeTmp = nullptr;
     snakeTmp = new snakeBody;
@@ -75,7 +86,8 @@ void SnakeEvoModel::newCell()
 }
 
 
-void SnakeEvoModel::move()
+template <class Network>
+void SnakeEvoModel<Network>::move()
 {
 	snakeBody* snakeTmp = nullptr;
 
@@ -119,7 +131,8 @@ void SnakeEvoModel::move()
 }
 
 
-void SnakeEvoModel::validation()
+template <class Network>
+void SnakeEvoModel<Network>::validation()
 {
 	snakeBody* snakeTmp = nullptr;
 
@@ -136,9 +149,10 @@ void SnakeEvoModel::validation()
 }
 
 
-void SnakeEvoModel::setVector(int direction)
+template <class Network>
+void SnakeEvoModel<Network>::setVector(int direction)
 {
-    direction = network.useMind(field, snakeHeadTail->firstCell->cellX, snakeHeadTail->firstCell->cellY);
+    direction = network->useMind(field, snakeHeadTail->firstCell->cellX, snakeHeadTail->firstCell->cellY);
 
     switch (direction) {
         case Screen::controll_keys::RIGHT:
@@ -165,7 +179,8 @@ void SnakeEvoModel::setVector(int direction)
 }
 
 
-void SnakeEvoModel::initFood()
+template <class Network>
+void SnakeEvoModel<Network>::initFood()
 {
     std::random_device random_device;
     std::mt19937 generator(random_device());
@@ -185,7 +200,8 @@ void SnakeEvoModel::initFood()
 }
 
 
-void SnakeEvoModel::initBorders()
+template <class Network>
+void SnakeEvoModel<Network>::initBorders()
 {
     std::random_device random_device;
     std::mt19937 generator(random_device());
@@ -205,7 +221,8 @@ void SnakeEvoModel::initBorders()
 }
 
 
-void SnakeEvoModel::snakeEat()
+template <class Network>
+void SnakeEvoModel<Network>::snakeEat()
 {
     newCell();
     newFood();
@@ -224,7 +241,8 @@ void SnakeEvoModel::snakeEat()
 }
 
 
-void SnakeEvoModel::newFood()
+template <class Network>
+void SnakeEvoModel<Network>::newFood()
 {
     std::random_device random_device;
     std::mt19937 generator(random_device());
@@ -241,14 +259,16 @@ void SnakeEvoModel::newFood()
 }
 
 
-void SnakeEvoModel::death()
+template <class Network>
+void SnakeEvoModel<Network>::death()
 {
     isAlive = false;
     evolutionParameters.aliveSnakes--;
 }
 
 
-void SnakeEvoModel::deleteSnake()
+template <class Network>
+void SnakeEvoModel<Network>::deleteSnake()
 {
 	snakeBody* snakeTmp = nullptr;
 	snakeBody* snakeSecondTmp = nullptr;
@@ -266,4 +286,13 @@ void SnakeEvoModel::deleteSnake()
         delete snakeHeadTail;
         snakeHeadTail = nullptr;
     }
+    delete network;
 }
+
+
+
+template class SnakeEvoModel<StandartNetwork>;
+
+template class SnakeEvoModel<StraightNetwork>;
+
+template class SnakeEvoModel<SimpleNetwork>;

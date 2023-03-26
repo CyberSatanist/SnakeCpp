@@ -10,26 +10,23 @@ LifeToolsBar::LifeToolsBar(int xStart, int yStart, int xEnd, int yEnd) : ToolsBa
  
     barChoices =
     {
-        "Save current state", "Load state",
         "Pause",              "Reset",
         "Speed++",            "Speed--",
         "Move Field",         "Draw cells",
-        "Clean up",           "Exit",
+        "Clean field",           "Exit",
     };
 
     rows = 2;
     columns = barChoices.size() / rows;
 
-    firstBarTitle = Save;
+    firstBarTitle = Pause;
     lastBarTitle = Exit;
 }
 
 
 void LifeToolsBar::menuControllSelect()
 {
-    if (currentChoice == barChoicesConst::Save){
-    } else if (currentChoice == barChoicesConst::Load){
-    } else if (currentChoice == barChoicesConst::Pause){
+    if (currentChoice == barChoicesConst::Pause){
         if (lifeGameParameters.pauseOn) {
             lifeGameParameters.pauseOn = false;
         } else {

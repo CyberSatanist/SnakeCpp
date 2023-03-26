@@ -11,16 +11,16 @@ StraightNetwork::StraightNetwork()
     std::mt19937 generator(random_device());
     std::uniform_int_distribution<> randGen(-100, 100);
 
-    foodNeuronsUp = new int [evolutionParameters.firstLayerNeuronCount];
-    foodNeuronsDown = new int [evolutionParameters.firstLayerNeuronCount];
-    foodNeuronsLeft = new int [evolutionParameters.firstLayerNeuronCount];
-    foodNeuronsRight = new int [evolutionParameters.firstLayerNeuronCount];
+    foodNeuronsUp = new int [evolutionParameters.inputLayerNeuronCount];
+    foodNeuronsDown = new int [evolutionParameters.inputLayerNeuronCount];
+    foodNeuronsLeft = new int [evolutionParameters.inputLayerNeuronCount];
+    foodNeuronsRight = new int [evolutionParameters.inputLayerNeuronCount];
 
-    wallNeuronsUp = new int [evolutionParameters.firstLayerNeuronCount];
-    wallNeuronsDown = new int [evolutionParameters.firstLayerNeuronCount];
-    wallNeuronsLeft = new int [evolutionParameters.firstLayerNeuronCount];
-    wallNeuronsRight = new int [evolutionParameters.firstLayerNeuronCount];
-    for (int neuronCount = 0; neuronCount < evolutionParameters.firstLayerNeuronCount; neuronCount++){
+    wallNeuronsUp = new int [evolutionParameters.inputLayerNeuronCount];
+    wallNeuronsDown = new int [evolutionParameters.inputLayerNeuronCount];
+    wallNeuronsLeft = new int [evolutionParameters.inputLayerNeuronCount];
+    wallNeuronsRight = new int [evolutionParameters.inputLayerNeuronCount];
+    for (int neuronCount = 0; neuronCount < evolutionParameters.inputLayerNeuronCount; neuronCount++){
         foodNeuronsUp[neuronCount] = randGen(generator);
         foodNeuronsDown[neuronCount] = randGen(generator);
         foodNeuronsLeft[neuronCount] = randGen(generator);
@@ -50,7 +50,7 @@ StraightNetwork::~StraightNetwork()
 
 int StraightNetwork::useMind(EvoField &evoField, int headX, int headY)
 {
-    int radius = (sqrt(evolutionParameters.firstLayerNeuronCount) -1) / 2;
+    int radius = (sqrt(evolutionParameters.inputLayerNeuronCount) -1) / 2;
     int neuronCount = 0;
     int result = 0;
 
@@ -63,9 +63,6 @@ int StraightNetwork::useMind(EvoField &evoField, int headX, int headY)
                 && (countY < evoField.getFullSizeY())
             ) {
                 switch (evoField.getCell(countX, countY)){
-                    //case Field::Free:
-                    //    result = validateResult(result, wallNeurons[neuronCount]);
-                    //    break;
                     case Field::Food:
                         up = validateResult(up, foodNeuronsUp[neuronCount]);
                         down = validateResult(down, foodNeuronsDown[neuronCount]);
@@ -133,7 +130,7 @@ void StraightNetwork::mergeNetworks(StraightNetwork *parentOne, StraightNetwork 
     std::mt19937 parentGenerator(random_device());
     std::uniform_int_distribution<> parentRandom(0, 100);
 
-    for (int neuronCount = 0; neuronCount < evolutionParameters.firstLayerNeuronCount; neuronCount++){
+    for (int neuronCount = 0; neuronCount < evolutionParameters.inputLayerNeuronCount; neuronCount++){
         int randChance = parentRandom(parentGenerator);
         if ((randChance < (evolutionParameters.mutationChance / 2)) || (randChance >  (100 -evolutionParameters.mutationChance))){
             wallNeuronsUp[neuronCount] = randGen(generator) / 10;

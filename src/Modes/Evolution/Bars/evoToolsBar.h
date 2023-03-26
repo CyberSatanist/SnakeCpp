@@ -15,8 +15,9 @@ class EvoToolsBar : public ToolsBar
 
     private:
         enum barChoicesConst {
-            Save, Load, SpeedUp, SpeedDown, FoodUp, FoodDown,
-            MutPlus, MutMinus, TurnsToDeathUp, TurnsToDeathDown, BordersUp, BordersDown, Pause, Exit};
+            SpeedUp, SpeedDown, FoodUp, FoodDown, MutPlus, MutMinus,
+            TurnsToDeathUp, TurnsToDeathDown, BordersUp, BordersDown, Pause, Exit
+        };
 
         void menuControllSelect() override;
 

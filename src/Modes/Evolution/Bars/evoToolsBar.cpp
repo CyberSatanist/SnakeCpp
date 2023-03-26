@@ -10,8 +10,6 @@ EvoToolsBar::EvoToolsBar(int xStart, int yStart, int xEnd, int yEnd) : ToolsBar(
 
     barChoices = 
     {
-        "Save state",
-        "Load state",
         "Speed++",
         "Speed--",
         "Food++",
@@ -29,18 +27,14 @@ EvoToolsBar::EvoToolsBar(int xStart, int yStart, int xEnd, int yEnd) : ToolsBar(
     rows = barChoices.size() / 5;
     columns = barChoices.size() / rows;
 
-    firstBarTitle = Save;
+    firstBarTitle = SpeedUp;
     lastBarTitle = Exit;
 }
 
 
 void EvoToolsBar::menuControllSelect()
 {
-    if (currentChoice == barChoicesConst::Save){
-        evolutionParameters.saveGame = true;
-    } else if (currentChoice == barChoicesConst::Load){
-        evolutionParameters.loadGame = true;
-    } else if (currentChoice == barChoicesConst::SpeedUp){
+    if (currentChoice == barChoicesConst::SpeedUp){
         if (evolutionParameters.delayDuration == 1) {
             evolutionParameters.delayDuration = 200;
         } else {

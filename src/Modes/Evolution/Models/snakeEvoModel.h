@@ -4,13 +4,10 @@
 #include <random>
 #include "Screen/screen.h"
 #include "Evolution/Field/evoField.h"
-#include "NeuralNetwork/network.h"
-#include "Evolution/NeuralNetwork/standartNetwork/standartNetwork.h"
-#include "Evolution/NeuralNetwork/straightNetwork/straightNetwork.h"
-#include "Evolution/NeuralNetwork/simpleNetwork/simpleNetwork.h"
 
 extern Screen currentScreen;
 
+template <class Network>
 class SnakeEvoModel
 {
 	public:
@@ -45,9 +42,7 @@ class SnakeEvoModel
 		void snakeEat();
 
     public:
-		//StandartNetwork network;
-    	StraightNetwork network;
-		//SimpleNetwork network;
+		Network *network = nullptr;
         EvoField field;
 
 
@@ -55,7 +50,7 @@ class SnakeEvoModel
 		int foodEaten = 0;
 		int turnsLeft = evolutionParameters.turnsToDeath;
 		
-		void init(int startX, int startY, int length, int color);
+		void init(Network *newNetwork, int startX, int startY, int length, int color);
 		void deleteSnake();
 		void move();
 		void setVector(int direction);
@@ -76,7 +71,5 @@ class SnakeEvoModel
 		//Draw
 		void drawField();
 		void drawStuff();
-		void drawSnake();
-		void drawFood();
 };
 #endif
